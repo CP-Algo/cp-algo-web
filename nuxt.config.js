@@ -14,7 +14,10 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: [
+    '~/assets/scss/styles/global.scss',
+    '~/assets/scss/styles/normalize.scss',
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -28,6 +31,8 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/google-fonts',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -38,6 +43,20 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  styleResources: {
+    // your settings here
+    scss: ['~assets/scss/vars/*.scss'],
+    hoistUseStatements: true, // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
+  },
+
+  googleFonts: {
+    families: {
+      Nunito: [400, 600, 700],
+      Poppins: [700],
+    },
+    display: 'swap',
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
