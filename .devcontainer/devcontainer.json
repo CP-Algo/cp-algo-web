@@ -15,16 +15,23 @@
     "eslint.format.enable": true,
     "eslint.lintTask.enable": true,
     "eslint.packageManager": "yarn",
+    "vetur.format.scriptInitialIndent": true,
+    "vetur.format.styleInitialIndent": true,
     "[vue]": {
-      "editor.defaultFormatter": "octref.vetur"
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "[javascript]": {
       "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": true
+    "[typescript]": {
+      "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "stylelint.packageManager": "yarn"
+    "stylelint.packageManager": "yarn",
+    "stylelint.validate": [
+      "css",
+      "scss",
+      "vue",
+    ],
   },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
@@ -33,7 +40,8 @@
     "orta.vscode-jest",
     "octref.vetur",
     "eamodio.gitlens",
-    "stylelint.vscode-stylelint"
+    "stylelint.vscode-stylelint",
+    "mrmlnc.vscode-scss"
   ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [

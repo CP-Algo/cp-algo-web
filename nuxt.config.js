@@ -23,7 +23,7 @@ export default {
   plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: false,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -33,16 +33,24 @@ export default {
     '@nuxtjs/stylelint-module',
     '@nuxtjs/style-resources',
     '@nuxtjs/google-fonts',
+    '@nuxtjs/svg',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  auth: {
+    strategies: {
+      local: {},
+    },
+  },
 
   styleResources: {
     // your settings here

@@ -4,6 +4,13 @@ body {
   margin: 0;
   font-family: $body-font, sans-serif;
   font-size: 62.5%;
+  background-color: $background-dark-primary;
+
+  .page-container {
+    margin: 0 auto;
+    min-height: 100vh;
+    max-width: 144rem;
+  }
 }
 
 a {
