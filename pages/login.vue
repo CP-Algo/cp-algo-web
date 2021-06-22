@@ -1,8 +1,16 @@
 <template>
-  <div class="page-container"></div>
+  <div class="page-container">
+    <auth-page page="login" />
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-export default Vue.extend({})
+import AuthPage from '~/components/AuthPage.vue'
+
+export default Vue.extend({
+  auth: 'guest',
+  components: { AuthPage },
+  layout: 'auth',
+})
 </script>

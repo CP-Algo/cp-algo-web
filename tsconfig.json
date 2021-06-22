@@ -28,11 +28,14 @@
       "@nuxtjs/axios",
       "@types/node",
       "@nuxtjs/auth-next"
-    ],
+    ]
   },
   "exclude": [
     "node_modules",
     ".nuxt",
     "dist"
+  ],
+  "include": [
+    "./test/jest-setup.ts"
   ]
 }

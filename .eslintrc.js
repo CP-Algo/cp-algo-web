@@ -8,6 +8,7 @@ module.exports = {
     '@nuxtjs/eslint-config-typescript',
     'plugin:prettier/recommended',
     'plugin:nuxt/recommended',
+    'plugin:jest-dom/recommended',
   ],
   plugins: [],
   // add your custom rules here

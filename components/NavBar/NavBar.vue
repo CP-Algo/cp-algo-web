@@ -2,8 +2,24 @@
   <div id="nav-bar">
     <img class="brand-icon" src="~assets/svg/site/logo.svg" />
     <div class="menu">
-      <div class="menu-item selected">Templates</div>
-      <div class="menu-item">Leaderboard</div>
+      <div
+        :class="{
+          'menu-item': true,
+          selected: selectedMenuItem === 'TEMPLATES',
+        }"
+        @click="selectedMenuItem = 'TEMPLATES'"
+      >
+        Templates
+      </div>
+      <div
+        :class="{
+          'menu-item': true,
+          selected: selectedMenuItem === 'LEADERBOARD',
+        }"
+        @click="selectedMenuItem = 'LEADERBOARD'"
+      >
+        Leaderboard
+      </div>
     </div>
     <div class="right">
       <div class="action">
@@ -24,7 +40,7 @@
           class="icon-container"
           @click="showProfilePopup = !showProfilePopup"
         >
-          <div class="action-icon avatar" />
+          <div class="action-icon avatar" data-testid="nav-bar-avatar" />
         </div>
         <profile-popup
           :show="showProfilePopup"
@@ -46,6 +62,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      selectedMenuItem: 'TEMPLATES',
       showProfilePopup: false,
     }
   },
