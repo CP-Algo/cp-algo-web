@@ -22,6 +22,26 @@
           <a href="/leaderboard">View all</a>
         </div>
         <hr />
+        <div class="topContributorList">
+          <top-contributor-row
+            :rank="1"
+            full-name="Abraham Lincoln"
+            user-name="abrahm"
+            :point="495"
+          />
+          <top-contributor-row
+            :rank="2"
+            full-name="Doctor Strange"
+            user-name="doctor"
+            :point="234"
+          />
+          <top-contributor-row
+            :rank="3"
+            full-name="JK Rowling"
+            user-name="jkr"
+            :point="123"
+          />
+        </div>
       </div>
       <div class="submission">
         <div class="header">
@@ -29,6 +49,20 @@
           <a href="/submissions">View all</a>
         </div>
         <hr />
+        <div class="recentSubmissionList">
+          <recent-submission-row
+            algorithm="Aho Corasick String Matching"
+            :code-size="258"
+            :taken-time="438"
+            user-name="fahimcp495"
+          />
+          <recent-submission-row
+            algorithm="KMP String Matching"
+            :code-size="582"
+            :taken-time="838"
+            user-name="DrSwad"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -37,9 +71,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import CategoryBanner from '~/components/CategoryBanner.vue'
+import RecentSubmissionRow from '~/components/RecentSubmissionRow.vue'
+import TopContributorRow from '~/components/TopContributorRow.vue'
 export default Vue.extend({
   components: {
     CategoryBanner,
+    TopContributorRow,
+    RecentSubmissionRow,
   },
 })
 </script>
@@ -125,6 +163,18 @@ hr {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .topContributorList,
+  .recentSubmissionList {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 3.2rem;
+  }
+
+  .topContributorList {
+    margin-bottom: 3.6rem;
   }
 }
 </style>
