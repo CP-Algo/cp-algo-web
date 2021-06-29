@@ -1,7 +1,11 @@
 <template>
   <div>
-    <input-field v-model="username" label="Username" />
-    <input-field v-model="password" label="Password" />
+    <input-field v-model="username" label="username" class="inputField"
+      >Username</input-field
+    >
+    <input-field v-model="password" label="password" class="inputField"
+      >Password</input-field
+    >
   </div>
 </template>
 
@@ -28,3 +32,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.inputField {
+  margin-bottom: 2rem;
+}
+</style>
