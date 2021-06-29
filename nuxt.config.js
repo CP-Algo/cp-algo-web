@@ -52,6 +52,10 @@ export default {
     },
   },
 
+  serverMiddleware: {
+    '/api': '~/api',
+  },
+
   styleResources: {
     // your settings here
     scss: ['~assets/scss/vars/*.scss'],

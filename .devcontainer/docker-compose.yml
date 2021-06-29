@@ -1,0 +1,35 @@
+version: '3.6'
+services:
+  app:
+    build:
+      context: .
+      args:
+        VARIANT: 14
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://user:pass@postgres:5432/db
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ..:/workspace:cached
+      - cp_algo_extensions_data:/home/node/.vscode-server/extensions
+    command: ["/bin/bash", "-c", "--", "while true; do sleep 86400; done"]
+    container_name: cpalgo_app
+  postgres:
+    image: postgres:13.0
+    restart: always
+    volumes:
+    - cp_algo_db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    container_name: cpalgo_db
+volumes:
+  cp_algo_db_data:
+  cp_algo_extensions_data:

@@ -88,3 +88,7 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Config files
+config/mail.js
+config/jwt.js

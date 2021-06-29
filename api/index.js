@@ -1,0 +1,39 @@
+const express = require('express')
+
+// Create express instance
+const app = express()
+
+// Log requests to the console for debugging purposes
+app.use(require('morgan')('dev'))
+
+// Parse urlencoded and json data and put them in req.body
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+// Configure models and sync with database
+require('./models')
+
+// Passport for auth
+const passport = require('passport')
+require('./helpers/passportStrategies')(passport) // Load the passport configuration for
+// custom local strategy and jwt strategy, and set up the passport instance using it
+app.use(passport.initialize()) // Initialize passport for use in express middlewares
+
+// Initalize authenticated middleware using the configured passport instance
+const { initMiddleware } = require('./helpers/authenticatedMiddleware')
+initMiddleware(passport)
+
+// Setup API Routes
+app.use(require('./routes')(passport))
+
+// Export express app
+module.exports = app
+
+// Start standalone server if directly running
+if (require.main === module) {
+  const port = process.env.PORT || 3001
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`API server listening on port ${port}`)
+  })
+}

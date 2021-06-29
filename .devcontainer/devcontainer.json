@@ -1,14 +1,10 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.183.0/containers/javascript-node
 {
-  "name": "cp-algo-frontend",
-  "build": {
-    "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 12, 14, 16
-    "args": {
-      "VARIANT": "14"
-    }
-  },
+  "name": "cp-algo",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "terminal.integrated.tabs.enabled": true,
@@ -41,7 +37,8 @@
     "octref.vetur",
     "eamodio.gitlens",
     "stylelint.vscode-stylelint",
-    "mrmlnc.vscode-scss"
+    "mrmlnc.vscode-scss",
+    "ms-vsliveshare.vsliveshare-pack"
   ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
