@@ -8,25 +8,91 @@ fs.readdirSync(__dirname)
   .forEach((file) => require(`./${file}`)(sequelize))
 
 // Model Associations
-const { User, Verification, ResetPassword } = sequelize.models
+const {
+  Algorithm,
+  Category,
+  Codebook,
+  Handle,
+  Language,
+  ResetPassword,
+  SubCategory,
+  Submission,
+  Test,
+  TestResult,
+  User,
+  Verification,
+} = sequelize.models
+
+function initHasOneRelationship(OwnerTable, OwnedTable, foreignKey) {
+  OwnerTable.hasOne(OwnedTable)
+  OwnedTable.belongsTo(OwnerTable, {
+    foreignKey: {
+      name: foreignKey,
+      allowNull: false,
+    },
+  })
+}
+
+function initHasManyRelationship(
+  OwnerTable,
+  OwnedTable,
+  foreignKey,
+  primaryKey = false
+) {
+  OwnerTable.hasMany(OwnedTable)
+  OwnedTable.belongsTo(OwnerTable, {
+    foreignKey: {
+      name: foreignKey,
+      allowNull: false,
+      primaryKey,
+    },
+  })
+}
+
+function initBelongsToManyRelationship(OwnerTable, OwnedTable, through) {
+  OwnerTable.belongsToMany(OwnedTable, { through })
+  OwnedTable.belongsToMany(OwnerTable, { through })
+}
+
+// Algorithm <= Submission
+initHasManyRelationship(Algorithm, Submission, 'AlgorithmId')
+
+// Algorithm <= Test
+initHasManyRelationship(Algorithm, Test, 'AlgorithmId')
+
+// Category <= SubCategory
+initHasManyRelationship(Category, SubCategory, 'CategoryId')
+
+// Codebook <= Submission
+initHasManyRelationship(Codebook, Submission, 'CodebookId')
+
+// Language <= Submission
+initHasManyRelationship(Language, Submission, 'LanguageId')
+
+// SubCategory <= Algorithm
+initHasManyRelationship(SubCategory, Algorithm, 'SubCategoryId')
+
+// Submission <= TestResult
+initHasManyRelationship(Submission, TestResult, 'SubmissionId')
+
+// Test <= TestResult
+initHasManyRelationship(Test, TestResult, 'TestId')
+
+// User <- Codebook
+initHasOneRelationship(User, Codebook, 'UserId')
+
+// User <= Handle
+initHasManyRelationship(User, Handle, 'UserId', true)
+
+// TODO: Check if a reset password request already exists before inserting
+// User <- ResetPassword
+initHasOneRelationship(User, ResetPassword, 'UserId')
+
+// User == Submission
+initBelongsToManyRelationship(User, Submission, 'UserSubmissions')
 
 // User <- Verification
-User.hasOne(Verification)
-Verification.belongsTo(User, {
-  foreignKey: {
-    name: 'UserId',
-    allowNull: false,
-  },
-})
-
-// User <- ResetPassword
-User.hasOne(ResetPassword)
-ResetPassword.belongsTo(User, {
-  foreignKey: {
-    name: 'UserId',
-    allowNull: false,
-  },
-})
+initHasOneRelationship(User, Verification, 'UserId')
 
 if (env !== 'production') {
   ;(async () => {

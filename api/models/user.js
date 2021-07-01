@@ -85,12 +85,12 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     points: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
     submissions: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },

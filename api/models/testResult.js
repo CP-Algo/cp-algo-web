@@ -7,11 +7,11 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     executionTime: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     executionMemory: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   })

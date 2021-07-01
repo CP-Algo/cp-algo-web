@@ -13,6 +13,9 @@ app.use(express.json())
 // Configure models and sync with database
 require('./models')
 
+// Generate seed data for models
+require('./seeds')
+
 // Passport for auth
 const passport = require('passport')
 require('./helpers/passportStrategies')(passport) // Load the passport configuration for

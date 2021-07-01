@@ -6,4 +6,5 @@
 //  language
 //  sortBy
 // Returns:
-//  Rows of authorIDs, complexities, resources, upvotes, adds to codebooks
+//  Codebook name
+//  Submission rows of authorIDs, complexities, resources, upvotes, adds to codebooks

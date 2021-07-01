@@ -5,7 +5,7 @@ const JWTstrategy = require('passport-jwt').Strategy // Verify JWT tokens in req
 const ExtractJWT = require('passport-jwt').ExtractJwt // Extract the JWT token from request header
 const { Op } = require('sequelize')
 const {
-  models: { User, Verification },
+  models: { User, Verification, Codebook },
 } = require('../models')
 const { root } = require('../../config')
 const { secret: jwtSecret } = require('../../config/jwt')
@@ -45,9 +45,7 @@ module.exports = function (passport) {
 
           // Copy default profile picture
           await fs.copyFile(
-            path.normalize(
-              path.join(root, 'assets', 'avatar', 'user-default.png')
-            ),
+            path.normalize(path.join(root, 'assets', 'avatar', '$default.png')),
             path.normalize(
               path.join(root, 'assets', 'avatar', `${user.id}.png`)
             )
@@ -59,6 +57,13 @@ module.exports = function (passport) {
           })
           await verification.generateToken()
           await verification.save()
+
+          // Create the codebook entry
+          await Codebook.create({
+            id: user.id,
+            name: `${user.name}'s Codebook`,
+            UserId: user.id,
+          })
 
           // Send email
           await sendMail(user.email, 'SIGNUP', { user, verification })

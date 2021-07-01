@@ -21,18 +21,18 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     executionTime: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     executionMemory: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
     },
     upvotes: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
     forks: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },

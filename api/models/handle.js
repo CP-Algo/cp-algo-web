@@ -5,6 +5,7 @@ module.exports = (sequelize) => {
     site: {
       type: DataTypes.ENUM('CODEFORCES', 'CODECHEF', 'HACKERRANK', 'LIGHTOJ'),
       allowNull: false,
+      primaryKey: true,
     },
     username: {
       type: DataTypes.STRING,
