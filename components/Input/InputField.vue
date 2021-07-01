@@ -176,7 +176,6 @@ $transition: 0.2s ease all;
 .material-input__component {
   position: relative;
   background: transparent;
-
   .material-input {
     @include font-h3-regular();
 
@@ -232,7 +231,6 @@ $transition: 0.2s ease all;
       padding-right: math.div($spacer, 2);
       padding-left: 0;
     }
-
     &.material--has-errors {
       // These styles are required
       // for custom validation:

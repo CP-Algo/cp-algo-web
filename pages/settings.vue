@@ -1,16 +1,114 @@
 <template>
   <div class="page-container">
-    <auth-page page="login" />
+    <div class="sidebar">
+      <div
+        :class="{ general: true, selected: selectedMode === 'GENERAL' }"
+        @click="selectedMode = 'GENERAL'"
+      >
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/generalIcon.svg?raw`)"
+        />
+        <span class="text">General</span>
+      </div>
+      <div
+        :class="{ security: true, selected: selectedMode === 'SECURITY' }"
+        @click="selectedMode = 'SECURITY'"
+      >
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/securityIcon.svg?raw`)"
+        />
+        <span class="text">Security</span>
+      </div>
+      <div
+        :class="{ handles: true, selected: selectedMode === 'HANDLES' }"
+        @click="selectedMode = 'HANDLES'"
+      >
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/handlesIcon.svg?raw`)"
+        />
+        <span class="text">Handles</span>
+      </div>
+    </div>
+
+    <settings-form class="form" :mode="selectedMode" />
+
+    <div class="profile">
+      <profile-box
+        full-name="Abraham Linkoln"
+        user-name="abraham"
+        :rank="123"
+        :contribution="344"
+        :submitted="124"
+      />
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import AuthPage from '~/components/AuthPage.vue'
-
-export default Vue.extend({
-  auth: 'guest',
-  components: { AuthPage },
-  layout: 'auth',
-})
+<script>
+import ProfileBox from '~/components/ProfileBox.vue'
+import SettingsForm from '~/components/SettingsForm.vue'
+export default {
+  components: { ProfileBox, SettingsForm },
+  data() {
+    return {
+      selectedMode: 'GENERAL',
+    }
+  },
+}
 </script>
+
+<style lang="scss" scoped>
+.page-container {
+  display: flex;
+  align-items: stretch;
+  margin-left: 0;
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    border-right: 0.1rem solid $background-dark-secondary;
+
+    .icon {
+      width: 2.8rem;
+      color: $text-light-secondary;
+      margin-right: 2.4rem;
+    }
+
+    .text {
+      @include font-body-bold();
+
+      color: $text-light-primary;
+    }
+    .general {
+      margin-top: 3.6rem;
+    }
+
+    .general,
+    .security,
+    .handles {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 1.7rem 18.5rem 1.7rem 3.6rem;
+      &:hover {
+        background-color: $background-dark-secondary;
+      }
+      &.selected {
+        background-color: $background-dark-tertiary;
+      }
+    }
+  }
+  .form {
+    margin-top: 0.8rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .profile {
+    margin-top: 3.6rem;
+    margin-right: 5.8rem;
+  }
+}
+</style>

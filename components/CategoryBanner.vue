@@ -1,5 +1,13 @@
 <template>
-  <div class="container">
+  <div
+    class="container"
+    @click="
+      $emit('categoryClicked', {
+        id: 'ADVANCED_SEARCH_TECHNIQUES',
+        name: 'Advanced Search Techniques',
+      })
+    "
+  >
     <img
       :src="require(`~/assets/svg/category/${thumbnail}.svg`)"
       :alt="`thumbnail of category ${name}`"
