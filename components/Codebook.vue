@@ -1,15 +1,6 @@
 <template>
   <div class="container">
-    <category-row
-      name="Input/Output"
-      thumbnail="input-output"
-      class="category"
-    />
-    <category-row
-      name="Advanced Search Techniques"
-      thumbnail="advanced-search-techniques"
-      class="category"
-    />
+    <category-row class="row" name="Input/Output" thumbnail="input-output" />
     <category-row name="Databases" thumbnail="database" class="category" />
   </div>
 </template>
@@ -25,9 +16,9 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  // align-items: stretch;
 
-  .category {
+  .row {
     display: flex;
     margin-bottom: 3rem;
   }

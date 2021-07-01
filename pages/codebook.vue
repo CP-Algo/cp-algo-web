@@ -9,7 +9,7 @@
       <div class="export">
         <div
           class="exportIcon"
-          v-html="require(`~/assets/svg/nav-bar/codebook.svg?raw`)"
+          v-html="require(`~/assets/svg/icon/exportIcon.svg?raw`)"
         />
         <span class="exportLabel">Export as PDF</span>
       </div>
@@ -19,7 +19,7 @@
       <div class="dropDown">
         <div
           class="icon"
-          v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
+          v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
         />
         <span class="text">Advanced Search Technique / BS</span>
       </div>
@@ -39,6 +39,7 @@
       </div>
       <button class="new">+ &nbsp; New</button>
     </div>
+
     <codebook class="codebookTable" />
   </div>
 </template>
