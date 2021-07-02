@@ -1,9 +1,19 @@
 <template>
   <div class="page-container">
     <div class="split left">
-      <div class="selectCategory">
-        <span>Select Category</span>
-        <div class="dropDown">Advanced Search Technique/BS</div>
+      <div class="header">
+        <div class="category">
+          <span>Search Category</span>
+          <div class="dropDown">Advanced Search Technique/BS</div>
+        </div>
+        <div class="time">
+          <span>Time Complexity</span>
+          <input class="timeComplex" />
+        </div>
+        <div class="mem">
+          <span>Memory Complexity</span>
+          <input class="memComplex" />
+        </div>
       </div>
       <div class="submission">
         <label>Submission</label>
@@ -50,30 +60,59 @@ export default {}
   display: flex;
   flex-direction: column;
   align-items: stretch;
-}
 
-.selectCategory {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2.4rem;
+  .header {
+    display: flex;
+    align-items: center;
 
-  span {
-    @include font-body-semi();
+    span {
+      @include font-body-semi();
 
-    color: $text-dark-secondary;
-    margin-right: 1.6rem;
-  }
+      color: $text-dark-secondary;
+      margin-left: 1.6rem;
+    }
 
-  .dropDown {
-    @include font-body-semi();
-    // @include single-line();
+    .category {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-    color: $text-light-primary;
-    padding: 1rem 2rem;
-    border: 0.3rem solid $background-dark-secondary;
-    border-radius: 1.2rem;
-    margin-right: 2.4rem;
-    width: 46.9rem;
+    .time,
+    .mem {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      flex: 1;
+
+      span {
+        align-self: flex-start;
+      }
+    }
+
+    .dropDown,
+    .timeComplex,
+    .memComplex {
+      @include font-body-semi();
+      // @include single-line();
+
+      color: $text-light-primary;
+      padding: 1rem 2rem;
+      margin-top: 1.6rem;
+      border: 0.3rem solid $background-dark-secondary;
+      border-radius: 1.2rem;
+      margin-right: 2.4rem;
+    }
+
+    .dropDown {
+      width: 46.9rem;
+    }
+
+    .timeComplex,
+    .memComplex {
+      background-color: transparent;
+      width: 18rem;
+    }
   }
 }
 
@@ -82,6 +121,7 @@ export default {}
   flex-direction: column;
   align-items: stretch;
   flex: 1;
+  margin-top: 2.4rem;
   margin-bottom: 2.4rem;
   label {
     @include font-label-semi();
