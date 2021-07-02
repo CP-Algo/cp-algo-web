@@ -1,18 +1,37 @@
 <template>
   <div class="subcatAlgo-container">
-    <span class="header">{{ subcatName }}</span>
-    <div v-if="subcatName === 'SHORTEST_PATH'" class="subcatClass">
-      <span class="algoName">BFS</span>
-      <span class="algoName">Dijkstra Algoritym</span>
-      <span class="algoName">SPFA</span>
+    <span class="header">{{ subcategoryName }}</span>
+    <div v-if="subcategoryName === 'SHORTEST_PATH'" class="subcatClass">
+      <span
+        :class="{ algoName: true, selected: selectedAlgorithm === 'BFS' }"
+        @click="
+          $emit('updatedSubcategoryAlgorithm', {
+            subcategory: subcategoryName,
+            algorithm: 'BFS',
+          })
+        "
+        >BFS</span
+      >
+      <span
+        :class="{ algoName: true, selected: selectedAlgorithm === 'SPFA' }"
+        @click="
+          $emit('updatedSubcategoryAlgorithm', {
+            subcategory: subcategoryName,
+            algorithm: 'SPFA',
+          })
+        "
+        >SPFA</span
+      >
+      <!-- <span class="algoName">Dijkstra Algoritym</span> -->
+      <!-- <span class="algoName">SPFA</span> -->
       <span class="algoName">Bellman Ford</span>
       <span class="algoName">Floyd Warshall</span>
     </div>
-    <div v-if="subcatName === 'MST'" class="subcatClass">
+    <div v-if="subcategoryName === 'MST'" class="subcatClass">
       <span class="algoName">Kruskal's Algorithm</span>
       <span class="algoName">Prim's Algorithm</span>
     </div>
-    <div v-if="subcatName === 'STRING_MATCHING'" class="subcatClass">
+    <div v-if="subcategoryName === 'STRING_MATCHING'" class="subcatClass">
       <span class="algoName">KMP</span>
       <span class="algoName">Z-Algorithm</span>
       <span class="algoName">Suffix Array</span>
@@ -25,7 +44,11 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'SubcatAlgoList',
   props: {
-    subcatName: {
+    subcategoryName: {
+      type: String,
+      required: true,
+    },
+    selectedAlgorithm: {
       type: String,
       required: true,
     },
@@ -62,6 +85,9 @@ export default Vue.extend({
       cursor: pointer;
 
       &:hover {
+        background-color: $background-dark-sec-ter;
+      }
+      &.selected {
         background-color: $background-dark-tertiary;
       }
     }

@@ -1,11 +1,31 @@
 <template>
   <div class="sub-container">
-    <div v-if="categoryName === 'GRAPH_ALGO'">
-      <subcat-algo-list subcat-name="SHORTEST_PATH" />
-      <subcat-algo-list subcat-name="MST" />
+    <div v-if="selectedCategory === 'GRAPH_ALGO'">
+      <subcat-algo-list
+        subcategory-name="SHORTEST_PATH"
+        :selected-algorithm="selectedAlgorithm"
+        @updatedSubcategoryAlgorithm="
+          $emit('updatedSubcategoryAlgorithm', $event)
+        "
+      />
+      <subcat-algo-list
+        subcategory-name="MST"
+        :selected-algorithm="selectedAlgorithm"
+        @updatedSubcategoryAlgorithm="
+          $emit('updatedSubcategoryAlgorithm', $event)
+        "
+      />
+      <!-- <subcat-algo-list subcat-name="MST" /> -->
     </div>
-    <div v-if="categoryName === 'STRING_ALGO'">
-      <subcat-algo-list subcat-name="STRING_MATCHING" />
+    <div v-if="selectedCategory === 'STRING_ALGO'">
+      <!-- <subcat-algo-list subcat-name="STRING_MATCHING" /> -->
+      <subcat-algo-list
+        subcategory-name="STRING_MATCHING"
+        :selected-algorithm="selectedAlgorithm"
+        @updatedSubcategoryAlgorithm="
+          $emit('updatedSubcategoryAlgorithm', $event)
+        "
+      />
     </div>
   </div>
 </template>
@@ -17,9 +37,17 @@ export default Vue.extend({
   name: 'SubcategoryPopup',
   components: { SubcatAlgoList },
   props: {
-    categoryName: {
+    selectedCategory: {
       type: String,
-      required: true,
+      default: '',
+    },
+    selectedSubcategory: {
+      type: String,
+      default: '',
+    },
+    selectedAlgorithm: {
+      type: String,
+      default: '',
     },
   },
 })
@@ -27,9 +55,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .sub-container {
-  // display: flex;
-  // flex-direction: column;
-  // align-items: stretch;
   width: 30.2rem;
   padding-bottom: 1rem;
   border-radius: 1.2rem;

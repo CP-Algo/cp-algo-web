@@ -3,43 +3,50 @@
     <div class="categoryPopup">
       <div
         :class="{
-          graphAlgo: true,
+          categorySection: true,
           selected: selectedCategory === 'GRAPH_ALGO',
         }"
-        @click="selectedCategory = 'GRAPH_ALGO'"
+        @click="$emit('updatedCategory', 'GRAPH_ALGO')"
       >
         <span>Graph Aglorithm</span>
       </div>
       <div
         :class="{
-          stringAlgo: true,
+          categorySection: true,
           selected: selectedCategory === 'STRING_ALGO',
         }"
-        @click="selectedCategory = 'STRING_ALGO'"
+        @click="$emit('updatedCategory', 'STRING_ALGO')"
       >
         <span>Sring Aglorithm</span>
       </div>
       <div
         :class="{
-          database: true,
+          categorySection: true,
           selected: selectedCategory === 'DATABASE',
         }"
-        @click="selectedCategory = 'DATABASE'"
+        @click="$emit('updatedCategory', 'DATABASE')"
       >
         <span>Database</span>
       </div>
       <div
         :class="{
-          gameTheory: true,
+          categorySection: true,
           selected: selectedCategory === 'GAME_THEORY',
         }"
-        @click="selectedCategory = 'GAME_THEORY'"
+        @click="$emit('updatedCategory', 'GAME_THEORY')"
       >
         <span>Game Theory</span>
       </div>
     </div>
     <div class="subcategoryPopup">
-      <subcategory-popup :category-name="selectedCategory" />
+      <subcategory-popup
+        :selected-category="selectedCategory"
+        :selected-subcategory="selectedSubcategory"
+        :selected-algorithm="selectedAlgorithm"
+        @updatedSubcategoryAlgorithm="
+          $emit('updatedSubcategoryAlgorithm', $event)
+        "
+      />
     </div>
   </div>
 </template>
@@ -50,10 +57,19 @@ import SubcategoryPopup from './SubcategoryPopup.vue'
 export default Vue.extend({
   name: 'FilterDropdown',
   components: { SubcategoryPopup },
-  data() {
-    return {
-      selectedCategory: 'GRAPH_ALGO',
-    }
+  props: {
+    selectedCategory: {
+      type: String,
+      default: '',
+    },
+    selectedSubcategory: {
+      type: String,
+      default: '',
+    },
+    selectedAlgorithm: {
+      type: String,
+      default: '',
+    },
   },
 })
 </script>
@@ -80,10 +96,7 @@ export default Vue.extend({
       color: $text-light-primary;
     }
 
-    .graphAlgo,
-    .stringAlgo,
-    .database,
-    .gameTheory {
+    .categorySection {
       display: flex;
       align-items: center;
       height: 4rem;
@@ -97,21 +110,5 @@ export default Vue.extend({
       }
     }
   }
-
-  // .subcategoryPopup {
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: stretch;
-  //   margin-right: 1.8rem;
-  //   width: 30.2rem;
-  //   border-radius: 1.2rem;
-  //   background-color: $background-dark-secondary;
-
-  //   span {
-  //     @include font-body-semi();
-
-  //     color: $text-light-primary;
-  //   }
-  // }
 }
 </style>
