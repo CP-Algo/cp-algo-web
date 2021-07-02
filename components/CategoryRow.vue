@@ -1,13 +1,13 @@
 <template>
-  <div class="container">
-    <div class="category">
+  <div class="category-container">
+    <div class="categoryHeading">
       <img
         :src="require(`~/assets/svg/category/${thumbnail}.svg`)"
         :alt="`thumbnail of category ${name}`"
       />
       <span class="categoryName">{{ name }}</span>
       <div
-        :class="{ expandIcon: true, isExpanded }"
+        :class="{ expandCategoryIcon: true, isExpanded }"
         @click="isExpanded = !isExpanded"
         v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
       />
@@ -43,12 +43,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.category-container {
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
-  .category {
+  .categoryHeading {
     display: flex;
     align-items: center;
     height: 8.6rem;
@@ -60,7 +60,7 @@ export default {
       max-height: 5rem;
       // margin-top: 1.8rem;
       // margin-bottom: 1.8rem;
-      margin-left: 9.6rem;
+      margin-left: 3.6rem;
     }
 
     .categoryName {
@@ -68,13 +68,13 @@ export default {
 
       color: $text-light-primary;
       margin-left: 3.6rem;
-      margin-right: auto;
+      // margin-right: auto;
     }
 
-    .expandIcon {
-      width: 2.4rem;
+    .expandCategoryIcon {
+      width: 4rem;
       // height: 4rem;
-      // margin-left: auto;
+      margin-left: auto;
       margin-right: 3.1rem;
       color: $background-dark-secondary;
       &.isExpanded {

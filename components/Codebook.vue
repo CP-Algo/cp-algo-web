@@ -1,7 +1,11 @@
 <template>
-  <div class="container">
-    <category-row class="row" name="Input/Output" thumbnail="input-output" />
-    <category-row name="Databases" thumbnail="database" class="category" />
+  <div class="codebook-container">
+    <category-row
+      class="categoryBox"
+      name="Input/Output"
+      thumbnail="input-output"
+    />
+    <category-row class="categoryBox" name="Databases" thumbnail="database" />
   </div>
 </template>
 
@@ -13,13 +17,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.codebook-container {
   display: flex;
   flex-direction: column;
-  // align-items: stretch;
 
-  .row {
-    display: flex;
+  .categoryBox {
     margin-bottom: 3rem;
   }
 }
