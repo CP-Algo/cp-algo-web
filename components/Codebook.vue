@@ -1,16 +1,11 @@
 <template>
-  <div class="container">
+  <div class="codebook-container">
     <category-row
+      class="categoryBox"
       name="Input/Output"
       thumbnail="input-output"
-      class="category"
     />
-    <category-row
-      name="Advanced Search Techniques"
-      thumbnail="advanced-search-techniques"
-      class="category"
-    />
-    <category-row name="Databases" thumbnail="database" class="category" />
+    <category-row class="categoryBox" name="Databases" thumbnail="database" />
   </div>
 </template>
 
@@ -22,12 +17,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.codebook-container {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 
-  .category {
+  .categoryBox {
     margin-bottom: 3rem;
   }
 }

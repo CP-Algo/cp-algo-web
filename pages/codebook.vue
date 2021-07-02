@@ -6,20 +6,20 @@
         v-html="require(`~/assets/svg/nav-bar/codebook.svg?raw`)"
       />
       <span class="pageTitle">Tony Stark's Codebook</span>
-      <div class="export">
+      <button class="export">
         <div
           class="exportIcon"
-          v-html="require(`~/assets/svg/nav-bar/codebook.svg?raw`)"
+          v-html="require(`~/assets/svg/icon/exportIcon.svg?raw`)"
         />
         <span class="exportLabel">Export as PDF</span>
-      </div>
+      </button>
     </div>
 
     <div class="option">
       <div class="dropDown">
         <div
           class="icon"
-          v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
+          v-html="require(`~/assets/svg/icon/filterIcon.svg?raw`)"
         />
         <span class="text">Advanced Search Technique / BS</span>
       </div>
@@ -37,9 +37,17 @@
         />
         <span class="text">Submission length dsc.</span>
       </div>
-      <button class="new">+ &nbsp; New</button>
+      <button class="add">
+        <div
+          class="addIcon"
+          v-html="require(`~/assets/svg/icon/addIcon.svg?raw`)"
+        />
+        <span class="addLabel">New</span>
+      </button>
     </div>
+
     <codebook class="codebookTable" />
+    <div class="dummy">Hello world</div>
   </div>
 </template>
 
@@ -77,7 +85,7 @@ export default {
       align-items: center;
       margin-left: auto;
       margin-right: 6rem;
-      padding: 2rem;
+      padding: 1rem 2rem;
       border: 0.3rem solid $background-dark-secondary;
       border-radius: 1.2rem;
       .exportIcon {
@@ -144,16 +152,29 @@ export default {
       width: 27.5rem;
     }
 
-    .new {
-      @include font-body-semi();
-
-      // align-self: flex-end;
-      width: 12rem;
-      color: $text-light-primary;
+    .add {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 0.3rem solid $extras-dark-green;
       background-color: $extras-dark-green;
       border-radius: 1.2rem;
-      padding: 1rem 2.4rem;
-      border: 0.3rem solid $extras-dark-green;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+
+      .addIcon {
+        width: 2.4rem;
+        margin-left: 0.6rem;
+        margin-right: 0.6rem;
+        color: $background-dark-secondary;
+      }
+
+      .addLabel {
+        @include font-body-semi();
+
+        color: $text-light-primary;
+        margin-right: 0.6rem;
+      }
     }
   }
   .heading {
@@ -182,7 +203,7 @@ export default {
     }
   }
   .codebookTable {
-    margin: 2.4rem 6rem 10rem 0;
+    margin: 2.4rem 6rem 6.7rem 0;
   }
 }
 </style>
