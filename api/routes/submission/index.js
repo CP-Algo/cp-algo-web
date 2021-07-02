@@ -5,5 +5,7 @@ router.use('/submission/:submission', require('./get_basic'))
 router.use('/submission/:submission', require('./get_tests'))
 router.use('/submission', require('./post_new'))
 router.use('/submission', require('./post_code'))
+router.use('/submission', require('./post_upvote'))
+router.use('/submission', require('./post_fork'))
 
 module.exports = router

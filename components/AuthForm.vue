@@ -2,10 +2,15 @@
   <div class="container">
     <div class="box">
       <!-- heading -->
-      <span v-if="mode === 'SIGNUP'" class="heading">Signup</span>
-      <span v-if="mode === 'LOGIN'" class="heading">Login</span>
-      <span v-if="mode === 'FORGOT_PASS'" class="heading">Forgot Password</span>
-      <span v-if="mode === 'RESET_PASS'" class="heading">Reset Password</span>
+      <span class="heading">{{
+        mode === 'SIGNUP'
+          ? 'Signup'
+          : mode === 'LOGIN'
+          ? 'Login'
+          : mode === 'FORGOT_PASS'
+          ? 'Forgot Password'
+          : 'Reset Password'
+      }}</span>
 
       <!-- message -->
       <p v-if="mode === 'FORGOT_PASS'" class="message">
@@ -77,11 +82,16 @@
       </div>
 
       <!-- confiramation button  -->
-      <button class="confirmation">
-        <span v-if="mode === 'SIGNUP'">Create Account</span>
-        <span v-if="mode === 'LOGIN'">Enter</span>
-        <span v-if="mode === 'FORGOT_PASS'">Send Email</span>
-        <span v-if="mode === 'RESET_PASS'">Enter</span>
+      <button class="confirmation" @click.prevent="handleSubmit">
+        {{
+          mode === 'SIGNUP'
+            ? 'Create Account'
+            : mode === 'LOGIN'
+            ? 'Enter'
+            : mode === 'FORGOT_PASS'
+            ? 'Send Email'
+            : 'Enter'
+        }}
       </button>
     </div>
     <span
@@ -108,6 +118,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import InputField from '~/components/Input/InputField.vue'
+import handleError from '~/helpers/handleError'
+
 export default Vue.extend({
   name: 'AuthForm',
   components: {
@@ -128,6 +140,28 @@ export default Vue.extend({
       confPass: '',
     }
   },
+  methods: {
+    async handleSubmit() {
+      try {
+        if (this.mode === 'SIGNUP') {
+          // handle signup
+        } else if (this.mode === 'LOGIN') {
+          await this.$auth.loginWith('local', {
+            data: {
+              emailOrUsername: this.usernameOrEmail,
+              password: this.password,
+            },
+          })
+        } else if (this.mode === 'FORGOT_PASS') {
+          // handle forgot
+        } else if (this.mode === 'RESET_PASS') {
+          // handle reset
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    },
+  },
 })
 </script>
 
@@ -143,10 +177,6 @@ export default Vue.extend({
     min-width: 60rem;
     border-radius: 2.75rem;
 
-    // span::first-letter {
-    //   color: $app-light-secondary;
-    // }
-
     .heading {
       @include font-h2-bold();
 
@@ -154,7 +184,8 @@ export default Vue.extend({
       margin-top: 2.9rem;
       margin-bottom: 0.7rem;
       text-align: center;
-      ::first-letter {
+
+      &::first-letter {
         color: $app-light-secondary;
       }
     }

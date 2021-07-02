@@ -1,9 +1,3 @@
-// Don't forget the field `forkedFrom` and `codebook`
-// Also, authors should be an array field, because having a separate join table
-// for this would blow up with a long enough fork chain
-
-// Relations with Algorithm, Authors, Language, Codebook
-
 const { DataTypes } = require('sequelize')
 
 module.exports = (sequelize) => {
@@ -16,8 +10,12 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    length: {
+    code: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    length: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     executionTime: {

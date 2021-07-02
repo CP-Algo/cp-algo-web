@@ -1,5 +1,14 @@
 const { env } = require('../../config')
-const orderedFiles = ['topics', 'language', 'user', 'handle']
+const orderedFiles = [
+  'topics',
+  'language',
+  'user',
+  'handle',
+  'submission',
+  'submissionAuthor',
+  'test',
+  'testResult',
+]
 
 if (env !== 'production') {
   ;(async () => {

@@ -1,16 +1,17 @@
-// Get submission test details
-// Returns:
-//  arrays of test status
 const { Router } = require('express')
 const router = Router({ mergeParams: true })
 
-/* const {
-  models: { Test, TestResult },
-} = require('../../models') */
+const {
+  models: { Submission },
+} = require('../../models')
 
-router.get('/tests', function (_req, res, next) {
+router.get('/tests', async function (req, res, next) {
   try {
-    return res.json({})
+    const submissionID = req.params.submission
+    const submission = await Submission.findByPk(submissionID)
+    const tests = await submission.getTests()
+
+    return res.json(tests)
   } catch (err) {
     next(err)
   }

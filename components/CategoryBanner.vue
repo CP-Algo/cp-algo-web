@@ -3,16 +3,16 @@
     class="container"
     @click="
       $emit('categoryClicked', {
-        id: 'ADVANCED_SEARCH_TECHNIQUES',
-        name: 'Advanced Search Techniques',
+        id: categoryId,
+        name: categoryName,
       })
     "
   >
     <img
-      :src="require(`~/assets/svg/category/${thumbnail}.svg`)"
-      :alt="`thumbnail of category ${name}`"
+      :src="require(`~/assets/svg/category/${categoryId}.svg`)"
+      :alt="`thumbnail of category ${categoryName}`"
     />
-    <span>{{ name }}</span>
+    <span>{{ categoryName }}</span>
   </div>
 </template>
 
@@ -20,11 +20,11 @@
 export default {
   name: 'CategoryBanner',
   props: {
-    thumbnail: {
+    categoryId: {
       type: String,
       required: true,
     },
-    name: {
+    categoryName: {
       type: String,
       required: true,
     },

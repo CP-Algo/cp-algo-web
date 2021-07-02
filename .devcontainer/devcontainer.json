@@ -31,14 +31,15 @@
   },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-    "dbaeumer.vscode-eslint",
-    "editorconfig.editorconfig",
-    "orta.vscode-jest",
-    "octref.vetur",
-    "eamodio.gitlens",
-    "stylelint.vscode-stylelint",
-    "mrmlnc.vscode-scss",
-  ],
+	"dbaeumer.vscode-eslint",
+	"editorconfig.editorconfig",
+	"orta.vscode-jest",
+	"octref.vetur",
+	"eamodio.gitlens",
+	"stylelint.vscode-stylelint",
+	"mrmlnc.vscode-scss",
+	"ms-vsliveshare.vsliveshare"
+],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
     3000

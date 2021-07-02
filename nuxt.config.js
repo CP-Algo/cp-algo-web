@@ -44,11 +44,31 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:3000/api',
+  },
 
   auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      home: '/',
+    },
     strategies: {
-      local: {},
+      local: {
+        endpoints: {
+          login: { url: 'auth/login', method: 'post' },
+          user: { url: 'user', method: 'get' },
+          logout: false,
+        },
+        token: {
+          property: 'token',
+          maxAge: 2592000,
+        },
+        user: {
+          property: false,
+        },
+      },
     },
   },
 

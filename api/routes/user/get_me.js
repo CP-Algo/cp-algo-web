@@ -14,7 +14,7 @@ router.get('/', authenticatedMiddleware, async function (req, res, next) {
     const user = await User.findByPk(userID, { raw: true })
     if (!user) throw new Error('Cannot find user')
     delete user.password
-    return res.json({ user })
+    return res.json({ ...user })
   } catch (err) {
     next(err)
   }

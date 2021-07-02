@@ -12,13 +12,18 @@
     @hide="$emit('hide')"
   >
     <profile-popup-option
-      title="Abraham Lincoln"
+      :title="$auth.user.name"
       sub-title="View your profile"
+      url="/user"
     />
     <div class="bar" />
-    <profile-popup-option icon="my-submissions" title="My Submissions" />
-    <profile-popup-option icon="settings" title="Settings" />
-    <profile-popup-option icon="logout" title="Log out" />
+    <profile-popup-option
+      icon="my-submissions"
+      title="My Submissions"
+      url="/my-submissions"
+    />
+    <profile-popup-option icon="settings" title="Settings" url="/settings" />
+    <profile-popup-option icon="logout" title="Log out" :click="logout" />
   </popup>
 </template>
 
@@ -37,6 +42,12 @@ export default Vue.extend({
     show: {
       type: Boolean,
       required: true,
+    },
+  },
+  methods: {
+    async logout() {
+      await this.$auth.logout()
+      this.$emit('hide')
     },
   },
 })

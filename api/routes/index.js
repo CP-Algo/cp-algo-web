@@ -7,6 +7,9 @@ module.exports = function (passport) {
   router.use('/', require('./topics'))
   router.use('/', require('./language'))
   router.use('/', require('./submission'))
+  router.use('/', require('./contributors'))
+  router.use('/', require('./submissions'))
+  router.use('/', require('./codebook'))
 
   // Handle errors
   router.use(function (err, _req, res, _next) {

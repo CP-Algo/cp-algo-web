@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <div class="Title">
+    <div class="title">
       <div
         class="codeIcon"
         v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
@@ -17,7 +17,7 @@
       </div>
     </div>
     <submission-details
-      :rank="1"
+      :authors="['75e851c1-acc6-46ea-969a-f28829a1de44']"
       :more-author="12"
       time-comlexity="NM"
       memory-comlexity="NM"
@@ -44,7 +44,7 @@ export default {
   flex-direction: column;
   padding: 4.2rem 5.7rem;
 
-  .Title {
+  .title {
     display: flex;
     align-items: center;
     margin-bottom: 0.8rem;

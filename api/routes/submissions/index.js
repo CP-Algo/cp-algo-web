@@ -1,12 +1,59 @@
-// Get submission list
-// Parameters:
-//  category
-//  subCategory
-//  algorithm
-//  language
-//  author
-//  sortBy
-//  page
-//  rows
-// Returns:
-//  Rows of rank, authorIDs, complexities, resources, upvotes, adds to codebooks
+const { Router } = require('express')
+const router = Router()
+
+const { Op } = require('sequelize')
+const {
+  models: { Submission },
+} = require('../../models')
+const getAlgorithmsInCategory = require('../../helpers/getAlgorithmsInCategory')
+
+router.get('/submissions', async function (req, res, next) {
+  try {
+    // TODO: Filter by author
+    const { category, algorithm, language } = req.query
+
+    let { sortBy, page, rows } = req.query
+
+    rows = rows || 20
+    page = page || 1
+    const offset = rows * (page - 1)
+    sortBy = sortBy || ['length', 'ASC']
+
+    let algorithms = []
+    if (!algorithm && category) {
+      algorithms = await getAlgorithmsInCategory(category)
+    }
+
+    const { rows: submissionRows, count: submissionsCount } =
+      await Submission.findAndCountAll({
+        where: {
+          ...(algorithm
+            ? { AlgorithmId: algorithm }
+            : category
+            ? { AlgorithmId: { [Op.in]: algorithms } }
+            : {}),
+          ...(language ? { LanguageId: language } : {}),
+        },
+        order: [sortBy],
+        limit: rows,
+        offset,
+      })
+
+    const hasPrev = page > 1
+    const hasNext = submissionsCount > offset + rows
+
+    const submissions = await Promise.all(
+      submissionRows.map(async (submission, index) => ({
+        ...submission.get({ plain: true }),
+        rank: offset + index + 1,
+        authors: (await submission.getAuthors()).map((author) => author.id),
+      }))
+    )
+
+    return res.json({ submissions, hasPrev, hasNext })
+  } catch (err) {
+    next(err)
+  }
+})
+
+module.exports = router

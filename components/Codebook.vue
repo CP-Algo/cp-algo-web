@@ -28,7 +28,6 @@ export default {
   align-items: stretch;
 
   .category {
-    display: flex;
     margin-bottom: 3rem;
   }
 }

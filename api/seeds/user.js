@@ -1,7 +1,10 @@
-const sequelize = require('../models')
+const fs = require('fs/promises') // To copy default profile picture
+const path = require('path') // To locate profile pictures
+const { root } = require('../../config')
+
 const {
-  models: { User },
-} = sequelize
+  models: { User, Codebook },
+} = require('../models')
 
 module.exports = {
   run: async () => {
@@ -13,14 +16,31 @@ module.exports = {
           name: 'Nayeemul Islam Swad',
           username: 'DrSwad',
           email: 'drswad2013@gmail.com',
-          password:
-            '$2b$10$oTATHeIEzRRLmB0hep2Fwu36X7fPKzuYge/iyEtBbA4zNW1LtCcLa',
+          password: 'asdfer',
           verified: true,
-          createdAt: sequelize.literal('CURRENT_TIMESTAMP'),
-          updatedAt: sequelize.literal('CURRENT_TIMESTAMP'),
         },
       ]
+
       await User.bulkCreate(users)
+
+      // Copy default profile picture
+      await Promise.all(
+        users.map(async (user) => {
+          // Create the codebook entry
+          await Codebook.create({
+            id: user.id,
+            name: `${user.name}'s Codebook`,
+            UserId: user.id,
+          })
+
+          await fs.copyFile(
+            path.normalize(path.join(root, 'assets', 'avatar', '$default.png')),
+            path.normalize(
+              path.join(root, 'assets', 'avatar', `${user.id}.png`)
+            )
+          )
+        })
+      )
     }
   },
 }

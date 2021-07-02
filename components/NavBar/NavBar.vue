@@ -22,27 +22,26 @@
       </div>
     </div>
     <div class="right">
-      <div class="action">
+      <a v-if="$auth.loggedIn" class="action" href="/codebook">
         <div class="icon-container">
           <img class="action-icon" src="~assets/svg/nav-bar/codebook.svg" />
         </div>
-      </div>
-      <div class="action">
-        <div class="icon-container">
-          <img
-            class="action-icon"
-            src="~assets/svg/nav-bar/notifications.svg"
-          />
-        </div>
-      </div>
+      </a>
       <div class="action">
         <div
+          v-if="$auth.loggedIn"
           class="icon-container"
           @click="showProfilePopup = !showProfilePopup"
         >
-          <div class="action-icon avatar" data-testid="nav-bar-avatar" />
+          <img
+            class="action-icon avatar"
+            data-testid="nav-bar-avatar"
+            :src="require(`~/assets/avatar/${$auth.user.id}.png`)"
+          />
         </div>
+        <a v-else class="join-button" href="/login">Join Us</a>
         <profile-popup
+          v-if="$auth.loggedIn"
           :show="showProfilePopup"
           @hide="showProfilePopup = false"
         />
@@ -121,6 +120,21 @@ export default Vue.extend({
     .action {
       height: 100%;
       position: relative;
+      display: flex;
+
+      .join-button {
+        @include font-h3-bold();
+
+        color: $text-light-primary;
+        margin: auto 0;
+        padding: 1.2rem 2.4rem;
+        border-radius: 1.6rem;
+        border: 0.3rem solid $app-dark-secondary;
+
+        &:hover {
+          background-color: $app-dark-secondary;
+        }
+      }
 
       .icon-container {
         height: 100%;
@@ -141,7 +155,6 @@ export default Vue.extend({
             height: 3.7rem;
             width: 3.7rem;
             border-radius: 50%;
-            background-color: $text-light-secondary;
           }
         }
       }

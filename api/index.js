@@ -6,15 +6,15 @@ const app = express()
 // Log requests to the console for debugging purposes
 app.use(require('morgan')('dev'))
 
+// Disable CORS
+app.use(require('cors')())
+
 // Parse urlencoded and json data and put them in req.body
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-// Configure models and sync with database
+// Configure models, sync with database and generate seed data
 require('./models')
-
-// Generate seed data for models
-require('./seeds')
 
 // Passport for auth
 const passport = require('passport')

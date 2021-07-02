@@ -24,13 +24,7 @@
       </div>
       <button class="new">+ &nbsp; New</button>
     </div>
-    <div class="heading">
-      <span class="rank">Rank</span>
-      <span class="authors">Authors</span>
-      <span class="complexity">Complexity</span>
-      <span class="resources">Resourses</span>
-      <span class="action">Action</span>
-    </div>
+    <submission-details-header class="heading" />
     <div class="submissionTable">
       <submission-details
         :rank="1"
@@ -138,9 +132,10 @@
 </template>
 
 <script>
+import SubmissionDetailsHeader from '~/components/SubmissionDetailsHeader.vue'
 import SubmissionDetails from '~/components/SubmissionDetails.vue'
 export default {
-  components: { SubmissionDetails },
+  components: { SubmissionDetailsHeader, SubmissionDetails },
 }
 </script>
 
@@ -213,29 +208,8 @@ export default {
     }
   }
   .heading {
-    @include font-h4-regular();
-
-    color: $text-dark-secondary;
-    display: flex;
-    align-items: center;
     margin-top: 2.5rem;
     margin-bottom: 1.6rem;
-
-    .rank {
-      margin-left: 3.6rem;
-    }
-    .authors {
-      margin-left: 8.4rem;
-    }
-    .complexity {
-      margin-left: 21.75rem;
-    }
-    .resources {
-      margin-left: 31.35rem;
-    }
-    .action {
-      margin-left: 29.5rem;
-    }
   }
   .submissionTable {
     display: flex;

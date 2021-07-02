@@ -8,11 +8,9 @@ module.exports = (sequelize) => {
     },
     executionTime: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
     executionMemory: {
       type: DataTypes.INTEGER,
-      allowNull: false,
     },
   })
 }

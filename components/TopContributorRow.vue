@@ -4,8 +4,8 @@
       <span class="signOrUnit">#</span>
       <span class="value"> {{ rank }}</span>
     </div>
-    <a class="userDetails" href="/profile">
-      <img src="~/assets/avatar/user-default.png" alt="user avatar" />
+    <a class="userDetails" :href="`/user/${userName}`">
+      <img :src="require(`~/assets/avatar/${userId}.png`)" alt="user avatar" />
       <div class="right">
         <div class="fullName">{{ fullName }}</div>
         <div class="userName">@{{ userName }}</div>
@@ -25,6 +25,10 @@ export default Vue.extend({
   props: {
     rank: {
       type: Number,
+      required: true,
+    },
+    userId: {
+      type: String,
       required: true,
     },
     fullName: {

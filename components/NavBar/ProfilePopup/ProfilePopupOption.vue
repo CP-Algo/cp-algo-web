@@ -1,19 +1,23 @@
 <template>
-  <div class="popup-option">
+  <a class="popup-option" :href="url" @click.prevent="click">
     <div class="icon-container">
       <div
         v-if="icon"
         class="icon"
         v-html="require(`~/assets/svg/nav-bar/${icon}.svg?raw`)"
       />
-      <div v-else class="avatar"></div>
+      <img
+        v-else
+        class="avatar"
+        :src="require(`~/assets/avatar/${$auth.user.id}.png`)"
+      />
     </div>
 
     <div class="info">
       <span class="title">{{ title }}</span>
       <span class="sub-title">{{ subTitle }}</span>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -33,6 +37,16 @@ export default Vue.extend({
     subTitle: {
       type: String,
       required: false,
+      default: '',
+    },
+    click: {
+      type: Function,
+      default: () => {
+        window.location.href = this.url
+      },
+    },
+    url: {
+      type: String,
       default: '',
     },
   },
@@ -60,7 +74,6 @@ export default Vue.extend({
       width: 3.5rem;
       height: 3.5rem;
       border-radius: 50%;
-      background-color: $background-dark-tertiary;
     }
 
     .icon {

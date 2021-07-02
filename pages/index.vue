@@ -11,36 +11,31 @@
           />
           <span class="headerTitle">{{ selectedCategory.name }} </span>
         </div>
-        <input placeholder="Filter..." />
+        <input v-model="filter" placeholder="Filter..." />
       </div>
       <hr />
       <div v-if="!selectedCategory.id" class="boxes">
         <category-banner
-          name="Input/Output"
-          thumbnail="input-output"
-          @categoryClicked="selectedCategory = $event"
-        />
-        <category-banner
-          name="Advanced Search Techniques"
-          thumbnail="advanced-search-techniques"
-          @categoryClicked="selectedCategory = $event"
-        />
-        <category-banner
-          name="Data Structures"
-          thumbnail="data-structures"
+          v-for="category in getCategories()"
+          :key="category.id"
+          :category-id="category.id"
+          :category-name="category.name"
           @categoryClicked="selectedCategory = $event"
         />
       </div>
       <div v-else class="subcategoryHolder">
-        <div class="subcategory">
-          <span class="subcategoryText">subcategory 1</span>
-          <templates-algorithm algorithm-name="Binary Search" />
-          <templates-algorithm algorithm-name="Ternary Search" />
-        </div>
-        <div class="subcategory">
-          <span class="subcategoryText">subcategory 2</span>
-          <templates-algorithm algorithm-name="New Algorithm in the world" />
-          <templates-algorithm algorithm-name="Ternary Search" />
+        <div
+          v-for="subCategory in getSubCategories(selectedCategory.id)"
+          :key="subCategory.id"
+          class="subcategory"
+        >
+          <span class="subcategoryText">{{ subCategory.name }}</span>
+          <templates-algorithm
+            v-for="algorithm in getAlgorithms(subCategory.id)"
+            :key="algorithm.id"
+            :algorithm-id="algorithm.id"
+            :algorithm-name="algorithm.name"
+          />
         </div>
       </div>
     </div>
@@ -53,22 +48,13 @@
         <hr />
         <div class="topContributorList">
           <top-contributor-row
-            :rank="1"
-            full-name="Abraham Lincoln"
-            user-name="abrahm"
-            :point="495"
-          />
-          <top-contributor-row
-            :rank="2"
-            full-name="Doctor Strange"
-            user-name="doctor"
-            :point="234"
-          />
-          <top-contributor-row
-            :rank="3"
-            full-name="JK Rowling"
-            user-name="jkr"
-            :point="123"
+            v-for="contributor in contributors.slice(0, 5)"
+            :key="contributor.id"
+            :rank="contributor.rank"
+            :user-id="contributor.id"
+            :full-name="contributor.name"
+            :user-name="contributor.username"
+            :point="contributor.points"
           />
         </div>
       </div>
@@ -110,13 +96,41 @@ export default Vue.extend({
     RecentSubmissionRow,
     TemplatesAlgorithm,
   },
+  async asyncData({ $axios }) {
+    const topics = await $axios.$get('/topics')
+    const contributors = await $axios.$get('/contributors')
+    return { ...topics, contributors }
+  },
   data() {
     return {
       selectedCategory: {
         id: '',
         name: '',
       },
+      filter: '',
     }
+  },
+  methods: {
+    getCategories() {
+      return this.categories.filter(
+        (category) =>
+          !this.filter ||
+          category.name.toLowerCase().includes(this.filter.toLowerCase())
+      )
+    },
+    getSubCategories(category) {
+      return this.subCategories.filter(
+        (subCategory) => subCategory.CategoryId === category
+      )
+    },
+    getAlgorithms(subCategory) {
+      return this.algorithms.filter(
+        (algorithm) =>
+          algorithm.SubCategoryId === subCategory &&
+          (!this.filter ||
+            algorithm.name.toLowerCase().includes(this.filter.toLowerCase()))
+      )
+    },
   },
 })
 </script>
@@ -196,7 +210,6 @@ hr {
 
 .boxes {
   display: flex;
-  // flex-direction: column;
   justify-content: space-between;
   flex-wrap: wrap;
   padding-top: 5.2rem;

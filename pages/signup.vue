@@ -1,7 +1,5 @@
 <template>
-  <div class="page-container">
-    <auth-page page="login" />
-  </div>
+  <auth-page page="SIGNUP" />
 </template>
 
 <script lang="ts">
@@ -9,8 +7,9 @@ import Vue from 'vue'
 import AuthPage from '~/components/AuthPage.vue'
 
 export default Vue.extend({
-  auth: 'guest',
   components: { AuthPage },
   layout: 'auth',
+  middleware: 'auth',
+  auth: 'guest',
 })
 </script>

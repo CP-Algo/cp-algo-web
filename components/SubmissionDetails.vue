@@ -8,50 +8,67 @@
       <img src="~/assets/avatar/user-default.png" alt="user avatar" />
       <span class="more"> +{{ moreAuthor }}</span>
     </a>
-    <div class="complexity">
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
-      />
-      <span class="text">O({{ timeComlexity }})</span>
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
-      />
-      <span class="text">O({{ memoryComlexity }})</span>
+    <div class="detailSection complexity">
+      <div class="detailItem">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
+        />
+        <span class="text">O({{ timeComlexity }})</span>
+      </div>
+      <div class="detailItem">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
+        />
+        <span class="text">O({{ memoryComlexity }})</span>
+      </div>
     </div>
-    <div class="resources">
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
-      />
-      <span class="text">{{ language }}</span>
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/codeSize.svg?raw`)"
-      />
-      <span class="text">{{ codeSize }} char</span>
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
-      />
-      <span class="text">{{ executionTime }}ms</span>
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
-      />
-      <span class="text">{{ requiredMemory }}M</span>
+    <div class="detailSection resources">
+      <div class="detailItem">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
+        />
+        <span class="text">{{ language }}</span>
+      </div>
+      <div class="detailItem">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/codeSize.svg?raw`)"
+        />
+        <span class="text">{{ codeSize }} char</span>
+      </div>
+      <div class="detailItem">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
+        />
+        <span class="text">{{ executionTime }}ms</span>
+      </div>
+      <div class="detailItem">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
+        />
+        <span class="text">{{ requiredMemory }}M</span>
+      </div>
     </div>
-    <div class="upvote">
-      <div class="icon" v-html="require(`~/assets/svg/icon/upvote.svg?raw`)" />
-      <span class="text">{{ upvote }}</span>
-    </div>
-    <div class="bookmark">
-      <div
-        class="icon"
-        v-html="require(`~/assets/svg/icon/bookmark.svg?raw`)"
-      />
-      <span class="text">{{ bookmark }}</span>
+    <div class="actions">
+      <div class="upvote">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/upvote.svg?raw`)"
+        />
+        <span class="text">{{ upvote }}</span>
+      </div>
+      <div class="bookmark">
+        <div
+          class="icon"
+          v-html="require(`~/assets/svg/icon/bookmark.svg?raw`)"
+        />
+        <span class="text">{{ bookmark }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -63,11 +80,15 @@ export default Vue.extend({
   props: {
     rank: {
       type: Number,
+      default: 0,
+    },
+    authors: {
+      type: Array,
       required: true,
     },
     moreAuthor: {
       type: Number,
-      required: true,
+      default: 0,
     },
     timeComlexity: {
       type: String,
@@ -106,18 +127,22 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+$separator-space: 2rem;
+
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.6rem 3.6rem;
-  margin-bottom: 1.2rem;
   border-radius: 1.6rem;
   background-color: $background-dark-secondary;
+
   .rank {
+    flex: 32;
     display: flex;
     align-items: center;
-    margin-right: 6.3rem;
+    justify-content: center;
+    margin-right: $separator-space;
 
     .hash {
       @include font-body-semi();
@@ -130,64 +155,87 @@ export default Vue.extend({
       @include font-h3-semi();
 
       color: $text-light-primary;
-      margin-right: 0.5rem;
     }
   }
 
   .authors {
+    flex: 155;
     display: flex;
     align-items: center;
+    justify-content: center;
+    margin-right: $separator-space;
+
     img {
       width: 3.5rem;
       height: 3.5rem;
       border-radius: 50%;
-      margin-right: 1.2rem;
+      margin-right: 0.5rem;
     }
+
     .more {
       @include font-body-semi();
 
       color: $text-dark-secondary;
-      margin-right: 0.6rem;
+      margin-left: 0.6rem;
     }
   }
+
+  .detailSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-radius: 2.8rem;
+    background-color: $background-dark-primary;
+    margin-right: $separator-space;
+
+    .detailItem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &.complexity {
+      flex: 248;
+    }
+
+    &.resources {
+      flex: 483;
+    }
+  }
+
   .icon {
-    width: 1.8rem;
-    height: 1.8rem;
-    // margin-right: 1.8rem;
+    margin-right: 0.8rem;
     color: $text-light-secondary;
+
+    svg {
+      height: 1.8rem;
+    }
   }
 
   .text {
     @include font-body-regular();
 
     color: $text-light-primary;
-    margin-right: 1.8rem;
   }
 
-  .complexity {
+  .actions {
+    flex: 178;
     display: flex;
     align-items: center;
-    padding: 2rem;
-    border-radius: 2.8rem;
-    background-color: $background-dark-primary;
-  }
+    justify-content: center;
 
-  .resources {
-    display: flex;
-    align-items: center;
-    padding: 2rem;
-    border-radius: 2.8rem;
-    background-color: $background-dark-primary;
-  }
+    .upvote {
+      display: flex;
+      align-items: center;
+      margin-right: 1.6rem;
+    }
 
-  .upvote {
-    display: flex;
-    align-items: center;
-  }
-
-  .bookmark {
-    display: flex;
-    align-items: center;
+    .bookmark {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 </style>

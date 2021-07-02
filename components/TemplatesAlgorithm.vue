@@ -1,5 +1,5 @@
 <template>
-  <a class="container" href="/index">
+  <a class="container" :href="`/submissions?algorithm=${algorithmId}`">
     <span class="algorithmName"> {{ algorithmName }} </span>
     <div
       class="rightArrow"
@@ -13,6 +13,10 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'TemplatesAlgorithm',
   props: {
+    algorithmId: {
+      type: String,
+      required: true,
+    },
     algorithmName: {
       type: String,
       required: true,
