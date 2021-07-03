@@ -21,7 +21,7 @@
       Institution
     </input-field>
     <input-field v-if="mode === 'GENERAL'" v-model="country" class="inputField"
-      >Counrtry</input-field
+      >Country</input-field
     >
 
     <input-field v-if="mode === 'SECURITY'" v-model="curPass" class="inputField"
@@ -52,13 +52,16 @@
     <input-field v-if="mode === 'HANDLES'" v-model="lightoj" class="inputField"
       >Light OJ</input-field
     >
-    <button class="saveChanges">Save Changes</button>
+    <button class="saveChanges" @click.prevent="handleSave">
+      Save Changes
+    </button>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import InputField from './Input/InputField.vue'
+
 export default Vue.extend({
   name: 'SettingsForm',
   components: {
@@ -85,6 +88,70 @@ export default Vue.extend({
       hackerrank: '',
       lightoj: '',
     }
+  },
+  async fetch() {
+    const user = await this.$axios.$get(
+      `/user/${this.$auth.user.username}/basic`
+    )
+    this.email = user.email
+    this.name = user.name
+    this.username = user.username
+    this.institution = user.institution
+    this.country = user.country
+
+    const { handles } = await this.$axios.$get(
+      `/user/${this.$auth.user.username}/handles`
+    )
+    this.codeforces =
+      handles.find((handle) => handle.site === 'CODEFORCES')?.username || ''
+    this.codechef =
+      handles.find((handle) => handle.site === 'CODECHEF')?.username || ''
+    this.hackerrank =
+      handles.find((handle) => handle.site === 'HACKERRANK')?.username || ''
+    this.lightoj =
+      handles.find((handle) => handle.site === 'LIGHTOJ')?.username || ''
+  },
+  methods: {
+    async handleSave() {
+      try {
+        if (this.mode === 'GENERAL') {
+          const { message } = await this.$axios.$post(`/user/basic`, {
+            email: this.email,
+            name: this.name,
+            username: this.username,
+            institution: this.institution,
+            country: this.country,
+          })
+          this.$toast.success(message)
+        } else if (this.mode === 'SECURITY') {
+          const { message } = await this.$axios.$post(`/user/security`, {
+            currentPassword: this.curPass,
+            newPassword: this.newPass,
+            confirmPassword: this.repPass,
+          })
+          this.$toast.success(message)
+        } else if (this.mode === 'HANDLES') {
+          const handles = [
+            { key: 'CODEFORCES', name: 'codeforces' },
+            { key: 'CODECHEF', name: 'codechef' },
+            { key: 'HACKERRANK', name: 'hackerrank' },
+            { key: 'LIGHTOJ', name: 'lightoj' },
+          ]
+
+          const { message } = await this.$axios.$post(
+            `/user/handles`,
+            handles
+              .map(({ key, name }) =>
+                this[name] ? { site: key, username: this[name] } : null
+              )
+              .filter((item) => !!item)
+          )
+          this.$toast.success(message)
+        }
+      } catch (err) {
+        this.$toast.error(err.message || err.error || err)
+      }
+    },
   },
 })
 </script>

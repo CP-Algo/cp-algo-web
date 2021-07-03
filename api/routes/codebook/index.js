@@ -37,7 +37,8 @@ router.get('/codebook/:codebook', async function (req, res, next) {
     submissions = await Promise.all(
       submissions.map(async (submission) => ({
         ...submission.get({ plain: true }),
-        authors: (await submission.getAuthors()).map((author) => author.id),
+        authors: await submission.getAuthors({ raw: true }),
+        language: await submission.getLanguage(),
       }))
     )
 

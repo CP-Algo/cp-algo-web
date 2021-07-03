@@ -1,25 +1,25 @@
 <template>
   <div id="nav-bar">
-    <img class="brand-icon" src="~assets/svg/site/logo.svg" />
+    <a href="/"><img class="brand-icon" src="~assets/svg/site/logo.svg" /></a>
     <div class="menu">
-      <div
+      <a
         :class="{
           'menu-item': true,
           selected: selectedMenuItem === 'TEMPLATES',
         }"
-        @click="selectedMenuItem = 'TEMPLATES'"
+        href="/"
       >
         Templates
-      </div>
-      <div
+      </a>
+      <a
         :class="{
           'menu-item': true,
           selected: selectedMenuItem === 'LEADERBOARD',
         }"
-        @click="selectedMenuItem = 'LEADERBOARD'"
+        href="/leaderboard"
       >
         Leaderboard
-      </div>
+      </a>
     </div>
     <div class="right">
       <a v-if="$auth.loggedIn" class="action" href="/codebook">
@@ -59,9 +59,14 @@ export default Vue.extend({
   components: {
     ProfilePopup,
   },
+  props: {
+    selectedMenuItem: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
-      selectedMenuItem: 'TEMPLATES',
       showProfilePopup: false,
     }
   },

@@ -8,7 +8,7 @@ module.exports = {
     if (submissionUpvoters.length === 0) {
       submissionUpvoters = [
         {
-          UserId: '75e851c1-acc6-46ea-969a-f28829a1de44',
+          UserId: 'a3d368f7-95a0-4f5e-954a-1102a39beddc',
           SubmissionId: 1,
         },
       ]

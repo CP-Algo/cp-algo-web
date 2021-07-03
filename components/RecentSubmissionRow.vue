@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <a class="algorithmName" href="/submission">{{ algorithm }}</a>
+    <a class="algorithmName" :href="`/submission/${submissionId}`">{{
+      algorithm
+    }}</a>
     <div class="details">
       <div class="detailsItem">
         <div
@@ -14,12 +16,14 @@
           class="detailsIcon"
           v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
         />
-        <span class="detailsText">{{ takenTime }} ms</span>
+        <span class="detailsText">{{
+          takenTime ? `${takenTime} ms` : '-'
+        }}</span>
       </div>
       <div class="detailsItem user">
         <img
           class="avatar"
-          src="~/assets/avatar/user-default.png"
+          :src="require(`~/assets/avatar/${userId}.png`)"
           alt="users avatar"
         />
         <span class="detailsText">{{ userName }}</span>
@@ -33,6 +37,10 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'RecentSubmissionRow',
   props: {
+    submissionId: {
+      type: Number,
+      required: true,
+    },
     algorithm: {
       type: String,
       required: true,
@@ -43,6 +51,10 @@ export default Vue.extend({
     },
     takenTime: {
       type: Number,
+      default: null,
+    },
+    userId: {
+      type: String,
       required: true,
     },
     userName: {

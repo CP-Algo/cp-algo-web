@@ -8,10 +8,11 @@
   >
     <div class="left">
       <span class="testCaseLabel"> Test&nbsp;{{ testCaseNo }} </span>
-      <span v-if="verdict === 'Accepted'" class="acLabel">{{ verdict }}</span>
-      <span v-if="verdict === 'Wrong answer'" class="waLabel">{{
-        verdict
-      }}</span>
+      <span v-if="verdict === 'ACCEPTED'" class="acLabel">Accepted</span>
+      <span v-else-if="verdict === 'PENDING'" class="pendingLabel"
+        >Pending</span
+      >
+      <span v-else class="waLabel">{{ verdict }}</span>
       <div class="time">
         <div
           class="timeIcon"
@@ -90,6 +91,7 @@ export default Vue.extend({
       color: $text-light-primary;
     }
     .acLabel,
+    .pendingLabel,
     .waLabel {
       @include font-body-regular();
 
@@ -100,7 +102,9 @@ export default Vue.extend({
     .acLabel {
       color: $extras-dark-green;
     }
-
+    .pendingLabel {
+      color: $extras-dark-yellow;
+    }
     .waLabel {
       color: $extras-dark-red;
     }

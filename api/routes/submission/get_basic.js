@@ -16,14 +16,16 @@ router.get('/basic', async function (req, res, next) {
     const algorithm = await submission.getAlgorithm()
     const subCategory = await algorithm.getSubCategory()
     const category = await subCategory.getCategory()
-    const authors = await submission.getAuthors()
+    const authors = await submission.getAuthors({ raw: true })
 
     return res.json({
       ...submission.get({ plain: true }),
-      algorithm: algorithm.id,
-      subCategory: subCategory.id,
-      category: category.id,
-      authors: authors.map((author) => author.id),
+      algorithm,
+      subCategory,
+      category,
+      authors,
+      language: await submission.getLanguage(),
+      codebook: await submission.getCodebook(),
     })
   } catch (err) {
     next(err)

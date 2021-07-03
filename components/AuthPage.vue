@@ -21,6 +21,8 @@
         margin: 'auto 13.4rem auto auto',
         'z-index': '10',
       }"
+      :user-id="userId"
+      :token="token"
       @modeUpdated="mode = $event"
     />
   </div>
@@ -36,10 +38,32 @@ export default {
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      default: '',
+    },
+    token: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       mode: this.page,
+    }
+  },
+  async fetch() {
+    if (this.page === 'LOGIN' && this.userId && this.token) {
+      try {
+        const { message } = await this.$axios.$post('/auth/verify', {
+          user: this.userId,
+          token: this.token,
+        })
+        // TODO: toast not showing bug
+        this.$toast.success(message)
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     }
   },
 }

@@ -5,41 +5,29 @@
         class="codeIcon"
         v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
       />
-      <span class="codebookTitle">Tony Stark's Codebook</span>
+      <span class="codebookTitle">{{ codebook.name }}</span>
       <span class="forwardSlash">&nbsp;/&nbsp;</span>
-      <span class="algoTitle">Aho Corasick String Matching</span>
+      <span class="algoTitle">{{ algorithm.name }}</span>
     </div>
-    <div class="details">
-      <div class="detailsHeader">
-        <span class="detailsHeaderText">Authors</span>
-        <span class="detailsHeaderText">Complexity</span>
-        <span class="detailsHeaderText">Resourses</span>
-      </div>
-    </div>
+    <submission-details-header class="details" :rank="false" :action="false" />
     <submission-details
-      :authors="['75e851c1-acc6-46ea-969a-f28829a1de44']"
-      :more-author="12"
-      time-comlexity="NM"
-      memory-comlexity="NM"
-      language="C++14"
-      :code-size="258"
-      :execution-time="438"
-      :required-memory="438"
-      :upvote="120"
-      :bookmark="23"
+      :authors="authors"
+      :more-author="Math.max(0, authors.length - 3)"
+      :time-complexity="timeComplexity"
+      :memory-complexity="memoryComplexity"
+      :language="language.name"
+      :code-size="length"
+      :execution-time="executionTime"
+      :required-memory="executionMemory"
+      :upvote="upvotes"
+      :bookmark="forks"
     />
     <div class="codeDiscussion">
       <div class="codeDetails">
         <span class="submissionText">Submission</span>
-        <textarea
-          id=""
-          class="codeArea"
-          name="code"
-          cols="200"
-          rows="100"
-        ></textarea>
+        <prism class="codeArea" lang="cpp" :code="code" />
         <div class="testStatus">
-          <div class="testStatusHeader">
+          <div class="testStatusHeader" @click="isExpanded = !isExpanded">
             <div class="left">
               <div
                 class="testStatusIcon"
@@ -51,57 +39,33 @@
             <div class="right">
               <div class="passed">
                 <span class="passedLabel">Passed</span>
-                <span class="passedCnt">5</span>
+                <span class="passedCnt">{{ passedTests }}</span>
               </div>
               <div class="failed">
                 <span class="failedLabel">Failed</span>
-                <span class="failedCnt">3</span>
+                <span class="failedCnt">{{ failedTests }}</span>
+              </div>
+              <div class="pending">
+                <span class="pendingLabel">Pending</span>
+                <span class="pendingCnt">{{ pendingTests }}</span>
               </div>
               <div
                 :class="{ expandIcon: true, isExpanded }"
-                @click="isExpanded = !isExpanded"
                 v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
               />
             </div>
           </div>
-          <div v-if="isExpanded" class="testCaseDetails">
+          <div
+            v-for="(test, index) in tests"
+            v-show="isExpanded"
+            :key="test.id"
+            class="testCaseDetails"
+          >
             <test-case
-              :test-case-no="1"
-              verdict="Accepted"
-              :execution-time="345"
-              :consumed-memory="187"
-            />
-          </div>
-          <div v-if="isExpanded" class="testCaseDetails">
-            <test-case
-              :test-case-no="2"
-              verdict="Accepted"
-              :execution-time="345"
-              :consumed-memory="187"
-            />
-          </div>
-          <div v-if="isExpanded" class="testCaseDetails">
-            <test-case
-              :test-case-no="3"
-              verdict="Accepted"
-              :execution-time="345"
-              :consumed-memory="187"
-            />
-          </div>
-          <div v-if="isExpanded" class="testCaseDetails">
-            <test-case
-              :test-case-no="4"
-              verdict="Wrong answer"
-              :execution-time="345"
-              :consumed-memory="187"
-            />
-          </div>
-          <div v-if="isExpanded" class="testCaseDetails">
-            <test-case
-              :test-case-no="5"
-              verdict="Wrong answer"
-              :execution-time="345"
-              :consumed-memory="187"
+              :test-case-no="index + 1"
+              :verdict="test.TestResult.verdict"
+              :execution-time="test.TestResult.executionTime"
+              :consumed-memory="test.TestResult.executionMemory"
             />
           </div>
         </div>
@@ -121,14 +85,49 @@
 </template>
 
 <script>
+import SubmissionDetailsHeader from '~/components/SubmissionDetailsHeader.vue'
 import SubmissionDetails from '~/components/SubmissionDetails.vue'
 import TestCase from '~/components/TestCase.vue'
+
 export default {
-  components: { SubmissionDetails, TestCase },
+  components: { SubmissionDetails, TestCase, SubmissionDetailsHeader },
+  async asyncData({ $axios, params }) {
+    const submission = await $axios.$get(`/submission/${params.id}/basic`)
+    const tests = await $axios.$get(`/submission/${params.id}/tests`)
+    return { ...submission, tests }
+  },
   data() {
     return {
       isExpanded: false,
+      tests: [],
     }
+  },
+  computed: {
+    passedTests() {
+      return this.tests.reduce(
+        (total, current) =>
+          (total += current.TestResult.verdict === 'ACCEPTED' ? 1 : 0),
+        0
+      )
+    },
+    failedTests() {
+      return this.tests.reduce(
+        (total, current) =>
+          (total +=
+            current.TestResult.verdict !== 'ACCEPTED' &&
+            current.TestResult.verdict !== 'PENDING'
+              ? 1
+              : 0),
+        0
+      )
+    },
+    pendingTests() {
+      return this.tests.reduce(
+        (total, current) =>
+          (total += current.TestResult.verdict === 'PENDING' ? 1 : 0),
+        0
+      )
+    },
   },
 }
 </script>
@@ -168,17 +167,9 @@ export default {
     }
   }
   .details {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
     margin-top: 2.4rem;
-    justify-content: space-between;
-
-    .detailsHeader {
-      @include font-h4-regular();
-
-      color: $text-dark-secondary;
-    }
+    margin-bottom: 0.8rem;
+    color: $text-dark-secondary;
   }
   .codeDiscussion {
     display: flex;
@@ -190,12 +181,12 @@ export default {
       align-items: stretch;
       margin-right: 3.6rem;
       width: 86.5rem;
-      // flex: 1;
 
       .submissionText {
         @include font-label-semi();
 
         color: $text-light-primary;
+        margin-left: 2.4rem;
       }
 
       .codeArea {
@@ -215,6 +206,7 @@ export default {
           align-items: center;
           background-color: $background-dark-tertiary;
           height: 3.8rem;
+          cursor: pointer;
 
           .left {
             display: flex;
@@ -240,7 +232,7 @@ export default {
             display: flex;
             align-items: center;
             margin-right: 1.3rem;
-            width: 19.3rem;
+            width: 30rem;
             justify-content: space-between;
 
             .passed {
@@ -278,6 +270,24 @@ export default {
               }
             }
 
+            .pending {
+              display: flex;
+              align-items: center;
+
+              .pendingLabel {
+                @include font-h4-semi();
+
+                color: $extras-dark-yellow;
+                margin-right: 0.5rem;
+              }
+
+              .pendingCnt {
+                @include font-h4-semi();
+
+                color: $text-light-primary;
+              }
+            }
+
             .expandIcon {
               display: flex;
               justify-content: stretch;
@@ -300,6 +310,7 @@ export default {
         @include font-label-semi();
 
         color: $text-light-primary;
+        margin-left: 2.4rem;
       }
 
       .discussArea {

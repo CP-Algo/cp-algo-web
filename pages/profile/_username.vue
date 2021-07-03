@@ -4,20 +4,20 @@
       <div class="avatarItem">
         <img
           class="avatar"
-          src="~/assets/avatar/user-default.png"
+          :src="require(`~/assets/avatar/${id}.png`)"
           alt="user avatar"
         />
         <div class="userDetails">
-          <span class="fullName">Abraham Linkcoln</span>
-          <span class="username">@abarahm</span>
-          <div class="location">
+          <span class="fullName">{{ name }}</span>
+          <span class="username">@{{ username }}</span>
+          <div v-if="institution || country" class="location">
             <div
               class="icon"
-              v-html="require(`~/assets/svg/icon/handlesIcon.svg?raw`)"
+              v-html="require(`~/assets/svg/icon/Location Icon.svg?raw`)"
             />
-            <span class="uni">University of Dhaka</span>
-            <span class="comma">,&nbsp; </span>
-            <span class="country">Bangladesh</span>
+            <span v-if="institution" class="uni">{{ institution }}</span>
+            <span v-if="institution && country" class="comma">,&nbsp; </span>
+            <span v-if="country" class="country">{{ country }}</span>
           </div>
         </div>
       </div>
@@ -26,59 +26,48 @@
           <div class="title">Rank</div>
           <div class="valSuf">
             <span class="suf">#</span>
-            <span class="val">1</span>
+            <span class="val">{{ rank }}</span>
           </div>
         </div>
         <div class="contributoin">
-          <div class="title">Contributoin</div>
+          <div class="title">Contribution</div>
           <div class="valExt">
-            <span class="val">124</span>
+            <span class="val">{{ points }}</span>
             <span class="suf">pts</span>
           </div>
         </div>
         <div class="submitted">
           <div class="title">Submitted</div>
           <div class="valExt">
-            <span class="val">495</span>
+            <span class="val">{{ submissions }}</span>
             <span class="suf">codes</span>
           </div>
         </div>
       </div>
     </div>
     <div class="profTab">
-      <!-- <div
+      <div
         class="ojicon"
         v-html="require(`~/assets/svg/icon/handlesIcon.svg?raw`)"
-      /> -->
+      />
     </div>
-    <div class="option">
-      <div class="dropDown">
-        <div
-          class="optionIcon"
-          v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
-        />
-        <span class="text">Advanced Search Technique / BS</span>
-      </div>
-      <div class="languageOption">
-        <div
-          class="optionIcon"
-          v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
-        />
-        <span class="text">C++14</span>
-      </div>
-      <div class="sortOption">
-        <div
-          class="optionIcon"
-          v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
-        />
-        <span class="text">Submission length dsc.</span>
-      </div>
-    </div>
+
+    <codebook class="codebookTable" :codebook-id="id" :new-button="false" />
   </div>
 </template>
 
 <script>
-export default {}
+import Codebook from '~/components/Codebook.vue'
+export default {
+  components: { Codebook },
+  async asyncData({ $axios, $auth, params }) {
+    const username = params.username || $auth.user.username
+    const user = await $axios.$get(`/user/${username}/basic`)
+    const handles = await $axios.$get(`/user/${username}/handles`)
+    const codebook = await $axios.$get(`/codebook/${user.id}`)
+    return { ...user, handles, codebook }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -189,55 +178,8 @@ export default {}
     background-color: $background-dark-secondary;
   }
 
-  .option {
-    display: flex;
-    align-items: center;
-    margin-left: 6rem;
-    margin-top: 3.6rem;
-
-    .optionIcon {
-      color: $background-dark-tertiary;
-      width: 2.5rem;
-      margin-right: 1.5rem;
-    }
-
-    .text {
-      @include font-body-semi();
-      @include single-line();
-
-      color: $text-light-primary;
-    }
-
-    .dropDown {
-      display: flex;
-      align-items: center;
-      padding: 1rem 2rem;
-      border: 0.3rem solid $background-dark-secondary;
-      border-radius: 1.2rem;
-      margin-left: 0;
-      margin-right: 2.4rem;
-      width: 46.9rem;
-    }
-
-    .languageOption {
-      display: flex;
-      align-items: center;
-      padding: 1rem 2rem;
-      border: 0.3rem solid $background-dark-secondary;
-      border-radius: 1.2rem;
-      margin-right: 2.4rem;
-      width: 27.5rem;
-    }
-
-    .sortOption {
-      display: flex;
-      align-items: center;
-      padding: 1rem 2rem;
-      border: 0.3rem solid $background-dark-secondary;
-      border-radius: 1.2rem;
-      margin-right: auto;
-      width: 27.5rem;
-    }
+  .codebookTable {
+    margin: 0 6rem 6.7rem 6rem;
   }
 }
 </style>

@@ -1,27 +1,36 @@
 <template>
-  <div class="container">
-    <div class="rank">
+  <div :class="{ container: true, removeBackground: !background }">
+    <div v-if="rank" class="rank">
       <span class="hash">#</span>
       <span class="value">{{ rank }}</span>
     </div>
-    <a class="authors" href="/profile">
-      <img src="~/assets/avatar/user-default.png" alt="user avatar" />
-      <span class="more"> +{{ moreAuthor }}</span>
-    </a>
+    <div class="authors">
+      <a
+        v-for="author in authors.slice(0, 3)"
+        :key="author.id"
+        :href="`/profile/${author.username}`"
+      >
+        <img
+          :src="require(`~/assets/avatar/${author.id}.png`)"
+          alt="user avatar"
+        />
+      </a>
+      <span v-if="moreAuthor" class="more"> +{{ moreAuthor }}</span>
+    </div>
     <div class="detailSection complexity">
       <div class="detailItem">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
         />
-        <span class="text">O({{ timeComlexity }})</span>
+        <span class="text">{{ timeComplexity }}</span>
       </div>
       <div class="detailItem">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
         />
-        <span class="text">O({{ memoryComlexity }})</span>
+        <span class="text">{{ memoryComplexity }}</span>
       </div>
     </div>
     <div class="detailSection resources">
@@ -44,25 +53,29 @@
           class="icon"
           v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
         />
-        <span class="text">{{ executionTime }}ms</span>
+        <span class="text">{{
+          executionTime ? `${executionTime}ms` : '-'
+        }}</span>
       </div>
       <div class="detailItem">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
         />
-        <span class="text">{{ requiredMemory }}M</span>
+        <span class="text">{{
+          requiredMemory ? `${requiredMemory}M` : '-'
+        }}</span>
       </div>
     </div>
     <div class="actions">
-      <div class="upvote">
+      <div class="upvote" @click="upvoteSubmission">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/upvote.svg?raw`)"
         />
         <span class="text">{{ upvote }}</span>
       </div>
-      <div class="bookmark">
+      <div class="bookmark" @click="forkSubmission">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/bookmark.svg?raw`)"
@@ -78,6 +91,10 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'SubmissionDetails',
   props: {
+    submissionId: {
+      type: Number,
+      required: true,
+    },
     rank: {
       type: Number,
       default: 0,
@@ -90,11 +107,11 @@ export default Vue.extend({
       type: Number,
       default: 0,
     },
-    timeComlexity: {
+    timeComplexity: {
       type: String,
       required: true,
     },
-    memoryComlexity: {
+    memoryComplexity: {
       type: String,
       required: true,
     },
@@ -108,11 +125,11 @@ export default Vue.extend({
     },
     executionTime: {
       type: Number,
-      required: true,
+      default: 0,
     },
     requiredMemory: {
       type: Number,
-      required: true,
+      default: 0,
     },
     upvote: {
       type: Number,
@@ -121,6 +138,38 @@ export default Vue.extend({
     bookmark: {
       type: Number,
       required: true,
+    },
+    background: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  methods: {
+    async upvoteSubmission() {
+      if (!this.$auth.loggedIn)
+        this.$toast.error('You to be logged in to upvote the submission!')
+      try {
+        const { message } = await this.$axios.$post(
+          `/submission/${this.submissionId}/upvote`
+        )
+        this.$toast.success(message)
+        this.$emit('upvote')
+      } catch (err) {
+        this.$toast.error(err)
+      }
+    },
+    async forkSubmission() {
+      if (!this.$auth.loggedIn)
+        this.$toast.error('You to be logged in to fork the submission!')
+      try {
+        const { message } = await this.$axios.$post(
+          `/submission/${this.submissionId}/fork`
+        )
+        this.$toast.success(message)
+        this.$emit('fork')
+      } catch (err) {
+        this.$toast.error(err)
+      }
     },
   },
 })
@@ -202,6 +251,13 @@ $separator-space: 2rem;
 
     &.resources {
       flex: 483;
+    }
+  }
+
+  &.removeBackground {
+    background-color: transparent;
+    .detailSection {
+      background-color: $background-dark-secondary;
     }
   }
 

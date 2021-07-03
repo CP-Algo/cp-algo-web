@@ -31,13 +31,23 @@
         class="inputField"
         >Username</input-field
       >
+      <input-field v-if="mode === 'SIGNUP'" v-model="name" class="inputField"
+        >Name</input-field
+      >
       <input-field
         v-if="mode === 'SIGNUP'"
         v-model="password"
+        type="password"
         class="inputField"
         >Password</input-field
       >
-
+      <input-field
+        v-if="mode === 'SIGNUP'"
+        v-model="confPass"
+        type="password"
+        class="inputField"
+        >Confirm Password</input-field
+      >
       <!-- login -->
       <input-field
         v-if="mode === 'LOGIN'"
@@ -45,7 +55,11 @@
         class="inputField"
         >Username/Email</input-field
       >
-      <input-field v-if="mode === 'LOGIN'" v-model="password" class="inputField"
+      <input-field
+        v-if="mode === 'LOGIN'"
+        v-model="password"
+        class="inputField"
+        type="password"
         >Password</input-field
       >
 
@@ -61,12 +75,14 @@
       <input-field
         v-if="mode === 'RESET_PASS'"
         v-model="password"
+        type="password"
         class="inputField"
         >Password</input-field
       >
       <input-field
         v-if="mode === 'RESET_PASS'"
         v-model="confPass"
+        type="password"
         class="inputField"
         >Confirm Password</input-field
       >
@@ -77,7 +93,7 @@
         class="footer"
         @click="$emit('modeUpdated', 'FORGOT_PASS')"
       >
-        <span class="remember">Remember me</span>
+        <!-- <span class="remember">Remember me</span> -->
         <span class="forgot">Forgot password?</span>
       </div>
 
@@ -112,13 +128,13 @@
       @click="$emit('modeUpdated', 'SIGNUP')"
       >Don't have an account yet?
     </span>
+    <span v-if="mode === 'RESET_PASS'" class="option"></span>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import InputField from '~/components/Input/InputField.vue'
-import handleError from '~/helpers/handleError'
 
 export default Vue.extend({
   name: 'AuthForm',
@@ -130,9 +146,18 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    userId: {
+      type: String,
+      default: '',
+    },
+    token: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
+      name: '',
       email: '',
       username: '',
       password: '',
@@ -144,7 +169,14 @@ export default Vue.extend({
     async handleSubmit() {
       try {
         if (this.mode === 'SIGNUP') {
-          // handle signup
+          const { message } = await this.$axios.$post('/auth/signup', {
+            name: this.name,
+            email: this.email,
+            username: this.username,
+            password: this.password,
+            confirmPassword: this.confPass,
+          })
+          this.$toast.success(message)
         } else if (this.mode === 'LOGIN') {
           await this.$auth.loginWith('local', {
             data: {
@@ -153,12 +185,21 @@ export default Vue.extend({
             },
           })
         } else if (this.mode === 'FORGOT_PASS') {
-          // handle forgot
+          const { message } = await this.$axios.$post('/auth/forgot', {
+            emailOrUsername: this.usernameOrEmail,
+          })
+          this.$toast.success(message)
         } else if (this.mode === 'RESET_PASS') {
-          // handle reset
+          const { message } = await this.$axios.$post('/auth/reset', {
+            user: this.userId,
+            token: this.token,
+            password: this.password,
+            confirmPassword: this.confPass,
+          })
+          this.$toast.success(message)
         }
       } catch (err) {
-        handleError(err)
+        this.$toast.error(err.message)
       }
     },
   },
@@ -170,6 +211,7 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   .box {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -243,6 +285,7 @@ export default Vue.extend({
     color: $app-light-secondary;
     text-align: center;
     margin-top: 3rem;
+    margin-bottom: 2rem;
     cursor: pointer;
   }
 }

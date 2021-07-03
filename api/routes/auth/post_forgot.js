@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 
+const { Op } = require('sequelize')
 const {
   models: { User, ResetPassword },
 } = require('../../models')
@@ -8,8 +9,15 @@ const sendMail = require('../../helpers/sendMail')
 
 router.post('/forgot', async function (req, res, next) {
   try {
-    const { user: userID } = req.body
-    const user = await User.findByPk(userID)
+    const { emailOrUsername } = req.body
+    const user = await User.findOne({
+      where: {
+        [Op.or]: {
+          email: emailOrUsername,
+          username: emailOrUsername,
+        },
+      },
+    })
 
     const resetPassword = ResetPassword.build({
       UserId: user.id,

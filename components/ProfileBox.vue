@@ -1,22 +1,25 @@
 <template>
-  <div class="container">
+  <div v-if="$auth.loggedIn" class="container">
     <a class="userDetails" href="/profile">
-      <img src="~/assets/avatar/user-default.png" alt="user avatar" />
-      <span class="fullName">{{ fullName }}</span>
-      <span class="userName">@{{ userName }}</span>
+      <img
+        :src="require(`~/assets/avatar/${$auth.user.id}.png`)"
+        alt="user avatar"
+      />
+      <span class="fullName">{{ $auth.user.name }}</span>
+      <span class="userName">@{{ $auth.user.username }}</span>
     </a>
     <div class="actionDetails">
       <div class="rank">
         <span class="actionName">Rank</span>
-        <span class="actionValue">{{ rank }}</span>
+        <span class="actionValue">{{ $auth.user.rank }}</span>
       </div>
       <div class="contribution">
         <span class="actionName">Contribution</span>
-        <span class="actionValue">{{ contribution }}</span>
+        <span class="actionValue">{{ $auth.user.points }}</span>
       </div>
       <div class="submitted">
         <span class="actionName">Submitted</span>
-        <span class="actionValue">{{ submitted }}</span>
+        <span class="actionValue">{{ $auth.user.submissions }}</span>
       </div>
     </div>
   </div>
@@ -26,28 +29,6 @@
 import Vue from 'vue'
 export default Vue.extend({
   name: 'ProfileBox',
-  props: {
-    fullName: {
-      type: String,
-      required: true,
-    },
-    userName: {
-      type: String,
-      required: true,
-    },
-    rank: {
-      type: Number,
-      required: true,
-    },
-    contribution: {
-      type: Number,
-      required: true,
-    },
-    submitted: {
-      type: Number,
-      required: true,
-    },
-  },
 })
 </script>
 
@@ -64,18 +45,13 @@ export default Vue.extend({
     flex-direction: column;
     align-items: center;
 
-    // &:hover {
-    //   .fullName {
-    //     text-decoration: underline;
-    //   }
-    // }
-
     img {
       width: 7rem;
       height: 7rem;
       margin-top: 1.7rem;
       border-radius: 50%;
     }
+
     .fullName {
       @include font-body-bold();
       @include single-line();
@@ -91,12 +67,11 @@ export default Vue.extend({
       margin-top: 0.4rem;
     }
   }
+
   .actionDetails {
     display: flex;
-    // align-items: center;
-    // flex: 1;
-    // justify-content: space-around;
     margin-top: 0.9rem;
+
     .actionName {
       @include font-h4-regular();
 

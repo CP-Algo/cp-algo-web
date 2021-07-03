@@ -21,28 +21,77 @@
       </div>
       <div class="langSubmit">
         <div class="langDropDown">C++</div>
-        <button class="submit">Submit</button>
+        <button class="submit" @click="submitCode">Submit</button>
       </div>
     </div>
 
     <div class="split right">
       <div class="input">
         <label for="input"> Input </label>
-        <textarea id="input" rows="3"></textarea>
+        <textarea id="input" v-model="input" rows="3"></textarea>
       </div>
 
       <div class="output">
         <label for="output"> Output </label>
-        <textarea id="output" rows="3"></textarea>
+        <textarea id="output" v-model="output" rows="3" readonly></textarea>
       </div>
 
-      <button class="run">Run</button>
+      <button class="run" @click="runCode">Run</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  middleware: 'auth',
+  data() {
+    return {
+      algorithm: 'BINARY_SEARCH',
+      timeComplexity: '',
+      memoryComplexity: '',
+      code: '',
+      language: 'CPP_11',
+      input: '',
+      output: '',
+    }
+  },
+  auth: true,
+  methods: {
+    async runCode() {
+      try {
+        const { status, message, output } = await this.$axios.$post(
+          '/submission/run',
+          {
+            input: this.input,
+            code: this.code,
+          }
+        )
+
+        if (status === 'ACCEPTED') this.$toast.success(message)
+        else this.$toast.error(message)
+
+        this.output = output
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async submitCode() {
+      try {
+        const { message, id } = await this.$axios.$post('/submission/new', {
+          algorithm: this.algorithm,
+          language: this.language,
+          timeComplexity: this.timeComplexity,
+          memoryComplexity: this.memoryComplexity,
+          code: this.code,
+        })
+        this.$toast.success(message)
+        setTimeout(() => (window.location.href = `/submission/${id}`), 3000)
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>

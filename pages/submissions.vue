@@ -27,88 +27,20 @@
     <submission-details-header class="heading" />
     <div class="submissionTable">
       <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
+        v-for="submission in submissions"
+        :key="submission.id"
+        :rank="submission.rank"
+        :authors="submission.authors"
+        :more-author="Math.max(0, submission.authors.length - 3)"
+        :time-complexity="submission.timeComplexity"
+        :memory-complexity="submission.memoryComplexity"
+        :language="submission.language.name"
+        :code-size="submission.length"
+        :execution-time="submission.executionTime"
+        :required-memory="submission.executionMemory"
+        :upvote="submission.upvotes"
+        :bookmark="submission.forks"
+        style="margin-bottom: 1.2rem"
       />
     </div>
     <div class="pageDetails">
@@ -118,12 +50,16 @@
       </div>
       <div class="right">
         <div
+          v-if="hasPrev"
           class="icon"
+          @click="fetchPrev"
           v-html="require(`~/assets/svg/icon/prevIcon.svg?raw`)"
         />
-        <span class="pageNo">6</span>
+        <span class="pageNo">{{ page }}</span>
         <div
+          v-if="hasNext"
           class="icon"
+          @click="fetchNext"
           v-html="require(`~/assets/svg/icon/nextIcon.svg?raw`)"
         />
       </div>
@@ -136,6 +72,32 @@ import SubmissionDetailsHeader from '~/components/SubmissionDetailsHeader.vue'
 import SubmissionDetails from '~/components/SubmissionDetails.vue'
 export default {
   components: { SubmissionDetailsHeader, SubmissionDetails },
+  data() {
+    return {
+      submissions: [],
+      hasPrev: false,
+      hasNext: false,
+      page: 1,
+    }
+  },
+  async fetch() {
+    const { submissions, hasPrev, hasNext } = await this.$axios.$get(
+      `/submissions?page=${this.page}`
+    )
+    this.submissions = submissions
+    this.hasPrev = hasPrev
+    this.hasNext = hasNext
+  },
+  methods: {
+    fetchPrev() {
+      this.page = this.page - 1
+      this.$fetch()
+    },
+    fetchNext() {
+      this.page = this.page + 1
+      this.$fetch()
+    },
+  },
 }
 </script>
 
@@ -248,6 +210,7 @@ export default {
 
       .icon {
         height: 2rem;
+        cursor: pointer;
       }
 
       .pageNo {

@@ -17,7 +17,7 @@ router.get('/submissions', async function (req, res, next) {
     rows = rows || 20
     page = page || 1
     const offset = rows * (page - 1)
-    sortBy = sortBy || ['length', 'ASC']
+    sortBy = sortBy || ['createdAt', 'DESC']
 
     let algorithms = []
     if (!algorithm && category) {
@@ -46,7 +46,10 @@ router.get('/submissions', async function (req, res, next) {
       submissionRows.map(async (submission, index) => ({
         ...submission.get({ plain: true }),
         rank: offset + index + 1,
-        authors: (await submission.getAuthors()).map((author) => author.id),
+        authors: await submission.getAuthors({ raw: true }),
+        author: await (await submission.getCodebook()).getUser(),
+        algorithm: await submission.getAlgorithm(),
+        language: await submission.getLanguage(),
       }))
     )
 

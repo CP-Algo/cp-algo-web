@@ -1,57 +1,50 @@
 <template>
   <div class="algorithm-container">
-    <div class="algorithm">
+    <div class="algorithm" @click="isExpanded = !isExpanded">
       <span class="algorithmName">{{ name }}</span>
       <div
         :class="{ icon: true, isExpanded }"
-        @click="isExpanded = !isExpanded"
         v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
       />
     </div>
     <div v-if="isExpanded" class="submissionTable">
-      <div class="heading">
-        <span class="rank">Rank</span>
-        <span class="authors">Authors</span>
-        <span class="complexity">Complexity</span>
-        <span class="resources">Resourses</span>
-        <span class="action">Action</span>
-      </div>
+      <submission-details-header class="heading" :rank="false" />
       <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
-      />
-      <submission-details
-        :rank="1"
-        :more-author="12"
-        time-comlexity="NM"
-        memory-comlexity="NM"
-        language="C++14"
-        :code-size="258"
-        :execution-time="438"
-        :required-memory="438"
-        :upvote="120"
-        :bookmark="23"
+        v-for="submission in getSubmissions()"
+        :key="submission.id"
+        :authors="submission.authors"
+        :more-author="Math.max(0, submission.authors.length - 3)"
+        :time-complexity="submission.timeComplexity"
+        :memory-complexity="submission.memoryComplexity"
+        :language="submission.language.name"
+        :code-size="submission.length"
+        :execution-time="submission.executionTime"
+        :required-memory="submission.executionMemory"
+        :upvote="submission.upvotes"
+        :bookmark="submission.forks"
+        style="margin-bottom: 1.2rem"
       />
     </div>
   </div>
 </template>
 
 <script>
+import SubmissionDetailsHeader from '~/components/SubmissionDetailsHeader.vue'
 import SubmissionDetails from '~/components/SubmissionDetails.vue'
 export default {
   name: 'AlgorithmRow',
-  components: { SubmissionDetails },
+  components: { SubmissionDetails, SubmissionDetailsHeader },
   props: {
+    algorithmId: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
+      required: true,
+    },
+    codebook: {
+      type: Object,
       required: true,
     },
   },
@@ -59,6 +52,14 @@ export default {
     return {
       isExpanded: false,
     }
+  },
+  methods: {
+    getSubmissions() {
+      const submissions = this.codebook.submissions.filter(
+        (submission) => submission.AlgorithmId === this.algorithmId
+      )
+      return submissions
+    },
   },
 }
 </script>
@@ -101,6 +102,7 @@ export default {
     flex-direction: column;
     margin-left: 3.9rem;
     margin-right: 1rem;
+
     .heading {
       @include font-h4-regular();
 
@@ -109,22 +111,6 @@ export default {
       align-items: center;
       margin-top: 2.5rem;
       margin-bottom: 1.6rem;
-
-      .rank {
-        margin-left: 3.6rem;
-      }
-      .authors {
-        margin-left: 8.4rem;
-      }
-      .complexity {
-        margin-left: 21.75rem;
-      }
-      .resources {
-        margin-left: 31.35rem;
-      }
-      .action {
-        margin-left: 29.5rem;
-      }
     }
   }
 }

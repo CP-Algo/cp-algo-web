@@ -1,5 +1,5 @@
 <template>
-  <a class="popup-option" :href="url" @click.prevent="click">
+  <a class="popup-option" :href="url" @click.prevent="clicked">
     <div class="icon-container">
       <div
         v-if="icon"
@@ -41,13 +41,16 @@ export default Vue.extend({
     },
     click: {
       type: Function,
-      default: () => {
-        window.location.href = this.url
-      },
+      default: null,
     },
     url: {
       type: String,
       default: '',
+    },
+  },
+  methods: {
+    clicked() {
+      this.click ? this.click() : (window.location.href = this.url)
     },
   },
 })

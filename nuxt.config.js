@@ -20,7 +20,9 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    /* { src: '~/plugins/prism', mode: 'client' } */
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
@@ -41,6 +43,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/toast',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -70,6 +73,12 @@ export default {
         },
       },
     },
+  },
+
+  toast: {
+    position: 'bottom-right',
+    theme: 'bubble',
+    duration: 10000,
   },
 
   serverMiddleware: {

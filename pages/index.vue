@@ -66,16 +66,14 @@
         <hr />
         <div class="recentSubmissionList">
           <recent-submission-row
-            algorithm="Aho Corasick String Matching"
-            :code-size="258"
-            :taken-time="438"
-            user-name="fahimcp495"
-          />
-          <recent-submission-row
-            algorithm="KMP String Matching"
-            :code-size="582"
-            :taken-time="838"
-            user-name="DrSwad"
+            v-for="submission in submissions.slice(0, 5)"
+            :key="submission.id"
+            :submission-id="submission.id"
+            :algorithm="submission.algorithm.name"
+            :code-size="submission.length"
+            :taken-time="submission.executionTime"
+            :user-id="submission.author.id"
+            :user-name="submission.author.username"
           />
         </div>
       </div>
@@ -84,22 +82,23 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import CategoryBanner from '~/components/CategoryBanner.vue'
 import RecentSubmissionRow from '~/components/RecentSubmissionRow.vue'
 import TemplatesAlgorithm from '~/components/TemplatesAlgorithm.vue'
 import TopContributorRow from '~/components/TopContributorRow.vue'
-export default Vue.extend({
+export default {
   components: {
     CategoryBanner,
     TopContributorRow,
     RecentSubmissionRow,
     TemplatesAlgorithm,
   },
+  layout: 'templates',
   async asyncData({ $axios }) {
     const topics = await $axios.$get('/topics')
-    const contributors = await $axios.$get('/contributors')
-    return { ...topics, contributors }
+    const { contributors } = await $axios.$get('/contributors')
+    const { submissions } = await $axios.$get('/submissions')
+    return { ...topics, contributors, submissions }
   },
   data() {
     return {
@@ -132,7 +131,7 @@ export default Vue.extend({
       )
     },
   },
-})
+}
 </script>
 
 <style lang="scss" scoped>

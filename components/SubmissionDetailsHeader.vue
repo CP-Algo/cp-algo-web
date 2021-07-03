@@ -1,16 +1,30 @@
 <template>
   <div class="container">
-    <span class="rank section">Rank</span>
+    <span v-if="rank" class="rank section">Rank</span>
     <span class="authors section">Authors</span>
     <span class="complexity section">Complexity</span>
     <span class="resources section">Resourses</span>
-    <span class="action section">Action</span>
+    <span
+      :style="{ visibility: action ? 'visible' : 'hidden' }"
+      class="action section last"
+      >Action</span
+    >
   </div>
 </template>
 
 <script>
 export default {
   name: 'SubmissionDetailsHeader',
+  props: {
+    rank: {
+      type: Boolean,
+      default: true,
+    },
+    action: {
+      type: Boolean,
+      default: true,
+    },
+  },
 }
 </script>
 
@@ -27,6 +41,10 @@ $separator-space: 2rem;
   .section {
     margin-right: $separator-space;
     text-align: center;
+
+    .last {
+      margin-right: 0;
+    }
   }
 
   .rank {
@@ -41,9 +59,8 @@ $separator-space: 2rem;
   .resources {
     flex: 483;
   }
-  .action.section {
+  .action {
     flex: 178;
-    margin-right: 0;
   }
 }
 </style>

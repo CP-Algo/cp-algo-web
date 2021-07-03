@@ -18,6 +18,15 @@ module.exports = {
           email: 'drswad2013@gmail.com',
           password: 'asdfer',
           verified: true,
+          points: 1,
+        },
+        {
+          id: 'a3d368f7-95a0-4f5e-954a-1102a39beddc',
+          name: 'Nayeemul Islam Swad 2',
+          username: 'nayeemul',
+          email: 'nayeemul2013@gmail.com',
+          password: 'asdfer',
+          verified: true,
         },
       ]
 

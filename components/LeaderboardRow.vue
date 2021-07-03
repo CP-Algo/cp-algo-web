@@ -4,8 +4,8 @@
       <span class="prefSuf">#</span>
       <span class="value"> {{ rank }}</span>
     </div>
-    <a class="userDetails" href="/profile">
-      <img src="~/assets/avatar/user-default.png" alt="user avatar" />
+    <a class="userDetails" :href="`/profile/${userName}`">
+      <img :src="require(`~/assets/avatar/${userId}.png`)" alt="user avatar" />
       <div class="right">
         <div class="fullName">{{ fullName }}</div>
         <div class="userName">@{{ userName }}</div>
@@ -31,6 +31,10 @@ export default Vue.extend({
       type: Number,
       required: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
     fullName: {
       type: String,
       required: true,
@@ -52,36 +56,41 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+$separator-space: 2rem;
 .container {
   display: flex;
-  // align-items: center;
   padding: 2.4rem 1.6rem;
   margin-bottom: 1.2rem;
   border-radius: 1.6rem;
   background-color: $background-dark-secondary;
+
   .prefSuf {
     @include font-body-semi();
 
     color: $text-dark-secondary;
     margin-right: 0.6rem;
   }
+
   .value {
     @include font-h3-semi();
 
     color: $text-light-primary;
     margin-right: 0.5rem;
   }
+
   .rank {
-    margin-left: 1.4rem;
+    flex: 32;
     display: flex;
     align-items: center;
-    // margin-right: 2.4rem;
+    justify-content: center;
+    margin-right: $separator-space;
   }
+
   .userDetails {
-    margin-left: 12.1rem;
+    flex: 155;
     display: flex;
-    // align-items: center;
-    // flex: 1;
+    justify-content: center;
+    margin-right: $separator-space;
 
     &:hover {
       .fullName {
@@ -99,8 +108,6 @@ export default Vue.extend({
     .right {
       display: flex;
       flex-direction: column;
-      // align-items: flex-start;
-      // flex: 1;
 
       .fullName {
         @include font-body-bold();
@@ -116,16 +123,20 @@ export default Vue.extend({
       }
     }
   }
+
   .points {
+    flex: 64;
     display: flex;
-    // flex-direction: column;
     align-items: center;
-    margin-left: 12.2rem;
+    justify-content: center;
+    margin-right: $separator-space;
   }
+
   .submitted {
+    flex: 64;
     display: flex;
     align-items: center;
-    margin-left: 17.7rem;
+    justify-content: center;
   }
 }
 </style>

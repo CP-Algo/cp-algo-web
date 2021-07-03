@@ -3,8 +3,11 @@
     <input
       :id="id"
       v-model="valueCopy"
-      :type="type"
-      class="material-input"
+      :type="!visible ? 'password' : type === 'password' ? 'text' : type"
+      :class="{
+        'material-input': true,
+        password: type === 'password',
+      }"
       :name="name"
       :placeholder="placeholder"
       :readonly="readonly"
@@ -21,7 +24,11 @@
       @input="handleModelInput"
     />
 
-    <span class="material-input-bar"></span>
+    <img
+      class="eyeIcon"
+      :src="`~/assets/svg/icon/eyeIcon${visible ? '' : 'In'}Visible.svg`"
+      @click="visible = !visible"
+    />
 
     <label class="material-label">
       <slot></slot>
@@ -105,6 +112,7 @@ export default {
       valueCopy: null,
       focus: false,
       valid: true,
+      visible: false,
     }
   },
   computed: {
@@ -176,6 +184,7 @@ $transition: 0.2s ease all;
 .material-input__component {
   position: relative;
   background: transparent;
+
   .material-input {
     @include font-h3-regular();
 
@@ -188,7 +197,19 @@ $transition: 0.2s ease all;
     width: 100%;
     border-radius: math.div($height, 2);
     transition: $transition;
+
+    &.password {
+      padding-right: $spacer + 5rem;
+    }
   }
+
+  .eyeIcon {
+    position: absolute;
+    right: 2.4rem;
+    top: auto;
+    bottom: auto;
+  }
+
   .material-label {
     @include font-h3-regular();
 

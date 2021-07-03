@@ -1,4 +1,5 @@
 version: '3.6'
+
 services:
   app:
     build:
@@ -30,6 +31,7 @@ services:
     ports:
       - "5432:5432"
     container_name: cpalgo_db
+
 volumes:
   cp_algo_db_data:
   cp_algo_extensions_data:

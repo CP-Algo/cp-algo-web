@@ -14,7 +14,7 @@
     <profile-popup-option
       :title="$auth.user.name"
       sub-title="View your profile"
-      url="/user"
+      url="/profile"
     />
     <div class="bar" />
     <profile-popup-option

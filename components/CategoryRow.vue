@@ -1,20 +1,24 @@
 <template>
   <div class="category-container">
-    <div class="categoryHeading">
+    <div class="categoryHeading" @click="isExpanded = !isExpanded">
       <img
-        :src="require(`~/assets/svg/category/${thumbnail}.svg`)"
+        :src="require(`~/assets/svg/category/${categoryId}.svg`)"
         :alt="`thumbnail of category ${name}`"
       />
       <span class="categoryName">{{ name }}</span>
       <div
         :class="{ expandCategoryIcon: true, isExpanded }"
-        @click="isExpanded = !isExpanded"
         v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
       />
     </div>
     <div v-if="isExpanded" class="algorithms">
-      <algorithm-row name="Binary Search" />
-      <algorithm-row name="Ternary Search" />
+      <algorithm-row
+        v-for="algorithm in getAlgorithms()"
+        :key="algorithm.id"
+        :algorithm-id="algorithm.id"
+        :name="algorithm.name"
+        :codebook="codebook"
+      />
     </div>
   </div>
 </template>
@@ -25,7 +29,7 @@ export default {
   name: 'CategoryRow',
   components: { AlgorithmRow },
   props: {
-    thumbnail: {
+    categoryId: {
       type: String,
       required: true,
     },
@@ -33,11 +37,44 @@ export default {
       type: String,
       required: true,
     },
+    topics: {
+      type: Object,
+      required: true,
+    },
+    codebook: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
       isExpanded: false,
     }
+  },
+  methods: {
+    getSubmissionTopics(submission) {
+      const algorithm = this.topics.algorithms.find(
+        (item) => item.id === submission.AlgorithmId
+      )
+      const subCategory = this.topics.subCategories.find(
+        (item) => item.id === algorithm.SubCategoryId
+      )
+      const category = this.topics.categories.find(
+        (item) => item.id === subCategory.CategoryId
+      )
+      return { algorithm, subCategory, category }
+    },
+    getAlgorithms() {
+      const algorithmIds = new Set(
+        this.codebook.submissions.map(
+          (submission) => this.getSubmissionTopics(submission).algorithm.id
+        )
+      )
+      const algorithms = Array.from(algorithmIds).map((algorithmId) =>
+        this.topics.algorithms.find((item) => item.id === algorithmId)
+      )
+      return algorithms
+    },
   },
 }
 </script>

@@ -15,6 +15,7 @@ module.exports = {
           CodebookId: '75e851c1-acc6-46ea-969a-f28829a1de44',
           AlgorithmId: 'BINARY_SEARCH',
           LanguageId: 'CPP_11',
+          upvotes: 1,
         },
         {
           timeComplexity: 'O(2)',

@@ -36,13 +36,7 @@
     <settings-form class="form" :mode="selectedMode" />
 
     <div class="profile">
-      <profile-box
-        full-name="Abraham Linkoln"
-        user-name="abraham"
-        :rank="123"
-        :contribution="344"
-        :submitted="124"
-      />
+      <profile-box />
     </div>
   </div>
 </template>
@@ -52,11 +46,13 @@ import ProfileBox from '~/components/ProfileBox.vue'
 import SettingsForm from '~/components/SettingsForm.vue'
 export default {
   components: { ProfileBox, SettingsForm },
+  middleware: 'auth',
   data() {
     return {
       selectedMode: 'GENERAL',
     }
   },
+  auth: true,
 }
 </script>
 
