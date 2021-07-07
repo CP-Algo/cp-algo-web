@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer')
+/* const nodemailer = require('nodemailer')
 const { transporterConfig, templates } = require('../../config/mail')
 const { env } = require('../../config')
 
@@ -15,6 +15,8 @@ async function sendMail(to, template, data) {
 
   // eslint-disable-next-line no-console
   console.log('Mail sent: %s', info.messageId)
-}
+} */
+
+async function sendMail() {}
 
 module.exports = sendMail
