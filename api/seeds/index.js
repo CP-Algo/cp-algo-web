@@ -1,6 +1,9 @@
 const { env } = require('../../config')
 const orderedFiles = [
-  'topics',
+  'category',
+  'subCategory',
+  'algorithm',
+  'algorithmExample',
   'language',
   'user',
   'handle',

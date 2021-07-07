@@ -8,8 +8,8 @@ module.exports = {
     if (submissions.length === 0) {
       submissions = [
         {
-          timeComplexity: 'O(1)',
-          memoryComplexity: 'O(1)',
+          timeComplexity: '1',
+          memoryComplexity: '1',
           code: '// This is my code',
           length: 18,
           CodebookId: '75e851c1-acc6-46ea-969a-f28829a1de44',
@@ -18,8 +18,8 @@ module.exports = {
           upvotes: 1,
         },
         {
-          timeComplexity: 'O(2)',
-          memoryComplexity: 'O(2)',
+          timeComplexity: 'N',
+          memoryComplexity: 'N',
           code: '// This is my second code',
           length: 25,
           CodebookId: '75e851c1-acc6-46ea-969a-f28829a1de44',

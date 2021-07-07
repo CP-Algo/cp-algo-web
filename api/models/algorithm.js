@@ -11,5 +11,33 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    inputFormat: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    inputDefinition: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    inputConstraints: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    outputFormat: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    outputDefinition: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    outputConstraints: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   })
 }

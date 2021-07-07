@@ -10,6 +10,7 @@ fs.readdirSync(__dirname)
 // Model Associations
 const {
   Algorithm,
+  AlgorithmExample,
   Category,
   Codebook,
   Handle,
@@ -56,6 +57,9 @@ function initBelongsToManyRelationship(OwnerTable, OwnedTable, through, as) {
   OwnerTable.belongsToMany(OwnedTable, { through })
   OwnedTable.belongsToMany(OwnerTable, { through, ...(as ? { as } : {}) })
 }
+
+// Algorithm <= AlgorithmExample
+initHasManyRelationship(Algorithm, AlgorithmExample, 'AlgorithmId')
 
 // Algorithm <= Submission
 initHasManyRelationship(Algorithm, Submission, 'AlgorithmId')
