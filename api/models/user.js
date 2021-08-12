@@ -13,42 +13,34 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        max: {
-          args: 254,
-          msg: 'Your full name can only be 254 caracters.',
+        len: {
+          args: [3, 254],
+          msg: 'Full name must be at least 3 and at most 254 characters long.',
         },
       },
     },
     username: {
-      type: DataTypes.STRING,
+      type: DataTypes.CITEXT,
       allowNull: false,
       unique: {
-        args: true,
-        message: 'Username must be unique.',
-        fields: [sequelize.fn('lower', sequelize.col('username'))],
+        msg: 'This username is already taken.',
       },
       validate: {
-        min: {
-          args: 3,
-          msg: 'Username must start with a letter, have no spaces, and be at least 3 characters.',
-        },
-        max: {
-          args: 40,
-          msg: 'Username must start with a letter, have no spaces, and be at most 40 characters.',
+        len: {
+          args: [3, 40],
+          msg: 'Username must be at least 3 and at most 40 characters long.',
         },
         is: {
           args: /^[A-Za-z][A-Za-z0-9_]+$/i, // must start with letter and only have letters, numbers, underscores
-          msg: 'Username must start with a letter, have no spaces, and be 3 - 40 characters.',
+          msg: 'Username must start with a letter and contain no spaces. The only allowed characters are the alphanumeric ones(A-Z, a-z, 0-9) and the underscore(_).',
         },
       },
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.CITEXT,
       allowNull: false,
       unique: {
-        args: true,
         msg: 'Oops. Looks like you already have an account with this email address. Please try to login.',
-        fields: [sequelize.fn('lower', sequelize.col('email'))],
       },
       validate: {
         isEmail: {

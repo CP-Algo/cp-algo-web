@@ -113,6 +113,9 @@ initHasOneRelationship(User, Verification, 'UserId')
 
 if (env !== 'production') {
   ;(async () => {
+    await sequelize.query(
+      'CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;'
+    )
     await sequelize.sync({ force: true })
     // eslint-disable-next-line no-console
     console.log('Database synced by sequelize models')
