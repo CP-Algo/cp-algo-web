@@ -17,7 +17,9 @@
       </div>
       <div class="submission">
         <label>Submission</label>
-        <div class="editor"></div>
+        <client-only
+          ><div class="editor"><editor /></div
+        ></client-only>
       </div>
       <div class="langSubmit">
         <div class="langDropDown">C++</div>
@@ -42,7 +44,9 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   middleware: 'auth',
   data() {
     return {
@@ -91,7 +95,7 @@ export default {
       }
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -179,11 +183,13 @@ export default {
     margin: 0 0 1.2rem 2.4rem;
     align-self: flex-start;
   }
+
   .editor {
     color: $text-light-primary;
     background-color: $background-dark-secondary;
     border-radius: 1.2rem;
-    flex: 1;
+    height: 20rem;
+    width: 100%;
   }
 }
 

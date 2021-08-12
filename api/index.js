@@ -1,10 +1,14 @@
+/* eslint-disable import/order */
 const express = require('express')
 
 // Create express instance
 const app = express()
 
+// Get environment
+const { env } = require('../config')
+
 // Log requests to the console for debugging purposes
-app.use(require('morgan')('dev'))
+if (env === 'development') app.use(require('morgan')('dev'))
 
 // Disable CORS
 app.use(require('cors')())
@@ -28,6 +32,9 @@ initMiddleware(passport)
 
 // Setup API Routes
 app.use(require('./routes')(passport))
+
+// Setup error handler
+require('./helpers/errorHandler').initializeErrorHandler(app)
 
 // Export express app
 module.exports = app

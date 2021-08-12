@@ -11,13 +11,5 @@ module.exports = function (passport) {
   router.use('/', require('./submissions'))
   router.use('/', require('./codebook'))
 
-  // Handle errors
-  router.use(function (err, _req, res, _next) {
-    // eslint-disable-next-line no-console
-    console.log('Fallback error:', err)
-    res.status(err.status || 500)
-    res.json({ error: err.message || err })
-  })
-
   return router
 }

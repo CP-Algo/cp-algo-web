@@ -31,6 +31,7 @@
     "core-js": "^3.9.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-error-handler": "^1.1.0",
     "imagemin": "^8.0.0",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-pngquant": "^9.0.2",
@@ -49,7 +50,8 @@
     "sequelize": "^6.6.2",
     "sequelize-tokenify": "^0.2.3",
     "sql-template-strings": "^2.2.2",
-    "vodal": "^2.4.0"
+    "vodal": "^2.4.0",
+    "vue2-ace-editor": "^0.0.15"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",

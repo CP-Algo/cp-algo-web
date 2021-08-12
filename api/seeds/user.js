@@ -42,12 +42,18 @@ module.exports = {
             UserId: user.id,
           })
 
-          await fs.copyFile(
-            path.normalize(path.join(root, 'assets', 'avatar', '$default.png')),
-            path.normalize(
-              path.join(root, 'assets', 'avatar', `${user.id}.png`)
-            )
+          const defaultPicturePath = path.normalize(
+            path.join(root, 'assets', 'avatar', '$default.png')
           )
+          const userPicturePath = path.normalize(
+            path.join(root, 'assets', 'avatar', `${user.id}.png`)
+          )
+
+          return fs
+            .stat(userPicturePath)
+            .catch(
+              async () => await fs.copyFile(defaultPicturePath, userPicturePath)
+            )
         })
       )
     }
