@@ -13,7 +13,11 @@ router.get('/', authenticatedMiddleware, async function (req, res, next) {
   try {
     const userID = req.user.id
     const user = await User.findByPk(userID, { raw: true })
-    if (!user) throw new Error('Cannot find user')
+    if (!user) {
+      const err = new Error('Cannot find user')
+      err.status = 400
+      throw err
+    }
     delete user.password
     const rank = await getUserRank(user.id)
     return res.json({ ...user, rank })

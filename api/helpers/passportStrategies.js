@@ -26,13 +26,14 @@ module.exports = function (passport) {
         try {
           // Make sure password confirmation matched
           const confirmPassword = req.body.confirmPassword
-          if (password !== confirmPassword)
-            return done(
-              new Error(
-                "Passwords don't match! Kindly type the password carefully in the input fields to make" +
-                  ' sure they match.'
-              )
+          if (password !== confirmPassword) {
+            const err = new Error(
+              "Passwords don't match! Kindly type the password carefully in the input fields to make" +
+                ' sure they match.'
             )
+            err.status = 400
+            return done(err)
+          }
 
           // Create user model
           const { name, username } = req.body
@@ -103,20 +104,20 @@ module.exports = function (passport) {
 
           // If the user is not found or the passwords don't match
           if (!user || !(await user.isValidPassword(password))) {
-            return done(
-              new Error(
-                'No user found matching the provided credentials. Kindly make sure everything is typed in correctly.'
-              )
+            const err = new Error(
+              'No user found matching the provided credentials. Kindly make sure everything is typed in correctly.'
             )
+            err.status = 400
+            return done(err)
           }
 
           // If the account hasn't been verified yet
           if (!user.verified) {
-            return done(
-              new Error(
-                "This account has not been verified yet. Kindly visit the verification link sent to the account's associated email to verify the account"
-              )
+            const err = new Error(
+              "This account has not been verified yet. Kindly visit the verification link sent to the account's associated email to verify the account"
             )
+            err.status = 401
+            return done(err)
           }
 
           // All is well, return plain user object excluding password

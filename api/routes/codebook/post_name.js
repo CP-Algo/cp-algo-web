@@ -16,8 +16,11 @@ router.post('/name', authenticatedMiddleware, async function (req, res, next) {
     const codebook = await Codebook.findByPk(codebookID)
     const author = await codebook.getUser()
 
-    if (userID !== author.id)
-      throw new Error('You are not authorized to update the codebook')
+    if (userID !== author.id) {
+      const err = new Error('You are not authorized to update the codebook')
+      err.status = 401
+      throw err
+    }
 
     await codebook.update({ name })
 

@@ -17,8 +17,11 @@ router.post('/fork', authenticatedMiddleware, async function (req, res, next) {
     let submission = await Submission.findByPk(submissionID)
 
     const forker = await User.findByPk(userID)
-    if (await submission.hasForker(forker))
-      throw new Error("You've already forked this submission")
+    if (await submission.hasForker(forker)) {
+      const err = new Error("You've already forked this submission")
+      err.status = 400
+      throw err
+    }
     await submission.addForker(forker)
     await submission.increment('forks')
 

@@ -20,11 +20,18 @@ router.post(
       const codebook = await submission.getCodebook()
       const author = await codebook.getUser()
 
-      if (userID === author.id) throw new Error('Cannot upvote own submission')
+      if (userID === author.id) {
+        const err = new Error('Cannot upvote own submission')
+        err.status = 401
+        throw err
+      }
 
       const upvoter = await User.findByPk(userID)
-      if (await submission.hasUpvoter(upvoter))
-        throw new Error("You've already upvoted this submission")
+      if (await submission.hasUpvoter(upvoter)) {
+        const err = new Error("You've already upvoted this submission")
+        err.status = 400
+        throw err
+      }
       await submission.addUpvoter(await User.findByPk(userID))
       await submission.increment('upvotes')
       await author.increment('points')

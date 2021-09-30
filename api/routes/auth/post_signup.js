@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const router = Router()
+const router = Router({ mergeParams: true })
 
 module.exports = function (passport) {
   router.post('/signup', function (req, res, next) {
@@ -9,7 +9,7 @@ module.exports = function (passport) {
       function (err, user) {
         if (err || !user) {
           // eslint-disable-next-line no-console
-          console.log(err)
+          // console.log(err)
           return next(err)
         }
 

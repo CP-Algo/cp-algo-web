@@ -19,17 +19,22 @@ router.post(
 
       // If the passwords don't match
       if (!(await user.isValidPassword(currentPassword))) {
-        throw new Error(
+        const err = new Error(
           'Wrong password! Kindly make sure everything is typed in correctly.'
         )
+        err.status = 401
+        throw err
       }
 
       // Make sure password confirmation matched
-      if (newPassword !== confirmPassword)
-        throw new Error(
+      if (newPassword !== confirmPassword) {
+        const err = new Error(
           "Passwords don't match! Kindly type the password carefully in the input fields to make" +
             ' sure they match.'
         )
+        err.status = 400
+        throw err
+      }
 
       await user.update({ password: newPassword })
 

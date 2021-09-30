@@ -15,10 +15,12 @@ router.post('/verify', async function (req, res, next) {
     })
 
     if (!verification || verification.token !== token) {
-      throw new Error(
+      const err = new Error(
         'No pending user found matching the provided credentials. Please try signing ' +
           'up again with your information and notify the admins if the problem persists.'
       )
+      err.status = 400
+      throw err
     }
 
     await verification.destroy()

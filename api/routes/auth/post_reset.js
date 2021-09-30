@@ -8,29 +8,39 @@ const sendMail = require('../../helpers/sendMail')
 
 router.post('/reset', async function (req, res, next) {
   try {
+    const { password, confirmPassword } = req.body
+    if (password !== confirmPassword) {
+      const err = new Error(
+        "Passwords don't match! Kindly type the password carefully in the input fields to make" +
+          ' sure they match.'
+      )
+      err.status = 400
+      throw err
+    }
+
     const { user: userID, token } = req.body
     const resetPassword = await ResetPassword.findOne({
       where: {
         UserId: userID,
+        token,
       },
     })
 
-    const { password, confirmPassword } = req.body
-    if (password !== confirmPassword)
-      throw new Error(
-        "Passwords don't match! Kindly type the password carefully in the input fields to make" +
-          ' sure they match.'
-      )
-
     if (!resetPassword || resetPassword.token !== token) {
-      throw new Error(
+      const err = new Error(
         'No reset request found matching the provided credentials. Please try requesting ' +
-          'for password reset again with your username/email information and notify the' +
+          'for password reset again with your username/email information and notify the ' +
           'admins if the problem persists.'
       )
+      err.status = 401
+      throw err
     }
 
-    await resetPassword.destroy()
+    await ResetPassword.destroy({
+      where: {
+        UserId: userID,
+      },
+    })
 
     const user = await User.findByPk(userID)
     user.set('password', password)

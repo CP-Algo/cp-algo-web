@@ -10,7 +10,11 @@ router.get('/basic', async function (req, res, next) {
   try {
     const username = req.params.user
     const user = await User.findOne({ where: { username }, raw: true })
-    if (!user) throw new Error('Cannot find user')
+    if (!user) {
+      const err = new Error('Cannot find user')
+      err.status = 400
+      throw err
+    }
     delete user.password
     const rank = await getUserRank(user.id)
     return res.json({ ...user, rank })

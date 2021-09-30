@@ -18,8 +18,11 @@ router.post('/code', authenticatedMiddleware, async function (req, res, next) {
     const codebook = await submission.getCodebook()
     const author = await codebook.getUser()
 
-    if (userID !== author.id)
-      throw new Error('You are not authorized to update the submission')
+    if (userID !== author.id) {
+      const err = new Error('You are not authorized to update the submission')
+      err.status = 401
+      throw err
+    }
 
     await submission.update({ code, length: code.length })
 
