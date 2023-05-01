@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="20px" viewBox="0 0 12 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Next Icon</title>
+    <g id="Submissions" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Submissions-desktop" transform="translate(-1356.000000, -1033.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="Submissions-Table" transform="translate(46.000000, 185.000000)">
+                <g id="Pagination" transform="translate(1208.000000, 840.000000)">
+                    <path d="M113.753934,17.3623672 L103.474084,8.24380079 C103.136759,7.91873307 102.590533,7.91873307 102.252352,8.24380079 C101.915883,8.56886851 101.915883,9.10231298 102.252352,9.4273807 L111.912345,17.9958325 L102.252352,26.5726193 C101.915883,26.897687 101.915883,27.4227964 102.252352,27.7561992 C102.590533,28.0812669 103.136759,28.0812669 103.474084,27.7561992 L113.753934,18.6376328 C113.933726,18.4625964 114.01078,18.2292144 113.998794,17.9958325 C114.01078,17.7707856 113.933726,17.5374036 113.753934,17.3623672" id="Next-Icon"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

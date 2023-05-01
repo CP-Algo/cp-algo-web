@@ -1,0 +1,91 @@
+$body-font: 'Nunito';
+$header-font: 'Poppins';
+
+$font-regular-weight: 400;
+$font-semi-weight: 600;
+$font-bold-weight: 700;
+
+@mixin font-brand-bold {
+  font-size: 3.2rem;
+  font-weight: $font-bold-weight;
+}
+
+@mixin font-body-bold {
+  font-size: 1.8rem;
+  font-weight: $font-bold-weight;
+}
+
+@mixin font-body-regular {
+  font-size: 1.8rem;
+  font-weight: $font-regular-weight;
+}
+
+@mixin font-body-semi {
+  font-size: 1.8rem;
+  font-weight: $font-semi-weight;
+}
+
+@mixin font-h1-bold {
+  font-size: 5.5rem;
+  font-weight: $font-bold-weight;
+}
+
+@mixin font-h2-bold {
+  font-size: 3.5rem;
+  font-weight: $font-bold-weight;
+}
+
+@mixin font-h2-semi {
+  font-size: 3.5rem;
+  font-weight: $font-semi-weight;
+}
+
+@mixin font-h3-bold {
+  font-size: 2.5rem;
+  font-weight: $font-bold-weight;
+}
+
+@mixin font-h3-regular {
+  font-size: 2.5rem;
+  font-weight: $font-regular-weight;
+}
+
+@mixin font-h3-semi {
+  font-size: 2.5rem;
+  font-weight: $font-semi-weight;
+}
+
+@mixin font-h4-regular {
+  font-size: 1.6rem;
+  font-weight: $font-regular-weight;
+}
+
+@mixin font-h4-semi {
+  font-size: 1.6rem;
+  font-weight: $font-semi-weight;
+}
+
+@mixin font-label-bold {
+  font-size: 2.2rem;
+  font-weight: $font-bold-weight;
+}
+
+@mixin font-label-regular {
+  font-size: 2.2rem;
+  font-weight: $font-regular-weight;
+}
+
+@mixin font-label-semi {
+  font-size: 2.2rem;
+  font-weight: $font-semi-weight;
+}
+
+@mixin font-meta-regular {
+  font-size: 1.2rem;
+  font-weight: $font-regular-weight;
+}
+
+@mixin font-meta-semi {
+  font-size: 1.2rem;
+  font-weight: $font-semi-weight;
+}
