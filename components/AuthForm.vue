@@ -87,7 +87,7 @@
         <span class="forgot">Forgot password?</span>
       </div>
 
-      <!-- confiramation button  -->
+      <!-- confirmation button  -->
       <button class="confirmation" @click.prevent="handleSubmit">
         {{
           mode === 'SIGNUP'

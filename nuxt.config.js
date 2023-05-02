@@ -51,7 +51,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:3000/api',
+    // baseURL: 'http://localhost:3000/api',
   },
 
   auth: {
@@ -103,12 +103,18 @@ export default {
   },
 
   publicRuntimeConfig: {
-    NODE_ENV: 'development',
-    DOMAIN: 'https://nuxtjs.org',
-    PORT: 3000,
+    NODE_ENV: process.env.NODE_ENV,
+    DOMAIN: process.env.DOMAIN,
+    PORT: process.env.PORT,
+    axios: {
+      browserBaseURL: process.env.BROWSER_BASE_URL
+    }
   },
   privateRuntimeConfig: {
-    DATABASE_URL: 'postgres://postgres:postgrespw@localhost:55000/postgres',
+    DATABASE_URL: process.env.DATABASE_URL,
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -116,5 +122,10 @@ export default {
     transpile: [
       'defu'
     ]
+  },
+
+  // To allow external connections
+  server: {
+    host: "0.0.0.0"
   }
 }
