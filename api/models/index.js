@@ -24,13 +24,8 @@ const {
 } = sequelize.models
 
 function initHasOneRelationship(OwnerTable, OwnedTable, foreignKey) {
-  OwnerTable.hasOne(OwnedTable)
-  OwnedTable.belongsTo(OwnerTable, {
-    foreignKey: {
-      name: foreignKey,
-      allowNull: false,
-    },
-  })
+  OwnerTable.hasOne(OwnedTable, { foreignKey: { name: foreignKey, allowNull: false } })
+  OwnedTable.belongsTo(OwnerTable, { foreignKey: { name: foreignKey, allowNull: false } })
 }
 
 function initHasManyRelationship(
@@ -60,7 +55,7 @@ function initHasManyRelationship(
   })
 }
 
-function initBelongsToManyRelationship(OwnerTable, OwnedTable, through, as) {
+function initManyToManyRelationship(OwnerTable, OwnedTable, through, as) {
   OwnerTable.belongsToMany(OwnedTable, { through })
   OwnedTable.belongsToMany(OwnerTable, { through, ...(as ? { as } : {}) })
 }
@@ -87,23 +82,15 @@ initHasManyRelationship(Codebook, Submission, 'CodebookId')
 initHasManyRelationship(Language, Submission, 'LanguageId')
 
 // Submission <- Submission
-initHasManyRelationship(
-  Submission,
-  Submission,
-  'ParentId',
-  'parent',
-  'children',
-  false,
-  true
-)
+initHasManyRelationship(Submission, Submission, 'ParentId', 'Parent', 'Children', false, true)
 
 // User == Submission
-initBelongsToManyRelationship(User, Submission, 'SubmissionAuthor', 'authors')
-initBelongsToManyRelationship(User, Submission, 'SubmissionUpvoter', 'upvoters')
-initBelongsToManyRelationship(User, Submission, 'SubmissionForker', 'forkers')
+initManyToManyRelationship(User, Submission, 'SubmissionAuthor', 'Authors')
+initManyToManyRelationship(User, Submission, 'SubmissionUpvoter', 'Upvoters')
+initManyToManyRelationship(User, Submission, 'SubmissionForker', 'Forkers')
 
 // Test == Submission
-initBelongsToManyRelationship(Test, Submission, 'TestResult', 'tests')
+initManyToManyRelationship(Test, Submission, 'TestResult', 'Tests')
 
 // User <- Verification
 initHasOneRelationship(User, Verification, 'UserId')
