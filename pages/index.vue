@@ -11,7 +11,13 @@
           />
           <span class="headerTitle">{{ selectedCategory.name }} </span>
         </div>
-        <input v-model="filter" placeholder="Filter..." />
+        <div class="filter-container">
+            <img class="filter-image"
+            :src="require(`~/assets/svg/icon/filterIcon.svg`)"
+            :alt="`Filter Icon`"
+            />
+            <input class="filter-placeholder" v-model="filter" placeholder="Filter..." />
+        </div>
       </div>
       <hr />
       <div v-if="!selectedCategory.id" class="boxes">
@@ -170,23 +176,34 @@ hr {
     margin-left: 1.2rem;
   }
 
-  input {
-    @include font-label-regular();
-
-    color: $text-light-primary;
-    &::placeholder {
-      @include font-label-semi();
-
-      color: $text-dark-secondary;
-    }
-
+  .filter-container {
     margin-left: auto;
     background-color: $background-dark-secondary;
-    border: none;
     border-radius: 2.2rem;
-    width: 27.5rem;
-    height: 4.4rem;
-    padding: 0 3rem;
+    padding-left: 3rem;
+    color: red;
+
+
+
+    input {
+        @include font-label-regular();
+
+        // color: $text-light-primary;
+        &::placeholder {
+            @include font-label-semi();
+
+            color: $text-dark-secondary;
+        }
+
+        // margin-left: auto;
+        background-color: transparent;
+        border: none;
+        // border-radius: 2.2rem;
+        width: 27.5rem;
+        height: 4.4rem;
+        padding: 0 3rem;
+    }
+
   }
 
   a {
