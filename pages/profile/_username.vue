@@ -29,7 +29,7 @@
             <span class="val">{{ rank }}</span>
           </div>
         </div>
-        <div class="contributoin">
+        <div class="contribution">
           <div class="title">Contribution</div>
           <div class="valExt">
             <span class="val">{{ points }}</span>

@@ -17,10 +17,18 @@
       </div>
       <span class="submission-label">Submission</span>
       <div class="submission">
-        <div class="editor"><Editor v-model="code" :lang="language" /></div>
+        <div class="editor"><Editor v-model="code" :lang="language.id" /></div>
       </div>
       <div class="langSubmit">
-        <div class="langDropDown">C++</div>
+        <LanguagePopup
+          :show="showLanguagePopup"
+          @hide="showLanguagePopup = false"
+          @language="languageSelected"
+        />
+        <div
+          class="langDropDown"
+          @click="showLanguagePopup = !showLanguagePopup"
+        >{{language.name}}</div>
         <button class="submit" @click="submitCode">Submit</button>
       </div>
     </div>
@@ -47,6 +55,8 @@
 </template>
 
 <script>
+import languages from '../config/judge0_mappings/language'
+
 export default {
   middleware: 'auth',
   data() {
@@ -65,10 +75,11 @@ int main() {
     
     return 0;
 }`,
-      language: '54',
+      language: { ...languages.find(item => item.id === 54) },
       input: '',
       output: '',
       stderr: '',
+      showLanguagePopup: false,
     }
   },
   methods: {
@@ -105,6 +116,11 @@ int main() {
         this.$toast.error(err.message)
       }
     },
+    languageSelected(id, name) {
+      this.language.id = String(id);
+      this.language.name = name;
+      this.showLanguagePopup = false;
+    }
   },
 }
 </script>
@@ -202,6 +218,7 @@ int main() {
 }
 
 .langSubmit {
+  position: relative;
   display: flex;
   align-self: flex-end;
   margin-bottom: 2.4rem;

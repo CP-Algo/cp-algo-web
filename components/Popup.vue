@@ -62,6 +62,7 @@ export default {
 <style lang="scss">
 @use 'node_modules/vodal/common.css';
 @use 'node_modules/vodal/slide-right.css';
+@use 'node_modules/vodal/slide-up.css';
 
 body.modal-open {
   overflow: hidden;
