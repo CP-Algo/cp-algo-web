@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import languages from '../../config/judge0_mappings/language'
+import languages from '../config/judge0_mappings/language'
 
 export default {
   props: {

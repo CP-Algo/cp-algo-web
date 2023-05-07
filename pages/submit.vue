@@ -3,8 +3,18 @@
     <div class="split left">
       <div class="header">
         <div class="category">
-          <span>Search Category</span>
-          <div class="dropDown">Advanced Search Technique/BS</div>
+          <span>Select Algorithm</span>
+          <div
+            class="dropDown"
+            @click="showAlgorithmPopup = !showAlgorithmPopup"
+          >{{algorithm.name}}</div>
+          <AlgorithmPopup
+            :show="showAlgorithmPopup"
+            @hide="showAlgorithmPopup = false"
+            :options="algorithmOptions"
+            @selected="({category, subCategory, algorithm}) => algorithmSelected(category, subCategory, algorithm)"
+            :addAnyOption="false"
+          />
         </div>
         <div class="time">
           <span>Time Complexity</span>
@@ -17,7 +27,7 @@
       </div>
       <span class="submission-label">Submission</span>
       <div class="submission">
-        <div class="editor"><Editor v-model="code" :lang="language.id" /></div>
+        <div class="editor"><Editor v-model="code" :lang="String(language.id)" /></div>
       </div>
       <div class="langSubmit">
         <LanguagePopup
@@ -55,13 +65,14 @@
 </template>
 
 <script>
+import category_details from '../config/category_details'
 import languages from '../config/judge0_mappings/language'
 
 export default {
   middleware: 'auth',
   data() {
     return {
-      algorithm: 'BINARY_SEARCH',
+      algorithm: category_details[0].subCategories[0].algorithms[0],
       timeComplexity: '',
       memoryComplexity: '',
       code: `#include<bits/stdc++.h>
@@ -80,7 +91,40 @@ int main() {
       output: '',
       stderr: '',
       showLanguagePopup: false,
+      showAlgorithmPopup: false,
     }
+  },
+  computed: {
+    algorithmOptions() {
+      const options = []
+      category_details.forEach(category => {
+        const childSubCategoryOptions = []
+        category.subCategories.forEach(subCategory => {
+          const childAlgorithmOptions = []
+          subCategory.algorithms.forEach(algorithm => {
+            childAlgorithmOptions.push({
+              type: "algorithm",
+              id: algorithm.id,
+              name: algorithm.name,
+              children: []
+            })
+          })
+          childSubCategoryOptions.push({
+            type: "subCategory",
+            id: subCategory.id,
+            name: subCategory.name,
+            children: childAlgorithmOptions
+          })
+        })
+        options.push({
+          type: "category",
+          id: category.id,
+          name: category.name,
+          children: childSubCategoryOptions
+        })
+      })
+      return options
+    },
   },
   methods: {
     async runCode() {
@@ -90,7 +134,7 @@ int main() {
           {
             code: this.code,
             input: this.input,
-            language: 54
+            language: this.language.id
           }
         )
 
@@ -120,6 +164,10 @@ int main() {
       this.language.id = String(id);
       this.language.name = name;
       this.showLanguagePopup = false;
+    },
+    algorithmSelected(category, subCategory, algorithm) {
+      this.algorithm = algorithm;
+      this.showAlgorithmPopup = false;
     }
   },
 }
@@ -154,6 +202,7 @@ int main() {
     }
 
     .category {
+      position: relative;
       flex: 1;
       display: flex;
       flex-direction: column;

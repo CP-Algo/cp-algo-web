@@ -1,14 +1,14 @@
 const {
   models: { SubCategory },
 } = require('../models')
-const algo = require('../../config/algo')
+const category_details = require('../../config/category_details')
 
 module.exports = {
   run: async () => {
     let subCategories = await SubCategory.findAll()
     if (subCategories.length === 0) {
       subCategories = []
-      algo.forEach(({ subCategories: _subCategories, id: categoryId }) => {
+      category_details.forEach(({ subCategories: _subCategories, id: categoryId }) => {
         _subCategories.forEach(({ algorithms, ...subCategory }) => subCategories.push({
           ...subCategory,
           CategoryId: categoryId
