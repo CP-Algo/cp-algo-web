@@ -10,6 +10,7 @@ const config = {
       url: process.env.DATABASE_URL,
       dialect: 'postgres',
     },
+    judge0: process.env.JUDGE0_BASE_URL,
     env,
   },
 
@@ -20,6 +21,7 @@ const config = {
       url: process.env.DATABASE_URL,
       dialect: 'postgres',
     },
+    judge0: process.env.JUDGE0_BASE_URL,
     env,
   },
 
@@ -30,6 +32,7 @@ const config = {
       url: process.env.DATABASE_URL,
       dialect: 'postgres',
     },
+    judge0: process.env.JUDGE0_BASE_URL,
     env,
   },
 }

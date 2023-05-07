@@ -14,7 +14,7 @@ module.exports = {
           length: 18,
           CodebookId: '75e851c1-acc6-46ea-969a-f28829a1de44',
           AlgorithmId: 'BINARY_SEARCH',
-          LanguageId: 'CPP_11',
+          LanguageId: 54,
           upvotes: 1,
         },
         {
@@ -24,7 +24,7 @@ module.exports = {
           length: 25,
           CodebookId: '75e851c1-acc6-46ea-969a-f28829a1de44',
           AlgorithmId: 'BINARY_SEARCH',
-          LanguageId: 'CPP_11',
+          LanguageId: 54,
         },
       ]
       await Submission.bulkCreate(submissions)

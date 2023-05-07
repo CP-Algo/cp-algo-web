@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import languages from '../config/judge0_mappings/language'
 
 Vue.component('Editor', {
   components: { 'ace-editor': require('vue2-ace-editor') },
@@ -19,27 +20,9 @@ Vue.component('Editor', {
     },
   },
   data() {
-    return {
-      langs: [
-        'plain_text',
-        'c_cpp',
-        'csharp',
-        'd',
-        'dart',
-        'golang',
-        'haskell',
-        'java',
-        'javascript',
-        'kotlin',
-        'ocaml',
-        'perl',
-        'php',
-        'python',
-        'ruby',
-        'rust',
-        'scala',
-      ],
-    }
+    const languageMappings = {}
+    languages.forEach(({id, ace_id}) => languageMappings[id] = ace_id)
+    return { languageMappings }
   },
   methods: {
     editorInit() {
@@ -48,29 +31,30 @@ Vue.component('Editor', {
       require('brace/ext/static_highlight')
       require('brace/ext/error_marker')
 
-      this.langs.forEach((lang) => require(`brace/mode/${lang}`))
-
+      const langs = [...new Set(Object.values(this.languageMappings))]
+      langs.forEach((lang) => { if (lang) require(`brace/mode/${lang}`) })
       require('brace/theme/dracula')
-
-      this.langs.forEach((lang) => require(`brace/snippets/${lang}`))
-
+      langs.forEach((lang) => { if (lang) require(`brace/snippets/${lang}`) })
       if (this.keybinding) require(`brace/keybinding/${this.keybinding}`)
     },
   },
   render(createElement) {
     const self = this
     return createElement('ace-editor', {
-      domProps: {
+      attrs: {
         value: self.value,
       },
       on: {
         input(value) {
+          console.log(value)
           self.$emit('input', value)
         },
-        init: self.editorInit,
+        init() {
+          self.editorInit()
+        },
       },
       props: {
-        lang: this.langs.find((lang) => lang === this.lang) || 'plain_text',
+        lang: this.languageMappings[this.lang] || 'plain_text',
         theme: 'dracula',
         options: {
           highlightSelectedWord: true,

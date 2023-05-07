@@ -8,16 +8,16 @@
         </div>
         <div class="time">
           <span>Time Complexity</span>
-          <input class="timeComplex" />
+          <input class="timeComplex" v-model="timeComplexity" />
         </div>
         <div class="mem">
           <span>Memory Complexity</span>
-          <input class="memComplex" />
+          <input class="memComplex" v-model="memoryComplexity" />
         </div>
       </div>
+      <span class="submission-label">Submission</span>
       <div class="submission">
-        <label>Submission</label>
-        <client-only ><div class="editor"><Editor /></div ></client-only>
+        <div class="editor"><Editor v-model="code" :lang="language" /></div>
       </div>
       <div class="langSubmit">
         <div class="langDropDown">C++</div>
@@ -36,6 +36,11 @@
         <textarea id="output" v-model="output" rows="3" readonly></textarea>
       </div>
 
+      <div class="stderr">
+        <label for="stderr"> Stderr </label>
+        <textarea id="stderr" v-model="stderr" rows="3" readonly></textarea>
+      </div>
+
       <button class="run" @click="runCode">Run</button>
     </div>
   </div>
@@ -49,28 +54,38 @@ export default {
       algorithm: 'BINARY_SEARCH',
       timeComplexity: '',
       memoryComplexity: '',
-      code: '',
-      language: 'CPP_11',
+      code: `#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int a;
+    cin >> a;
+    cout << a * a << endl;
+    cerr << "Value of a: " << a << endl;
+    
+    return 0;
+}`,
+      language: '54',
       input: '',
       output: '',
+      stderr: '',
     }
   },
-  auth: true,
   methods: {
     async runCode() {
       try {
-        const { status, message, output } = await this.$axios.$post(
+        const { status, stdout, stderr, time, memory } = await this.$axios.$post(
           '/submission/run',
           {
-            input: this.input,
             code: this.code,
+            input: this.input,
+            language: 54
           }
         )
 
-        if (status === 'ACCEPTED') this.$toast.success(message)
-        else this.$toast.error(message)
-
-        this.output = output
+        this.$toast.success(`Time ${time}ms, Memory ${memory}KB`)
+        this.output = stdout
+        this.stderr = stderr
       } catch (err) {
         this.$toast.error(err.message)
       }
@@ -96,7 +111,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-container {
-  align-items: flex-start;
+  align-items: stretch;
   display: flex;
 }
 .split {
@@ -109,6 +124,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-right: 2rem;
 
   .header {
     display: flex;
@@ -122,9 +138,11 @@ export default {
     }
 
     .category {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      margin-right: 1rem;
     }
 
     .time,
@@ -132,7 +150,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      flex: 1;
+      margin: 0 1rem;
 
       span {
         align-self: flex-start;
@@ -143,8 +161,9 @@ export default {
     .timeComplex,
     .memComplex {
       @include font-body-semi();
-      // @include single-line();
+      @include single-line();
 
+      width: 100%;
       color: $text-light-primary;
       padding: 1rem 2rem;
       margin-top: 1.6rem;
@@ -153,38 +172,31 @@ export default {
       margin-right: 2.4rem;
     }
 
-    .dropDown {
-      width: 46.9rem;
-    }
-
     .timeComplex,
     .memComplex {
       background-color: transparent;
-      width: 18rem;
     }
   }
 }
 
-.submission {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex: 1;
-  margin-top: 2.4rem;
-  margin-bottom: 2.4rem;
-  label {
-    @include font-label-semi();
+.submission-label {
+  @include font-label-semi();
 
-    color: $text-light-primary;
-    margin: 0 0 1.2rem 2.4rem;
-    align-self: flex-start;
-  }
+  color: $text-light-primary;
+  margin: 2.4rem 0 1.2rem 2.4rem;
+  align-self: flex-start;
+}
+
+.submission {
+  flex: 1;
+  margin-bottom: 2.4rem;
 
   .editor {
     color: $text-light-primary;
     background-color: $background-dark-secondary;
     border-radius: 1.2rem;
-    height: 20rem;
+    overflow: hidden;
+    height: 100%;
     width: 100%;
   }
 }
@@ -192,6 +204,7 @@ export default {
 .langSubmit {
   display: flex;
   align-self: flex-end;
+  margin-bottom: 2.4rem;
 
   .langDropDown {
     @include font-body-semi();
@@ -226,7 +239,8 @@ export default {
 }
 
 .input,
-.output {
+.output,
+.stderr {
   display: flex;
   flex-direction: column;
   align-items: stretch;

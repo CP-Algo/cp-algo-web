@@ -25,7 +25,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     /* { src: '~/plugins/prism', mode: 'client' } */
-    /* { src: '~/plugins/editor.client.js' } */
+    { src: '~/plugins/editor.client.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -116,14 +116,16 @@ export default {
     DATABASE_URL: process.env.DATABASE_URL,
     axios: {
       baseURL: process.env.BASE_URL
-    }
+    },
+    judge0BaseURL: process.env.JUDGE0_BASE_URL
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [
       'defu'
-    ]
+    ],
+    standalone: true
   },
 
   // To allow external connections
