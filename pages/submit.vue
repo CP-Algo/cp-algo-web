@@ -68,12 +68,15 @@
 </template>
 
 <script>
-import category_details from '../config/category_details'
-
 export default {
   middleware: 'auth',
   data() {
     return {
+      topics: {
+        categories: [],
+        subCategories: [],
+        algorithms: []
+      },
       algorithm: { id: '', name: '' },
       timeComplexity: 'O(N)',
       memoryComplexity: 'O(N)',
@@ -106,32 +109,33 @@ int main() {
   },
   computed: {
     algorithmOptions() {
-      const options = []
-      category_details.forEach(category => {
-        const childSubCategoryOptions = []
-        category.subCategories.forEach(subCategory => {
-          const childAlgorithmOptions = []
-          subCategory.algorithms.forEach(algorithm => {
-            childAlgorithmOptions.push({
-              type: "algorithm",
-              id: algorithm.id,
-              name: algorithm.name,
-              children: []
-            })
-          })
-          childSubCategoryOptions.push({
-            type: "subCategory",
-            id: subCategory.id,
-            name: subCategory.name,
-            children: childAlgorithmOptions
-          })
-        })
-        options.push({
-          type: "category",
-          id: category.id,
-          name: category.name,
-          children: childSubCategoryOptions
-        })
+      const subCategories = this.topics.subCategories.map(subCategory => ({
+        ...subCategory,
+        children: []
+      }))
+      this.topics.algorithms.forEach(algorithm => {
+        const algorithmItem = {
+          id: algorithm.id,
+          name: algorithm.name,
+          type: 'algorithm',
+          children: []
+        }
+        subCategories.find(item => item.id === algorithm.SubCategoryId).children.push(algorithmItem)
+      })
+      const options = this.topics.categories.map(category => ({
+        id: category.id,
+        name: category.name,
+        type: 'category',
+        children: []
+      }))
+      subCategories.forEach(subCategory => {
+        const subCategoryItem = {
+          id: subCategory.id,
+          name: subCategory.name,
+          type: 'subCategory',
+          children: subCategory.children
+        }
+        options.find(category => category.id === subCategory.CategoryId).children.push(subCategoryItem)
       })
       return options
     },
