@@ -24,18 +24,15 @@
 </template>
 
 <script>
-import languages from '../config/judge0_mappings/language'
-
 export default {
   props: {
     show: {
       type: Boolean,
       required: true,
     },
-  },
-  data() {
-    return {
-      languages: languages.map(({ace_id, ...rest}) => rest)
+    languages: {
+      type: Array,
+      required: true,
     }
   },
   methods: {

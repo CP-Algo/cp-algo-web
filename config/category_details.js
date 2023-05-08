@@ -2,7 +2,30 @@ module.exports = [
   {
     id: 'DATA_STRUCTURES',
     name: 'Data Structures',
-    subCategories: []
+    subCategories: [
+      {
+        id: 'ADVANCED_DATA_STRUCTURES',
+        name: 'Advanced',
+        algorithms: [
+          {
+            id: 'SEGMENT_TREE',
+            name: 'Segment Tree',
+            description:
+              'Task description',
+            inputFormat:
+              'Task input format',
+            inputDefinition:
+              'Task input definition',
+            inputConstraints:
+              'Task input constraints',
+            outputFormat: 'Task output format',
+            outputDefinition:
+              'Task output definition',
+            outputConstraints: 'Task output constraints',
+          },
+        ],
+      },
+    ]
   },
   {
     id: 'DATABASE',
@@ -31,7 +54,7 @@ module.exports = [
             id: 'BINARY_SEARCH',
             name: 'Binary Search',
             description:
-              `Search sorted data in $O(\\log(N))$`,
+              'Search sorted data in $O(\\log(N))$',
             inputFormat:
               '$N$\n' +
               '$A_1, A_2, \\cdots, A_{N}$',

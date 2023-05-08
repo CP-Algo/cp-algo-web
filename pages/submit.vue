@@ -27,18 +27,21 @@
       </div>
       <span class="submission-label">Submission</span>
       <div class="submission">
-        <div class="editor"><Editor v-model="code" :lang="String(language.id)" /></div>
+        <div class="editor"><Editor v-model="code" :lang="language.ace_id" /></div>
       </div>
       <div class="langSubmit">
         <LanguagePopup
           :show="showLanguagePopup"
           @hide="showLanguagePopup = false"
+          :languages="languages"
           @language="languageSelected"
         />
         <div
           class="langDropDown"
           @click="showLanguagePopup = !showLanguagePopup"
-        >{{language.name}}</div>
+        >
+          {{language.name}}
+        </div>
         <button class="submit" @click="submitCode">Submit</button>
       </div>
     </div>
@@ -66,15 +69,14 @@
 
 <script>
 import category_details from '../config/category_details'
-import languages from '../config/judge0_mappings/language'
 
 export default {
   middleware: 'auth',
   data() {
     return {
-      algorithm: category_details[0].subCategories[0].algorithms[0],
-      timeComplexity: '',
-      memoryComplexity: '',
+      algorithm: { id: '', name: '' },
+      timeComplexity: 'O(N)',
+      memoryComplexity: 'O(N)',
       code: `#include<bits/stdc++.h>
 using namespace std;
 
@@ -86,13 +88,21 @@ int main() {
     
     return 0;
 }`,
-      language: { ...languages.find(item => item.id === 54) },
+      languages: [],
+      language: { id: '', name: '', ace_id: '' },
       input: '',
       output: '',
       stderr: '',
       showLanguagePopup: false,
       showAlgorithmPopup: false,
     }
+  },
+  async fetch() {
+    this.languages = await this.$axios.$get(`/language`)
+    this.language = this.languages.find(item => item.id === 54)
+
+    this.topics = await this.$axios.$get(`/topics`)
+    this.algorithm = this.topics.algorithms[0]
   },
   computed: {
     algorithmOptions() {
@@ -161,8 +171,7 @@ int main() {
       }
     },
     languageSelected(id, name) {
-      this.language.id = String(id);
-      this.language.name = name;
+      this.language = this.languages.find(lang => lang.id === id);
       this.showLanguagePopup = false;
     },
     algorithmSelected(category, subCategory, algorithm) {
@@ -272,6 +281,9 @@ int main() {
   align-self: flex-end;
   margin-bottom: 2.4rem;
 
+  &:focus {
+    outline: none;
+  }
   .langDropDown {
     @include font-body-semi();
     @include single-line();
@@ -282,6 +294,7 @@ int main() {
     border-radius: 1.2rem;
     margin-right: 2.4rem;
     width: 27.5rem;
+    cursor: pointer;
   }
   .submit {
     @include font-body-semi();

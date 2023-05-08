@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import languages from '../config/judge0_mappings/language'
 
 Vue.component('Editor', {
   components: { 'ace-editor': require('vue2-ace-editor') },
@@ -10,8 +9,7 @@ Vue.component('Editor', {
     },
     lang: {
       type: String,
-      required: false,
-      default: 'c_cpp',
+      required: true,
     },
     keybinding: {
       type: String,
@@ -20,9 +18,9 @@ Vue.component('Editor', {
     },
   },
   data() {
-    const languageMappings = {}
-    languages.forEach(({id, ace_id}) => languageMappings[id] = ace_id)
-    return { languageMappings }
+    return {
+      languages_imported: []
+    }
   },
   methods: {
     editorInit() {
@@ -30,23 +28,22 @@ Vue.component('Editor', {
       require('brace/ext/searchbox')
       require('brace/ext/static_highlight')
       require('brace/ext/error_marker')
-
-      const langs = [...new Set(Object.values(this.languageMappings))]
-      langs.forEach((lang) => { if (lang) require(`brace/mode/${lang}`) })
       require('brace/theme/dracula')
-      langs.forEach((lang) => { if (lang) require(`brace/snippets/${lang}`) })
       if (this.keybinding) require(`brace/keybinding/${this.keybinding}`)
     },
   },
   render(createElement) {
     const self = this
+    if (this.lang && !this.languages_imported.find(lang => lang === this.lang)) {
+      require(`brace/mode/${this.lang}`)
+      require(`brace/snippets/${this.lang}`)
+    }
     return createElement('ace-editor', {
       attrs: {
         value: self.value,
       },
       on: {
         input(value) {
-          console.log(value)
           self.$emit('input', value)
         },
         init() {
@@ -54,7 +51,7 @@ Vue.component('Editor', {
         },
       },
       props: {
-        lang: this.languageMappings[this.lang] || 'plain_text',
+        lang: this.lang || 'plain_text',
         theme: 'dracula',
         options: {
           highlightSelectedWord: true,
