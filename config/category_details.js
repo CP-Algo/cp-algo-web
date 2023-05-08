@@ -5,13 +5,13 @@ module.exports = [
     subCategories: []
   },
   {
-    id: 'DIVIDE_AND_CONQUER',
-    name: 'Divide & Conquer',
+    id: 'DATABASE',
+    name: 'Database',
     subCategories: []
   },
   {
-    id: 'DATABASE',
-    name: 'Database',
+    id: 'DIVIDE_AND_CONQUER',
+    name: 'Divide & Conquer',
     subCategories: []
   },
   {
@@ -30,14 +30,22 @@ module.exports = [
           {
             id: 'BINARY_SEARCH',
             name: 'Binary Search',
-            description: 'Search sorted data in O(log(N))',
-            inputFormat: 'N\nA_1, A_2, \\cdots, A_{N}',
-            inputDefinition: 'N \\eq Array size\nA \\eq Sorted array',
-            inputConstraints: '1 \\le N \\le 100\n0 \\le A_i \\le 1',
-            outputFormat: 'FirstOne',
+            description:
+              `Search sorted data in $O(\\log(N))$`,
+            inputFormat:
+              '$N$\n' +
+              '$A_1, A_2, \\cdots, A_{N}$',
+            inputDefinition:
+              '$N \\eq$ Array size' +
+              '$A \\eq$ Sorted array',
+            inputConstraints:
+              '$1 \\le N \\le 10^6$' +
+              '$0 \\le A_i \\le 1$',
+            outputFormat: '$\\texttt{FirstOne}$',
             outputDefinition:
-              'FirstOne \\eq Index of the first element that equals to 1, -1 if none exists. More formally, the smallest index, FirstOne, satisfying A_{FirstOne} = 1. And -1 if no such index exists.',
-            outputConstraints: '0 \\le FirstOne \\lt N',
+              '$\\texttt{FirstOne} \\eq$ Index of the first element that equals to $1$, $-1$ if none exists.' +
+              'More formally, the smallest index, $\\texttt{FirstOne}$, satisfying $A_{\\textttt{FirstOne}} = 1$. And $-1$ if no such index exists.',
+            outputConstraints: '$-1 \\le \\texttt{FirstOne} < N$',
           },
         ],
       },
@@ -76,11 +84,6 @@ module.exports = [
   {
     id: 'INPUT_OUTPUT',
     name: 'Input Output',
-    subCategories: []
-  },
-  {
-    id: 'GREEDY',
-    name: 'Greedy',
     subCategories: []
   },
   {
