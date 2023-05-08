@@ -10,26 +10,26 @@ module.exports = {
         {
           TestId: 1,
           SubmissionId: 1,
-          verdict: 'ACCEPTED',
+          verdict: 3,
           executionTime: 11,
           executionMemory: 12,
         },
         {
           TestId: 2,
           SubmissionId: 1,
-          verdict: 'WRONG_ANSWER',
+          verdict: 4,
           executionTime: 21,
           executionMemory: 22,
         },
         {
           TestId: 1,
           SubmissionId: 2,
-          verdict: 'PENDING',
+          verdict: 1,
         },
         {
           TestId: 2,
           SubmissionId: 2,
-          verdict: 'PENDING',
+          verdict: 1,
         },
       ]
       await TestResult.bulkCreate(testResults)

@@ -6,13 +6,13 @@
         v-html="require(`~/assets/svg/nav-bar/codebook.svg?raw`)"
       />
       <span class="pageTitle">{{ name }}</span>
-      <button class="export">
+      <!-- <button class="export">
         <div
           class="exportIcon"
           v-html="require(`~/assets/svg/icon/exportIcon.svg?raw`)"
         />
         <span class="exportLabel">Export as PDF</span>
-      </button>
+      </button> -->
     </div>
 
     <Codebook class="codebookTable" :codebook-id="id" />
@@ -24,6 +24,7 @@ export default {
   async asyncData({ $axios, $auth, params }) {
     const id = params.id || $auth.user.id
     const codebook = await $axios.$get(`/codebook/${id}`)
+    console.log(codebook)
     return { ...codebook }
   },
 }

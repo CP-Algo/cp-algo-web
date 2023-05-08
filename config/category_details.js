@@ -1,5 +1,25 @@
 module.exports = [
   {
+    id: 'DATA_STRUCTURES',
+    name: 'Data Structures',
+    subCategories: []
+  },
+  {
+    id: 'DIVIDE_AND_CONQUER',
+    name: 'Divide & Conquer',
+    subCategories: []
+  },
+  {
+    id: 'DATABASE',
+    name: 'Database',
+    subCategories: []
+  },
+  {
+    id: 'DYNAMIC_PROGRAMMING',
+    name: 'Dynamic Programming',
+    subCategories: []
+  },
+  {
     id: 'EFFICIENT_SEARCH_ALGORITHMS',
     name: 'Efficient Search Algorithms',
     subCategories: [
@@ -22,5 +42,75 @@ module.exports = [
         ],
       },
     ],
-  }
+  },
+  {
+    id: 'FAST_FOURIER_TRANSFORM',
+    name: 'Fast Fourier Transform',
+    subCategories: []
+  },
+  {
+    id: 'FLOW_MATCHING',
+    name: 'Flow Matching',
+    subCategories: []
+  },
+  {
+    id: 'GAME_THEORY',
+    name: 'Game Theory',
+    subCategories: []
+  },
+  {
+    id: 'GEOMETRY',
+    name: 'Geometry',
+    subCategories: []
+  },
+  {
+    id: 'GRAPH_THEORY',
+    name: 'Graph Theory',
+    subCategories: []
+  },
+  {
+    id: 'GREEDY',
+    name: 'Greedy',
+    subCategories: []
+  },
+  {
+    id: 'INPUT_OUTPUT',
+    name: 'Input Output',
+    subCategories: []
+  },
+  {
+    id: 'GREEDY',
+    name: 'Greedy',
+    subCategories: []
+  },
+  {
+    id: 'MATH',
+    name: 'Math',
+    subCategories: []
+  },
+  {
+    id: 'MATRIX',
+    name: 'Matrix',
+    subCategories: []
+  },
+  {
+    id: 'PARSING_GRAMMAR',
+    name: 'Parsing Grammar',
+    subCategories: []
+  },
+  {
+    id: 'RECURSION',
+    name: 'Recursion',
+    subCategories: []
+  },
+  {
+    id: 'STRING',
+    name: 'String',
+    subCategories: []
+  },
+  {
+    id: 'WARMUP',
+    name: 'Warmup',
+    subCategories: []
+  },
 ]

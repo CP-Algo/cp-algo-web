@@ -3,7 +3,7 @@ const {
 } = require('../models')
 const runTests = require('./runTests')
 
-async function createSubmission(authorID, data, forkFrom) {
+async function createSubmission(authorID, data) {
   const { algorithm, language, timeComplexity, memoryComplexity, code } = data
   const submission = await Submission.create({
     timeComplexity,
@@ -19,11 +19,6 @@ async function createSubmission(authorID, data, forkFrom) {
     UserId: authorID,
     SubmissionId: submission.id,
   })
-
-  if (forkFrom) {
-    await submission.setParent(await Submission.findByPk(forkFrom))
-    await (await submission.getParent()).setChild(submission)
-  }
 
   runTests(submission.id)
 

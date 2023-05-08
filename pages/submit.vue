@@ -149,10 +149,10 @@ int main() {
       try {
         const { message, id } = await this.$axios.$post('/submission/new', {
           algorithm: this.algorithm,
+          code: this.code,
           language: this.language,
           timeComplexity: this.timeComplexity,
           memoryComplexity: this.memoryComplexity,
-          code: this.code,
         })
         this.$toast.success(message)
         setTimeout(() => (window.location.href = `/submission/${id}`), 3000)
