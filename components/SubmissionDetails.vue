@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ container: true, removeBackground: !background }">
+  <a :href="`/submission/${submissionId}`" :class="{ container: true, removeBackground: !background }">
     <div v-if="rank" class="rank">
       <span class="hash">#</span>
       <span class="value">{{ rank }}</span>
@@ -23,14 +23,14 @@
           class="icon"
           v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
         />
-        <span class="text">{{ timeComplexity }}</span>
+        <span class="text">O({{ timeComplexity }})</span>
       </div>
       <div class="detailItem">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
         />
-        <span class="text">{{ memoryComplexity }}</span>
+        <span class="text">O({{ memoryComplexity }})</span>
       </div>
     </div>
     <div class="detailSection resources">
@@ -83,7 +83,7 @@
         <span class="text">{{ bookmark }}</span>
       </div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>

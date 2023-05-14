@@ -76,7 +76,7 @@ export default {
   justify-content: flex-start;
 
   .brand-icon {
-    height: 5.5rem;
+    height: 3.5rem;
     margin-right: 4.5rem;
   }
 

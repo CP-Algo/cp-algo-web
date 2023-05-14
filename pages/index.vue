@@ -6,7 +6,7 @@
         <div v-else class="categoryNameHeader">
           <div
             class="leftArrow"
-            @click="selectedCategory.id = ''"
+            @click="selectedCategory = { id: '' }"
             v-html="require(`~/assets/svg/icon/leftArrow.svg?raw`)"
           />
           <span class="headerTitle">{{ selectedCategory.name }} </span>
@@ -16,25 +16,23 @@
       <hr />
       <div v-if="!selectedCategory.id" class="boxes">
         <CategoryBanner
-          v-for="category in getCategories()"
+          v-for="category in filteredCategories"
           :key="category.id"
-          :category-id="category.id"
-          :category-name="category.name"
-          @categoryClicked="selectedCategory = $event"
+          :category="category"
+          @categoryClicked="selectedCategory = category"
         />
       </div>
       <div v-else class="subcategoryHolder">
         <div
-          v-for="subCategory in getSubCategories(selectedCategory.id)"
+          v-for="subCategory in selectedCategory.children"
           :key="subCategory.id"
           class="subcategory"
         >
           <span class="subcategoryText">{{ subCategory.name }}</span>
           <TemplatesAlgorithm
-            v-for="algorithm in getAlgorithms(subCategory.id)"
+            v-for="algorithm in filteredAlgorithms(subCategory)"
             :key="algorithm.id"
-            :algorithm-id="algorithm.id"
-            :algorithm-name="algorithm.name"
+            :algorithm="algorithm"
           />
         </div>
       </div>
@@ -88,34 +86,31 @@ export default {
     const topics = await $axios.$get('/topics')
     const { contributors } = await $axios.$get('/contributors')
     const { submissions } = await $axios.$get('/submissions')
-    return { ...topics, contributors, submissions }
+    return { topics, contributors, submissions }
   },
   data() {
     return {
       selectedCategory: {
         id: '',
         name: '',
+        children: []
       },
       filter: '',
     }
   },
-  methods: {
-    getCategories() {
-      return this.categories.filter(
+  computed: {
+    filteredCategories() {
+      return this.topics.filter(
         (category) =>
           !this.filter ||
           category.name.toLowerCase().includes(this.filter.toLowerCase())
       )
     },
-    getSubCategories(category) {
-      return this.subCategories.filter(
-        (subCategory) => subCategory.CategoryId === category
-      )
-    },
-    getAlgorithms(subCategory) {
-      return this.algorithms.filter(
+  },
+  methods: {
+    filteredAlgorithms(subCategory) {
+      return subCategory.children.filter(
         (algorithm) =>
-          algorithm.SubCategoryId === subCategory &&
           (!this.filter ||
             algorithm.name.toLowerCase().includes(this.filter.toLowerCase()))
       )

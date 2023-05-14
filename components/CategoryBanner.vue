@@ -1,30 +1,21 @@
 <template>
   <div
     class="container"
-    @click="
-      $emit('categoryClicked', {
-        id: categoryId,
-        name: categoryName,
-      })
-    "
+    @click="$emit('categoryClicked')"
   >
     <img
-      :src="require(`~/assets/svg/category/${categoryId}.svg`)"
-      :alt="`thumbnail of category ${categoryName}`"
+      :src="require(`~/assets/svg/category/${category.id}.svg`)"
+      :alt="`thumbnail of category ${category.name}`"
     />
-    <span>{{ categoryName }}</span>
+    <span>{{ category.name }}</span>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    categoryId: {
-      type: String,
-      required: true,
-    },
-    categoryName: {
-      type: String,
+    category: {
+      type: Object,
       required: true,
     },
   },

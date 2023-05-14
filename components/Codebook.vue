@@ -31,17 +31,12 @@
       </a>
     </div>
     <div class="codebook-container">
-      <p v-if="$fetchState.pending">Fetching codebook...</p>
-      <p v-else-if="$fetchState.error">An error occurred :(</p>
       <CategoryRow
-        v-else
-        v-for="category in getCategories()"
+        v-for="category in filteredTopics"
         :key="category.id"
-        :category-id="category.id"
+        :category="category"
+        :codebook-submissions="codebook.Submissions"
         class="categoryBox"
-        :name="category.name"
-        :topics="topics"
-        :codebook="codebook"
       />
     </div>
   </div>
@@ -50,55 +45,43 @@
 <script>
 export default {
   props: {
-    codebookId: {
-      type: String,
+    codebook: {
+      type: Object,
+      required: true,
+    },
+    topics: {
+      type: Array,
       required: true,
     },
     newButton: {
       type: Boolean,
-      default: true,
+      required: true,
     },
   },
-  data() {
-    return {
-      codebook: {
-        submissions: [],
-      },
-      topics: {
-        categories: [],
-        subCategories: [],
-        algorithms: [],
-      },
+  computed: {
+    filteredTopics() {
+      const filteredCategories = []
+      this.topics.forEach(category => {
+        const filteredSubCategories = []
+        category.children.forEach(subCategory => {
+          const filteredAlgorithms = []
+          subCategory.children.forEach(algorithm => {
+            if (this.codebook.Submissions.find(submission => submission.AlgorithmId === algorithm.id) !== undefined) {
+              filteredAlgorithms.push(algorithm)
+            }
+          })
+          if (filteredAlgorithms.length > 0) {
+            const { children, ...rest } = subCategory
+            filteredSubCategories.push({ ...rest, children: filteredAlgorithms })
+          }
+        })
+        if (filteredSubCategories.length > 0) {
+          const { children, ...rest } = category
+          filteredCategories.push({ ...rest, children: filteredSubCategories })
+        }
+      })
+      return filteredCategories
     }
-  },
-  async fetch() {
-    this.codebook = await this.$axios.$get(`/codebook/${this.codebookId}`)
-    this.topics = await this.$axios.$get('/topics')
-  },
-  methods: {
-    getSubmissionTopics(submission) {
-      const algorithm = this.topics.algorithms.find(
-        (item) => item.id === submission.AlgorithmId
-      )
-      const subCategory = this.topics.subCategories.find(
-        (item) => item.id === algorithm.SubCategoryId
-      )
-      const category = this.topics.categories.find(
-        (item) => item.id === subCategory.CategoryId
-      )
-      return { algorithm, subCategory, category }
-    },
-    getCategories() {
-      const categoryIds = new Set(
-        this.codebook.submissions.map(
-          (submission) => this.getSubmissionTopics(submission).category.id
-        )
-      )
-      const categories = Array.from(categoryIds).map((categoryId) =>
-        this.topics.categories.find((item) => item.id === categoryId)
-      )
-      return categories
-    },
   },
 }
 </script>

@@ -23,7 +23,7 @@ module.exports = {
           code: '// This is my second code',
           length: 25,
           CodebookId: '75e851c1-acc6-46ea-969a-f28829a1de44',
-          AlgorithmId: 'BINARY_SEARCH',
+          AlgorithmId: 'SEGMENT_TREE',
           LanguageId: 54,
         },
       ]

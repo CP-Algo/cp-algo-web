@@ -5,7 +5,7 @@
         class="codebookIcon"
         v-html="require(`~/assets/svg/nav-bar/codebook.svg?raw`)"
       />
-      <span class="pageTitle">{{ name }}</span>
+      <span class="pageTitle">{{ codebook.name }}</span>
       <!-- <button class="export">
         <div
           class="exportIcon"
@@ -15,17 +15,21 @@
       </button> -->
     </div>
 
-    <Codebook class="codebookTable" :codebook-id="id" />
+    <Codebook class="codebookTable" :codebook="codebook" :topics="topics" :newButton="newButton" />
   </div>
 </template>
 
 <script>
 export default {
-  async asyncData({ $axios, $auth, params }) {
-    const id = params.id || $auth.user.id
+  async asyncData({ $axios, $auth, params, redirect }) {
+    const id = params?.id || $auth?.user?.id
+    if (!id) {
+      redirect('/login')
+      return {}
+    }
     const codebook = await $axios.$get(`/codebook/${id}`)
-    console.log(codebook)
-    return { ...codebook }
+    const topics = await $axios.$get(`/topics`)
+    return { codebook, topics, newButton: id === $auth.user.id }
   },
 }
 </script>

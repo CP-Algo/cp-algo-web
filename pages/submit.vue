@@ -11,7 +11,7 @@
           <AlgorithmPopup
             :show="showAlgorithmPopup"
             @hide="showAlgorithmPopup = false"
-            :options="algorithmOptions"
+            :options="topics"
             @selected="({category, subCategory, algorithm}) => algorithmSelected(category, subCategory, algorithm)"
             :addAnyOption="false"
           />
@@ -72,11 +72,7 @@ export default {
   middleware: 'auth',
   data() {
     return {
-      topics: {
-        categories: [],
-        subCategories: [],
-        algorithms: []
-      },
+      topics: [],
       algorithm: { id: '', name: '' },
       timeComplexity: 'O(N)',
       memoryComplexity: 'O(N)',
@@ -105,40 +101,7 @@ int main() {
     this.language = this.languages.find(item => item.id === 54)
 
     this.topics = await this.$axios.$get(`/topics`)
-    this.algorithm = this.topics.algorithms[0]
-  },
-  computed: {
-    algorithmOptions() {
-      const subCategories = this.topics.subCategories.map(subCategory => ({
-        ...subCategory,
-        children: []
-      }))
-      this.topics.algorithms.forEach(algorithm => {
-        const algorithmItem = {
-          id: algorithm.id,
-          name: algorithm.name,
-          type: 'algorithm',
-          children: []
-        }
-        subCategories.find(item => item.id === algorithm.SubCategoryId).children.push(algorithmItem)
-      })
-      const options = this.topics.categories.map(category => ({
-        id: category.id,
-        name: category.name,
-        type: 'category',
-        children: []
-      }))
-      subCategories.forEach(subCategory => {
-        const subCategoryItem = {
-          id: subCategory.id,
-          name: subCategory.name,
-          type: 'subCategory',
-          children: subCategory.children
-        }
-        options.find(category => category.id === subCategory.CategoryId).children.push(subCategoryItem)
-      })
-      return options
-    },
+    this.algorithm = this.topics[0].children[0].children[0]
   },
   methods: {
     async runCode() {
@@ -221,6 +184,7 @@ int main() {
       flex-direction: column;
       align-items: flex-start;
       margin-right: 1rem;
+      cursor: pointer;
     }
 
     .time,

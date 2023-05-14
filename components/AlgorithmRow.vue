@@ -1,7 +1,7 @@
 <template>
   <div class="algorithm-container">
     <div class="algorithm" @click="isExpanded = !isExpanded">
-      <span class="algorithmName">{{ name }}</span>
+      <span class="algorithmName">{{ algorithm.name }}</span>
       <div
         :class="{ icon: true, isExpanded }"
         v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
@@ -10,13 +10,14 @@
     <div v-if="isExpanded" class="submissionTable">
       <SubmissionDetailsHeader class="heading" :rank="false" />
       <SubmissionDetails
-        v-for="submission in getSubmissions()"
+        v-for="submission in filteredSubmissions"
         :key="submission.id"
-        :authors="submission.authors"
-        :more-author="Math.max(0, submission.authors.length - 3)"
+        :submission-id="submission.id"
+        :authors="submission.Authors"
+        :more-author="Math.max(0, submission.Authors.length - 3)"
         :time-complexity="submission.timeComplexity"
         :memory-complexity="submission.memoryComplexity"
-        :language="submission.language.name"
+        :language="submission.Language.name"
         :code-size="submission.length"
         :execution-time="submission.executionTime"
         :required-memory="submission.executionMemory"
@@ -31,16 +32,12 @@
 <script>
 export default {
   props: {
-    algorithmId: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    codebook: {
+    algorithm: {
       type: Object,
+      required: true,
+    },
+    codebookSubmissions: {
+      type: Array,
       required: true,
     },
   },
@@ -49,10 +46,10 @@ export default {
       isExpanded: false,
     }
   },
-  methods: {
-    getSubmissions() {
-      const submissions = this.codebook.submissions.filter(
-        (submission) => submission.AlgorithmId === this.algorithmId
+  computed: {
+    filteredSubmissions() {
+      const submissions = this.codebookSubmissions.filter(
+        (submission) => submission.AlgorithmId === this.algorithm.id
       )
       return submissions
     },
@@ -75,6 +72,7 @@ export default {
     height: 8rem;
     margin-bottom: 2rem;
     background-color: $background-dark-secondary;
+    cursor: pointer;
     .algorithmName {
       @include font-h3-semi();
 

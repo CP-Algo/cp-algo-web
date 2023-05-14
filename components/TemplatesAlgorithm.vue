@@ -1,6 +1,6 @@
 <template>
-  <a class="container" :href="`/submissions?algorithm=${algorithmId}`">
-    <span class="algorithmName"> {{ algorithmName }} </span>
+  <a class="container" :href="`/submissions?algorithm=${algorithm.id}`">
+    <span class="algorithmName"> {{ algorithm.name }} </span>
     <div
       class="rightArrow"
       v-html="require(`~/assets/svg/icon/rightArrow.svg?raw`)"
@@ -11,12 +11,8 @@
 <script>
 export default {
   props: {
-    algorithmId: {
-      type: String,
-      required: true,
-    },
-    algorithmName: {
-      type: String,
+    algorithm: {
+      type: Object,
       required: true,
     },
   },

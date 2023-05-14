@@ -2,10 +2,10 @@
   <div class="category-container">
     <div class="categoryHeading" @click="isExpanded = !isExpanded">
       <img
-        :src="require(`~/assets/svg/category/${categoryId}.svg`)"
-        :alt="`thumbnail of category ${name}`"
+        :src="require(`~/assets/svg/category/${category.id}.svg`)"
+        :alt="`thumbnail of category ${category.name}`"
       />
-      <span class="categoryName">{{ name }}</span>
+      <span class="categoryName">{{ category.name }}</span>
       <div
         :class="{ expandCategoryIcon: true, isExpanded }"
         v-html="require(`~/assets/svg/icon/expandIcon.svg?raw`)"
@@ -13,11 +13,10 @@
     </div>
     <div v-if="isExpanded" class="algorithms">
       <AlgorithmRow
-        v-for="algorithm in getAlgorithms()"
+        v-for="algorithm in algorithms"
         :key="algorithm.id"
-        :algorithm-id="algorithm.id"
-        :name="algorithm.name"
-        :codebook="codebook"
+        :algorithm="algorithm"
+        :codebook-submissions="codebookSubmissions"
       />
     </div>
   </div>
@@ -26,20 +25,12 @@
 <script>
 export default {
   props: {
-    categoryId: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    topics: {
+    category: {
       type: Object,
       required: true,
     },
-    codebook: {
-      type: Object,
+    codebookSubmissions: {
+      type: Array,
       required: true,
     },
   },
@@ -48,29 +39,15 @@ export default {
       isExpanded: false,
     }
   },
-  methods: {
-    getSubmissionTopics(submission) {
-      const algorithm = this.topics.algorithms.find(
-        (item) => item.id === submission.AlgorithmId
-      )
-      const subCategory = this.topics.subCategories.find(
-        (item) => item.id === algorithm.SubCategoryId
-      )
-      const category = this.topics.categories.find(
-        (item) => item.id === subCategory.CategoryId
-      )
-      return { algorithm, subCategory, category }
-    },
-    getAlgorithms() {
-      const algorithmIds = new Set(
-        this.codebook.submissions.map(
-          (submission) => this.getSubmissionTopics(submission).algorithm.id
-        )
-      )
-      const algorithms = Array.from(algorithmIds).map((algorithmId) =>
-        this.topics.algorithms.find((item) => item.id === algorithmId)
-      )
-      return algorithms
+  computed: {
+    algorithms() {
+      const accumulated_algorithms = []
+      this.category.children.forEach(subCategory => {
+        subCategory.children.forEach(algorithm => {
+          accumulated_algorithms.push(algorithm)
+        })
+      })
+      return accumulated_algorithms
     },
   },
 }
@@ -89,6 +66,7 @@ export default {
     // margin-right: auto;
     border-radius: 1.6rem;
     background-color: $background-dark-tertiary;
+    cursor: pointer;
     img {
       max-width: 5rem;
       max-height: 5rem;
