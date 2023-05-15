@@ -130,6 +130,6 @@ export default {
 
   // To allow external connections
   server: {
-    host: "0.0.0.0"
+    host: process.env.HOST_ADDRESS
   }
 }
