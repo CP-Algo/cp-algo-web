@@ -33,7 +33,7 @@ NODE_ENV='development'
 DOMAIN='http://localhost'
 PORT=3000
 DATABASE_URL='postgres://postgres:postgrespw@localhost:5040/postgres'
-HOST_ADDRESS=localhost
+HOST_ADDRESS='localhost'
 BASE_URL=http://localhost:3000/api
 BROWSER_BASE_URL=http://localhost:3000/api
 JUDGE0_BASE_URL=http://localhost:2358
@@ -41,7 +41,7 @@ JUDGE0_BASE_URL=http://localhost:2358
 
 If you're developing remotely, then change the -
 - `HOST_ADDRESS` variable to `0.0.0.0`.
-- `BROWSER_BASE_URL` variable to `https://your-remote-machine-address:3000/api`.
+- `BROWSER_BASE_URL` variable to `https://your-remote-machine-address/api`.
 
 ## Setup Judge0
 
