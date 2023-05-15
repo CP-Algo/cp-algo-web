@@ -17,7 +17,7 @@ $ docker run -p 5050:80 -e 'PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org' -e 'PGAD
 Then you can access pgAdmin by visiting `http://localhost:5050`. In order to connect pgAdmin to the database instance created earlier, use the following credentials:
 
 ```
-Host Address: IP Address of your device
+Host Address: host.docker.internal
 Port: 5040
 Maintenance Database: postgres
 User: postgres
