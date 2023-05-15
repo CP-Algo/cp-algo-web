@@ -26,7 +26,19 @@ Password: postgrespw
 
 ## Configure the .env file
 
-Once the database is ready, head over to the `.env` file. If you're developing locally, then change the `BROWSER_BASE_URL` variable to `http://localhost:3000/api`. Otherwise, change it to the remote host address where you're hosting the app.
+Once the database is ready, create a `.env` file in the project root directory with the following contents:
+
+```bash
+NODE_ENV='development'
+DOMAIN='http://localhost'
+PORT=3000
+DATABASE_URL='postgres://postgres:postgrespw@localhost:5040/postgres'
+BASE_URL=http://localhost:3000/api
+BROWSER_BASE_URL=http://localhost:3000/api
+JUDGE0_BASE_URL=http://localhost:2358
+```
+
+If you're developing remotely, then change the `BROWSER_BASE_URL` variable to `https://your-remote-machine-address:3000/api`.
 
 ## Setup Judge0
 
