@@ -22,6 +22,7 @@ async function runCode(code, language, input, expected_output) {
   }
 
   let { status, stdout, stderr, time, memory } = await pollForStatus(token);
+  time = parseFloat(time)
   stdout = Buffer.from(stdout || '', 'base64').toString('ascii')
   stderr = Buffer.from(stderr || '', 'base64').toString('ascii')
 

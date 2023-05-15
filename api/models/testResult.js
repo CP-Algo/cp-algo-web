@@ -7,10 +7,10 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     executionTime: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
     },
     executionMemory: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
     },
   })
 }

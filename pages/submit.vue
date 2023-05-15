@@ -74,8 +74,8 @@ export default {
     return {
       topics: [],
       algorithm: { id: '', name: '' },
-      timeComplexity: 'O(N)',
-      memoryComplexity: 'O(N)',
+      timeComplexity: 'N',
+      memoryComplexity: 'N',
       code: `#include<bits/stdc++.h>
 using namespace std;
 
@@ -125,9 +125,9 @@ int main() {
     async submitCode() {
       try {
         const { message, id } = await this.$axios.$post('/submission/new', {
-          algorithm: this.algorithm,
+          algorithm: this.algorithm.id,
           code: this.code,
-          language: this.language,
+          language: this.language.id,
           timeComplexity: this.timeComplexity,
           memoryComplexity: this.memoryComplexity,
         })

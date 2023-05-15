@@ -46,7 +46,7 @@ export default {
       required: true,
     },
     verdict: {
-      type: String,
+      type: Number,
       required: true,
     },
     executionTime: {
