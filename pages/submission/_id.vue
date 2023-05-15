@@ -23,36 +23,7 @@
       :upvote="upvotes"
       :bookmark="forks"
     />
-    <div class="description">
-      <span class="descriptionLabel">Description</span>
-      <textarea
-        id=""
-        class="descriptionArea"
-        name="code"
-        cols="200"
-        rows="20"
-      ></textarea>
-    </div>
-    <div class="inputFormat">
-      <span class="inputFormatLabel">Input Format</span>
-      <textarea
-        id=""
-        class="inputFormatArea"
-        name="code"
-        cols="200"
-        rows="10"
-      ></textarea>
-    </div>
-    <div class="outputFormat">
-      <span class="outputFormatLabel">Output Format</span>
-      <textarea
-        id=""
-        class="outputFormatArea"
-        name="code"
-        cols="200"
-        rows="10"
-      ></textarea>
-    </div>
+    <AlgorithmSpecifications :algorithm="algorithm" />
     <div class="codeDiscussion">
       <div class="codeDetails">
         <span class="submissionText">Submission</span>
@@ -196,61 +167,6 @@ export default {
     margin-top: 2.4rem;
     margin-bottom: 0.8rem;
     color: $text-dark-secondary;
-  }
-  .description {
-    display: flex;
-    flex-direction: column;
-
-    .descriptionLabel {
-      @include font-label-semi();
-
-      color: $text-light-primary;
-    }
-
-    .descriptionArea {
-      background-color: $background-dark-secondary;
-      margin-top: 1.2rem;
-      border: 0 solid;
-      border-radius: 1.2rem;
-    }
-  }
-
-  .inputFormat {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2rem;
-
-    .inputFormatLabel {
-      @include font-label-semi();
-
-      color: $text-light-primary;
-    }
-
-    .inputFormatArea {
-      background-color: $background-dark-secondary;
-      margin-top: 1.2rem;
-      border: 0 solid;
-      border-radius: 1.2rem;
-    }
-  }
-
-  .outputFormat {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2rem;
-
-    .outputFormatLabel {
-      @include font-label-semi();
-
-      color: $text-light-primary;
-    }
-
-    .outputFormatArea {
-      background-color: $background-dark-secondary;
-      margin-top: 1.2rem;
-      border: 0 solid;
-      border-radius: 1.2rem;
-    }
   }
   .codeDiscussion {
     display: flex;

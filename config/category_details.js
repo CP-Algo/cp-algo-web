@@ -54,7 +54,7 @@ module.exports = [
             id: 'BINARY_SEARCH',
             name: 'Binary Search',
             description:
-              'Search sorted data in $O(\\log(N))$',
+              'Given a sorted binary array, find the first occurrence of $1$.',
             inputFormat:
               '$N$\n' +
               '$A_1, A_2, \\cdots, A_{N}$',

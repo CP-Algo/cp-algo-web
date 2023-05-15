@@ -9,13 +9,17 @@ module.exports = {
       tests = [
         {
           AlgorithmId: 'BINARY_SEARCH',
-          input: 'i1',
-          output: 'o1',
+          input:
+            '5\n' +
+            '0 0 1 1 1',
+          output: '2',
         },
         {
           AlgorithmId: 'BINARY_SEARCH',
-          input: 'i2',
-          output: 'o2',
+          input:
+            '5\n' +
+            '0 0 0 0 0',
+          output: '-1',
         },
       ]
       await Test.bulkCreate(tests)

@@ -21,28 +21,28 @@
         <span
           v-if="options.length && options[0].type !== 'category' && addAnyOption"
           class="algorithm-option"
-          @click="selected(null, null, null, {})"
+          @click="selected({type: null}, {})"
         >
           Any
         </span>
         <span
           class="algorithm-option"
-          v-for="({type, id, name, children}) in options"
-          :key="type+id"
-          @click="children.length ? visibleOptionId=type+id : selected(type, id, name, {})"
+          v-for="option in options"
+          :key="option.type+option.id"
+          @click="option.children.length ? visibleOptionId=option.type+option.id : selected(option, {})"
         >
-          {{ name }}
+          {{ option.name }}
         </span>
       </div>
     </Popup>
     <AlgorithmPopup
-      v-for="({type, id, name, children}) in options"
+      v-for="option in options"
       v-if="totalChildren > 0"
-      :key="type+id"
-      :show="show && visibleOptionId === type+id"
+      :key="option.type+option.id"
+      :show="show && visibleOptionId === option.type+option.id"
       @hide="visibleOptionId = ''"
-      :options="children"
-      @selected="(obj) => selected(type, id, name, obj)"
+      :options="option.children"
+      @selected="(obj) => selected(option, obj)"
       :addAnyOption="addAnyOption"
     />
   </div>
@@ -71,10 +71,10 @@ export default {
     }
   },
   methods: {
-    selected(type, id, name, obj) {
+    selected(option, obj) {
       this.$emit('selected', {
         ...obj,
-        ...(type ? {[type]: { id, name }} : {})
+        ...(option.type ? {[option.type]: option} : {})
       })
     },
   },

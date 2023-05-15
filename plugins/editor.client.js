@@ -16,6 +16,11 @@ Vue.component('Editor', {
       required: false,
       default: '',
     },
+    readOnly: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
   data() {
     return {
@@ -42,6 +47,7 @@ Vue.component('Editor', {
       attrs: {
         value: self.value,
       },
+      ...(this.readOnly ? {class: "hidden-editor"} : {}),
       on: {
         input(value) {
           self.$emit('input', value)
@@ -60,6 +66,9 @@ Vue.component('Editor', {
           enableLiveAutocompletion: true,
           enableSnippets: true,
           fontSize: '1.6rem',
+          readOnly: this.readOnly,
+          highlightActiveLine: !this.readOnly,
+          highlightGutterLine: !this.readOnly,
         },
       },
     })

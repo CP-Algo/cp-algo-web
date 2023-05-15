@@ -28,3 +28,7 @@ button {
   background-color: transparent;
   cursor: pointer;
 }
+
+.hidden-editor .ace_cursor-layer {
+  display: none;
+}

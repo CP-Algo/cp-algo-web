@@ -15,29 +15,25 @@ router.get('/topics', async function (_req, res, next) {
 
     subCategories = subCategories.map(subCategory => ({
       ...subCategory,
+      type: 'subCategory',
       children: []
     }))
     algorithms.forEach(algorithm => {
       const algorithmItem = {
-        id: algorithm.id,
-        name: algorithm.name,
+        ...algorithm,
         type: 'algorithm',
         children: []
       }
       subCategories.find(item => item.id === algorithm.SubCategoryId).children.push(algorithmItem)
     })
     categories = categories.map(category => ({
-      id: category.id,
-      name: category.name,
+      ...category,
       type: 'category',
       children: []
     }))
     subCategories.forEach(subCategory => {
       const subCategoryItem = {
-        id: subCategory.id,
-        name: subCategory.name,
-        type: 'subCategory',
-        children: subCategory.children
+        ...subCategory,
       }
       categories.find(category => category.id === subCategory.CategoryId).children.push(subCategoryItem)
     })

@@ -25,6 +25,7 @@
           <input class="memComplex" v-model="memoryComplexity" />
         </div>
       </div>
+      <AlgorithmSpecifications v-if="algorithm.id" :algorithm="algorithm" />
       <span class="submission-label">Submission</span>
       <div class="submission">
         <div class="editor"><Editor v-model="code" :lang="language.ace_id" /></div>
@@ -231,6 +232,7 @@ int main() {
 
 .submission {
   flex: 1;
+  min-height: 40rem;
   margin-bottom: 2.4rem;
 
   .editor {
