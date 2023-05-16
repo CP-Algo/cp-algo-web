@@ -6,6 +6,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    verdictDescription: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     executionTime: {
       type: DataTypes.DOUBLE,
     },

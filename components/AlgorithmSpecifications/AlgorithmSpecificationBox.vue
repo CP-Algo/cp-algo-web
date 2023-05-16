@@ -1,11 +1,13 @@
 <template>
   <div class="box">
     <span class="title">{{title}}</span>
-    <p class="content">{{content}}</p>
+    <p class="content" v-html="latexedContent" />
   </div>
 </template>
 
 <script>
+import katex from 'katex';
+
 export default {
   props: {
     title: {
@@ -17,6 +19,31 @@ export default {
       required: true,
     },
   },
+  computed: {
+    latexedContent() {
+      const len = this.content.length
+      let newContent = ''
+      let latexedStr = ''
+      for (let i = 0; i < len; i++) {
+        let char = this.content[i]
+        if (char == '\n') {
+          newContent += '<br/>'
+        }
+        else if (char != '$') {
+          if (latexedStr.length) latexedStr += char
+          else newContent += char
+        }
+        else {
+          latexedStr += char
+          if (latexedStr.length > 1) {
+            newContent += katex.renderToString(latexedStr.slice(1, -1))
+            latexedStr = ''
+          }
+        }
+      }
+      return newContent
+    }
+  }
 }
 </script>
 
@@ -33,11 +60,11 @@ export default {
 
   .title {
     @include font-h3-semi();
-    color: $text-light-primary;
+    color: $text-dark-secondary;
   }
   .content {
     @include font-h4-regular();
-    color: $text-dark-secondary;
+    color: $text-light-primary;
   }
 }
 </style>

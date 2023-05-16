@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/submission/${submissionId}`" :class="{ container: true, removeBackground: !background }">
+  <a :href="`/submission/${submissionId}`" :class="{ container: true, removeBackground: !background, padding: rank ? '1.6rem 3.6rem' : '1.6rem 0' }">
     <div v-if="rank" class="rank">
       <span class="hash">#</span>
       <span class="value">{{ rank }}</span>
@@ -13,6 +13,8 @@
         <img
           :src="require(`~/assets/avatar/${author.id}.png`)"
           alt="user avatar"
+          height="35"
+          width="35"
         />
       </a>
       <span v-if="moreAuthor" class="more"> +{{ moreAuthor }}</span>
@@ -75,13 +77,13 @@
         />
         <span class="text">{{ upvote }}</span>
       </div>
-      <div class="bookmark" @click="forkSubmission">
+      <!-- <div class="bookmark" @click="forkSubmission">
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/bookmark.svg?raw`)"
         />
         <span class="text">{{ bookmark }}</span>
-      </div>
+      </div> -->
     </div>
   </a>
 </template>
@@ -156,19 +158,19 @@ export default {
         this.$toast.error(err)
       }
     },
-    async forkSubmission() {
-      if (!this.$auth.loggedIn)
-        this.$toast.error('You to be logged in to fork the submission!')
-      try {
-        const { message } = await this.$axios.$post(
-          `/submission/${this.submissionId}/fork`
-        )
-        this.$toast.success(message)
-        this.$emit('fork')
-      } catch (err) {
-        this.$toast.error(err)
-      }
-    },
+    // async forkSubmission() {
+    //   if (!this.$auth.loggedIn)
+    //     this.$toast.error('You to be logged in to fork the submission!')
+    //   try {
+    //     const { message } = await this.$axios.$post(
+    //       `/submission/${this.submissionId}/fork`
+    //     )
+    //     this.$toast.success(message)
+    //     this.$emit('fork')
+    //   } catch (err) {
+    //     this.$toast.error(err)
+    //   }
+    // },
   },
 }
 </script>
@@ -180,7 +182,6 @@ $separator-space: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.6rem 3.6rem;
   border-radius: 1.6rem;
   background-color: $background-dark-secondary;
 
@@ -206,15 +207,14 @@ $separator-space: 2rem;
   }
 
   .authors {
-    flex: 155;
+    // flex: 155;
+    flex: 50;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: $separator-space;
 
     img {
-      width: 3.5rem;
-      height: 3.5rem;
       border-radius: 50%;
       margin-right: 0.5rem;
     }
@@ -275,7 +275,8 @@ $separator-space: 2rem;
   }
 
   .actions {
-    flex: 178;
+    // flex: 178;
+    flex: 50;
     display: flex;
     align-items: center;
     justify-content: center;

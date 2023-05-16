@@ -12,14 +12,14 @@
         <AlgorithmSpecificationBox title="Description" :content="algorithm.description" />
       </div>
       <div class="section">
-        <AlgorithmSpecificationBox title="Input Format" :content="algorithm.description" />
+        <AlgorithmSpecificationBox title="Input Format" :content="algorithm.inputFormat" />
         <AlgorithmSpecificationBox title="Input Definition" :content="algorithm.inputDefinition" />
         <AlgorithmSpecificationBox title="Input Constraints" :content="algorithm.inputConstraints" />
       </div>
       <div class="section">
-        <AlgorithmSpecificationBox title="Output Format" :content="algorithm.description" />
-        <AlgorithmSpecificationBox title="Output Definition" :content="algorithm.inputDefinition" />
-        <AlgorithmSpecificationBox title="Output Constraints" :content="algorithm.inputConstraints" />
+        <AlgorithmSpecificationBox title="Output Format" :content="algorithm.outputFormat" />
+        <AlgorithmSpecificationBox title="Output Definition" :content="algorithm.outputDefinition" />
+        <AlgorithmSpecificationBox title="Output Constraints" :content="algorithm.outputConstraints" />
       </div>
     </div>
   </div>

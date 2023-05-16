@@ -19,6 +19,7 @@
     "express": "^4.18.2",
     "express-error-handler": "^1.1.0",
     "jsonwebtoken": "^9.0.0",
+    "katex": "^0.16.7",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.1",
     "nuxt": "^2.15.8",

@@ -73,8 +73,8 @@ export default {
   data() {
     return {
       submissions: [],
-      hasPrev: false,
-      hasNext: false,
+      total: 0,
+      perPage: 20,
       page: 1,
     }
   },

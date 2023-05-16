@@ -2,13 +2,19 @@ const {
   models: { Submission, TestResult },
 } = require('../models')
 const runCode = require('./runCode')
+const getVerdictDescription = require('./getVerdictDescription')
 
 async function runTests(submissionID) {
   const submission = await Submission.findByPk(submissionID)
   const code = submission.code
   const language = await submission.getLanguage({ raw: true })
   const tests = await (await submission.getAlgorithm()).getTests({ raw: true })
-  await submission.setTests(tests.map(test => test.id), { through: { verdict: 1 } })
+  await submission.setTests(tests.map(test => test.id), {
+    through: {
+      verdict: 1,
+      verdictDescription: getVerdictDescription(1),
+    }
+  })
 
   let maxExecutionTime = 0
   let maxExecutionMemory = 0
@@ -22,6 +28,7 @@ async function runTests(submissionID) {
     await TestResult.update(
       {
         verdict: status.id,
+        verdictDescription: getVerdictDescription(status.id),
         executionTime,
         executionMemory,
       },

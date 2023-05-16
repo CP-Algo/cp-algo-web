@@ -6,7 +6,7 @@ const {
 } = require('../../helpers/authenticatedMiddleware')
 const createSubmission = require('../../helpers/createSubmission')
 
-router.post('/new', authenticatedMiddleware, async function (req, res, next) {
+router.post('/', authenticatedMiddleware, async function (req, res, next) {
   try {
     const userID = req.user.id
     const submission = await createSubmission(userID, req.body)

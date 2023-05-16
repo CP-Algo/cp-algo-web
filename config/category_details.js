@@ -59,16 +59,16 @@ module.exports = [
               '$N$\n' +
               '$A_1, A_2, \\cdots, A_{N}$',
             inputDefinition:
-              '$N \\eq$ Array size' +
-              '$A \\eq$ Sorted array',
+              '$N =$ Array size\n' +
+              '$A =$ Sorted array',
             inputConstraints:
-              '$1 \\le N \\le 10^6$' +
+              '$1 \\le N \\le 10^6$\n' +
               '$0 \\le A_i \\le 1$',
-            outputFormat: '$\\texttt{FirstOne}$',
+            outputFormat: '$\\tt{FirstOne}$',
             outputDefinition:
-              '$\\texttt{FirstOne} \\eq$ Index of the first element that equals to $1$, $-1$ if none exists.' +
-              'More formally, the smallest index, $\\texttt{FirstOne}$, satisfying $A_{\\textttt{FirstOne}} = 1$. And $-1$ if no such index exists.',
-            outputConstraints: '$-1 \\le \\texttt{FirstOne} < N$',
+              '$\\tt{FirstOne} =$ Index of the first element that equals to $1$, $-1$ if none exists.' +
+              'More formally, the smallest index, $\\tt{FirstOne}$, satisfying $A_{\\tt{FirstOne}} = 1$. And $-1$ if no such index exists.',
+            outputConstraints: '$-1 \\leq \\tt{FirstOne} < N$',
           },
         ],
       },

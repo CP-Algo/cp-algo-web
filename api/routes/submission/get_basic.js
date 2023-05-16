@@ -24,8 +24,8 @@ router.get('/basic', async function (req, res, next) {
       subCategory,
       category,
       authors,
-      language: await submission.getLanguage(),
-      codebook: await submission.getCodebook(),
+      language: await submission.getLanguage({ raw: true }),
+      codebook: await submission.getCodebook({ raw: true }),
     })
   } catch (err) {
     next(err)

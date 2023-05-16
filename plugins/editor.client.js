@@ -69,6 +69,7 @@ Vue.component('Editor', {
           readOnly: this.readOnly,
           highlightActiveLine: !this.readOnly,
           highlightGutterLine: !this.readOnly,
+          scrollMargin: 10,
         },
       },
     })

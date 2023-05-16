@@ -8,24 +8,20 @@
   >
     <div class="left">
       <span class="testCaseLabel"> Test&nbsp;{{ testCaseNo }} </span>
-      <span v-if="verdict === 'ACCEPTED'" class="acLabel">Accepted</span>
-      <span v-else-if="verdict === 'PENDING'" class="pendingLabel"
-        >Pending</span
-      >
-      <span v-else class="waLabel">{{ verdict }}</span>
+      <span :class="verdict <= 2 ? 'pendingLabel' : verdict === 3 ? 'acLabel' : 'waLabel'">{{ verdictDescription }}</span>
       <div class="time">
         <div
           class="timeIcon"
           v-html="require(`~/assets/svg/icon/takenTime.svg?raw`)"
         />
-        <span class="timeLabel">{{ executionTime }}&nbsp;ms</span>
+        <span class="timeLabel">{{ executionTime !== null ? `${executionTime} s` : '-' }}</span>
       </div>
       <div class="memory">
         <div
           class="memIcon"
           v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
         />
-        <span class="memLabel">{{ consumedMemory }}&nbsp;M</span>
+        <span class="memLabel">{{ consumedMemory !== null ? `${consumedMemory / 1000} M` : '-' }}</span>
       </div>
     </div>
     <div class="right">
@@ -49,13 +45,15 @@ export default {
       type: Number,
       required: true,
     },
+    verdictDescription: {
+      type: String,
+      required: true,
+    },
     executionTime: {
       type: Number,
-      required: true,
     },
     consumedMemory: {
       type: Number,
-      required: true,
     },
   },
 }
@@ -79,14 +77,12 @@ export default {
   .left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-left: 2.4rem;
-    width: 42rem;
 
     .testCaseLabel {
       @include font-body-semi();
-
       color: $text-light-primary;
+      margin-right: 2rem;
     }
     .acLabel,
     .pendingLabel,
@@ -96,6 +92,7 @@ export default {
       color: $text-light-primary;
       width: 14rem;
       text-align: center;
+      margin-right: 2rem;
     }
     .acLabel {
       color: $extras-dark-green;
@@ -112,7 +109,9 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 8.1rem;
+      // max-width: 8.1rem;
+      max-width: 15rem;
+      margin-right: 2rem;
 
       .timeIcon,
       .memIcon {

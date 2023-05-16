@@ -22,12 +22,20 @@
       :required-memory="executionMemory"
       :upvote="upvotes"
       :bookmark="forks"
+      :background="false"
     />
     <AlgorithmSpecifications :algorithm="algorithm" />
     <div class="codeDiscussion">
       <div class="codeDetails">
-        <span class="submissionText">Submission</span>
-        <prism class="codeArea" lang="cpp" :code="code" />
+        <div class="submissionHeader">
+          <span class="submissionLabel">Submission</span>
+          <div class="submissionHeaderButtons">
+            <span class="submissionHeaderButton" @click="copyToClipboard">Copy</span>
+            <a class="submissionHeaderButton" :href="`/submit/${id}`">Edit</a>
+            <a class="submissionHeaderButton" @click="rejudge">Rejudge</a>
+          </div>
+        </div>
+        <Editor class="codeArea" v-model="code" :lang="language.ace_id" :read-only="true" />
         <div class="testStatus">
           <div class="testStatusHeader" @click="isExpanded = !isExpanded">
             <div class="left">
@@ -57,15 +65,14 @@
               />
             </div>
           </div>
-          <div
-            v-for="(test, index) in tests"
-            v-show="isExpanded"
-            :key="test.id"
-            class="testCaseDetails"
-          >
+          <div class="testCaseDetails">
             <TestCase
+              v-for="(test, index) in tests"
+              v-show="isExpanded"
+              :key="test.id"
               :test-case-no="index + 1"
               :verdict="test.TestResult.verdict"
+              :verdict-description="test.TestResult.verdictDescription"
               :execution-time="test.TestResult.executionTime"
               :consumed-memory="test.TestResult.executionMemory"
             />
@@ -73,7 +80,8 @@
         </div>
       </div>
       <div class="discussion">
-        <span class="discussionText">Discussion</span>
+        <span class="discussionLabel">Discussion</span>
+        <div class="discussionChat"></div>
         <textarea
           id=""
           class="discussArea"
@@ -87,6 +95,8 @@
 </template>
 
 <script>
+import status from '../../config/judge0_mappings/status'
+
 export default {
   async asyncData({ $axios, params }) {
     const submission = await $axios.$get(`/submission/${params.id}/basic`)
@@ -96,36 +106,72 @@ export default {
   data() {
     return {
       isExpanded: false,
-      tests: [],
     }
   },
   computed: {
     passedTests() {
       return this.tests.reduce(
         (total, current) =>
-          (total += current.TestResult.verdict === 'ACCEPTED' ? 1 : 0),
+          (total += current.TestResult.verdict === 3 ? 1 : 0),
         0
       )
     },
     failedTests() {
       return this.tests.reduce(
         (total, current) =>
-          (total +=
-            current.TestResult.verdict !== 'ACCEPTED' &&
-            current.TestResult.verdict !== 'PENDING'
-              ? 1
-              : 0),
+          (total += current.TestResult.verdict > 3 ? 1 : 0),
         0
       )
     },
     pendingTests() {
       return this.tests.reduce(
         (total, current) =>
-          (total += current.TestResult.verdict === 'PENDING' ? 1 : 0),
+          (total += current.TestResult.verdict <= 2 ? 1 : 0),
         0
       )
     },
   },
+  methods: {
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.code)
+      this.$toast.success("Code copied to clipboard")
+    },
+    async pollForTests() {
+      this.tests = await this.$axios.$get(`/submission/${this.id}/tests`)
+      let pending = false
+      this.tests.forEach(test => pending = pending || test.TestResult.verdict <= 2)
+      if (pending) {
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        return this.pollForTests()
+      }
+    },
+    async rejudge() {
+      this.isExpanded = true
+      this.$toast.success("Rejudging the submission...")
+      await this.$axios.$post('/submission', {
+        id: this.id,
+        algorithm: this.algorithm.id,
+        code: this.code,
+        language: this.language.id,
+        timeComplexity: this.timeComplexity,
+        memoryComplexity: this.memoryComplexity,
+      })
+      this.tests.forEach(test => {
+        test.TestResult.verdict = 1
+        test.TestResult.verdictDescription = status.find(({id}) => id == 1).description
+      })
+      await new Promise(resolve => setTimeout(resolve, 3000))
+      await this.pollForTests()
+    }
+  },
+  mounted() {
+    let pending = false
+    this.tests.forEach(test => pending = pending || test.TestResult.verdict <= 2)
+    if (pending) {
+      this.isExpanded = true
+      this.pollForTests()
+    }
+  }
 }
 </script>
 
@@ -169,6 +215,7 @@ export default {
     color: $text-dark-secondary;
   }
   .codeDiscussion {
+    flex: 1;
     display: flex;
     margin-top: 3.6rem;
 
@@ -179,15 +226,39 @@ export default {
       margin-right: 3.6rem;
       width: 86.5rem;
 
-      .submissionText {
-        @include font-label-semi();
+      .submissionHeader {
+        display: flex;
+        align-items: center;
 
-        color: $text-light-primary;
-        margin-left: 2.4rem;
+        .submissionLabel {
+          @include font-label-semi();
+
+          color: $text-light-primary;
+          margin-left: 2.4rem;
+        }
+
+        .submissionHeaderButtons {
+          margin-left: auto;
+          margin-right: 1.2rem;
+
+          .submissionHeaderButton {
+            @include font-meta-semi();
+            color: $text-light-secondary;
+            border-radius: 0.5rem;
+            border: thin solid $background-light-tertiary;
+            padding: 0.5rem 1.5rem;
+            margin-left: 1rem;
+            cursor: pointer;
+
+            &:hover {
+              background-color: $background-light-tertiary;
+            }
+          }
+        }
       }
 
       .codeArea {
-        background-color: $background-dark-secondary;
+        flex: 1;
         margin-top: 1.2rem;
         border: 0 solid;
         border-radius: 1.2rem;
@@ -197,6 +268,9 @@ export default {
         display: flex;
         flex-direction: column;
         margin-top: 3.2rem;
+        border-radius: 1.2rem;
+        overflow: hidden;
+        background-color: $background-dark-secondary;
 
         .testStatusHeader {
           display: flex;
@@ -296,6 +370,13 @@ export default {
             }
           }
         }
+
+        .testCaseDetails {
+          max-height: 20rem;
+          overflow: auto;
+          border-radius: 1.2rem;
+          border: 1px solid $background-dark-secondary;
+        }
       }
     }
 
@@ -303,7 +384,7 @@ export default {
       display: flex;
       flex-direction: column;
 
-      .discussionText {
+      .discussionLabel {
         @include font-label-semi();
 
         color: $text-light-primary;

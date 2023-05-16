@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div :class="{ container: true, padding: rank ? '0 3.6rem' : '0 0' }">
     <span v-if="rank" class="rank section">Rank</span>
     <span class="authors section">Authors</span>
     <span class="complexity section">Complexity</span>
@@ -35,7 +35,6 @@ $separator-space: 2rem;
   color: $text-dark-secondary;
   display: flex;
   align-items: center;
-  padding: 0 3.6rem;
 
   .section {
     margin-right: $separator-space;
@@ -50,7 +49,8 @@ $separator-space: 2rem;
     flex: 32;
   }
   .authors {
-    flex: 155;
+    // flex: 155;
+    flex: 50;
   }
   .complexity {
     flex: 248;
@@ -59,7 +59,8 @@ $separator-space: 2rem;
     flex: 483;
   }
   .action {
-    flex: 178;
+    // flex: 178;
+    flex: 50;
   }
 }
 </style>

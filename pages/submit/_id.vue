@@ -74,22 +74,7 @@ export default {
   data() {
     return {
       topics: [],
-      algorithm: { id: '', name: '' },
-      timeComplexity: 'N',
-      memoryComplexity: 'N',
-      code: `#include<bits/stdc++.h>
-using namespace std;
-
-int main() {
-    int a;
-    cin >> a;
-    cout << a * a << endl;
-    cerr << "Value of a: " << a << endl;
-    
-    return 0;
-}`,
       languages: [],
-      language: { id: '', name: '', ace_id: '' },
       input: '',
       output: '',
       stderr: '',
@@ -97,12 +82,66 @@ int main() {
       showAlgorithmPopup: false,
     }
   },
+  async asyncData({ $axios, params }) {
+    if (!params.id) return {
+      id: '',
+      algorithm: { id: '', name: '' },
+      timeComplexity: 'N',
+      memoryComplexity: 'N',
+      code: `#include<bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    
+    vector<int> a(n);
+    for (int &i : a) cin >> i;
+
+    int ans;
+    for (ans = 0; ans < n; ans++) {
+      if (a[ans] == 1) break;
+    }
+    
+    if (ans == n) ans = -1;
+
+    cout << ans << '\\n';
+    
+    return 0;
+}`,
+      language: { id: '', name: '', ace_id: '' },
+    }
+    const submission = await $axios.$get(`/submission/${params.id}/basic`)
+    return {
+      id: submission.id,
+      algorithm: submission.algorithm,
+      timeComplexity: submission.timeComplexity,
+      memoryComplexity: submission.memoryComplexity,
+      code: submission.code,
+      language: submission.language,
+    }
+  },
   async fetch() {
     this.languages = await this.$axios.$get(`/language`)
-    this.language = this.languages.find(item => item.id === 54)
+    if (!this.language.id) {
+      this.language = this.languages.find(item => item.id === 54)
+    }
 
     this.topics = await this.$axios.$get(`/topics`)
-    this.algorithm = this.topics[0].children[0].children[0]
+    if (!this.algorithm.id) {
+      this.algorithm = this.topics[0].children[0].children[0]
+    }
+    else {
+      this.topics.forEach(category => {
+        category.children.forEach(subCategory => {
+          subCategory.children.forEach(algorithm => {
+            if (this.algorithm.id === algorithm.id) {
+              this.algorithm = algorithm
+            }
+          })
+        })
+      })
+    }
   },
   methods: {
     async runCode() {
@@ -125,7 +164,8 @@ int main() {
     },
     async submitCode() {
       try {
-        const { message, id } = await this.$axios.$post('/submission/new', {
+        const { message, id } = await this.$axios.$post('/submission', {
+          id: this.id,
           algorithm: this.algorithm.id,
           code: this.code,
           language: this.language.id,
