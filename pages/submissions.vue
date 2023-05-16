@@ -2,18 +2,36 @@
   <div class="page-container">
     <div class="option">
       <div class="dropDown">
+        <AlgorithmPopup
+          :show="showAlgorithmPopup"
+          @hide="showAlgorithmPopup = false"
+          :options="topics"
+          @selected="({category, subCategory, algorithm}) => algorithmSelected(category, subCategory, algorithm)"
+          :addAnyOption="false"
+        />
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
         />
-        <span class="text">Advanced Search Technique / BS</span>
+        <div class="text" @click="showAlgorithmPopup = !showAlgorithmPopup">
+          {{algorithm.name}}
+        </div>
       </div>
       <div class="languageOption">
+        <LanguagePopup
+          :show="showLanguagePopup"
+          @hide="showLanguagePopup = false"
+          :languages="languages"
+          @language="languageSelected"
+          :top="false"
+        />
         <div
           class="icon"
           v-html="require(`~/assets/svg/icon/codeIcon.svg?raw`)"
         />
-        <span class="text">C++14</span>
+        <span class="text" @click="showLanguagePopup = !showLanguagePopup">
+          {{language.name}}
+        </span>
       </div>
       <div class="sortOption">
         <div
@@ -51,14 +69,14 @@
       </div>
       <div class="right">
         <div
-          v-if="hasPrev"
+          v-if="page > 1"
           class="icon"
           @click="fetchPrev"
           v-html="require(`~/assets/svg/icon/prevIcon.svg?raw`)"
         />
         <span class="pageNo">{{ page }}</span>
         <div
-          v-if="hasNext"
+          v-if="page * perPage < total"
           class="icon"
           @click="fetchNext"
           v-html="require(`~/assets/svg/icon/nextIcon.svg?raw`)"
@@ -72,19 +90,32 @@
 export default {
   data() {
     return {
+      showLanguagePopup: false,
+      showAlgorithmPopup: false,
+      topics: [],
+      algorithm: { id: '', name: '' },
+      languages: [],
+      language: { id: '', name: '', ace_id: '' },
+      sort_by: 'LENGTH_DESC',
       submissions: [],
       total: 0,
-      perPage: 20,
+      // perPage: 20,
+      perPage: 1,
       page: 1,
     }
   },
   async fetch() {
-    const { submissions, hasPrev, hasNext } = await this.$axios.$get(
-      `/submissions?page=${this.page}`
+    const { submissions, total } = await this.$axios.$get(
+      `/submissions?page=${this.page}&count=${this.perPage}&algorithm=${this.algorithm.id}&language=${this.language.id}&sort_by=${this.sort_by}`
     )
     this.submissions = submissions
-    this.hasPrev = hasPrev
-    this.hasNext = hasNext
+    this.total = total
+
+    this.languages = await this.$axios.$get(`/language`)
+    this.language = this.languages.find(item => item.id === 54)
+
+    this.topics = await this.$axios.$get(`/topics`)
+    this.algorithm = this.topics[0].children[0].children[0]
   },
   methods: {
     fetchPrev() {
@@ -95,6 +126,14 @@ export default {
       this.page = this.page + 1
       this.$fetch()
     },
+    languageSelected(id, name) {
+      this.language = this.languages.find(lang => lang.id === id);
+      this.showLanguagePopup = false;
+    },
+    algorithmSelected(category, subCategory, algorithm) {
+      this.algorithm = algorithm;
+      this.showAlgorithmPopup = false;
+    }
   },
 }
 </script>
@@ -125,6 +164,8 @@ export default {
     }
 
     .dropDown {
+      position: relative;
+      cursor: pointer;
       display: flex;
       align-items: center;
       padding: 1rem 2rem;
@@ -133,9 +174,15 @@ export default {
       margin-left: 0;
       margin-right: 2.4rem;
       width: 46.9rem;
+
+      .text {
+        flex: 1;
+      }
     }
 
     .languageOption {
+      position: relative;
+      cursor: pointer;
       display: flex;
       align-items: center;
       padding: 1rem 2rem;

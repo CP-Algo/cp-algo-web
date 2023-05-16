@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/submission/${submissionId}`" :class="{ container: true, removeBackground: !background, padding: rank ? '1.6rem 3.6rem' : '1.6rem 0' }">
+  <a :href="`/submission/${submissionId}`" :class="{ container: true, removeBackground: !background}" :style="{padding: rank ? '1.6rem 3.6rem' : '1.6rem 0' }">
     <div v-if="rank" class="rank">
       <span class="hash">#</span>
       <span class="value">{{ rank }}</span>

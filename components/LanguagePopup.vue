@@ -4,9 +4,9 @@
     animation="slideUp"
     :custom-styles="{
       width: '31.2rem',
-      bottom: '100%',
+      ...(top ? {bottom: '100%'} : {top: '100%'}),
       left: 0,
-      marginBottom: '1.2rem',
+      ...(top ? {marginBottom: '1.2rem'} : {marginTop: '1.2rem'}),
       overflow: 'hidden',
     }"
     @hide="$emit('hide')"
@@ -33,6 +33,10 @@ export default {
     languages: {
       type: Array,
       required: true,
+    },
+    top: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

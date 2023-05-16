@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ container: true, padding: rank ? '0 3.6rem' : '0 0' }">
+  <div :class="{ container: true }" :style="{ padding: rank ? '0 3.6rem' : '0 0' }">
     <span v-if="rank" class="rank section">Rank</span>
     <span class="authors section">Authors</span>
     <span class="complexity section">Complexity</span>
