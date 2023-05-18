@@ -12,6 +12,7 @@
         elegant and efficient codes<br />
         for your upcoming contest
       </div>
+      <span v-if="verificationMessage">{{verificationMessage}}</span>
     </div>
     <img class="blue-background" src="~/assets/svg/site/auth-background.svg" />
     <AuthForm
@@ -47,7 +48,8 @@ export default {
   },
   data() {
     return {
-      mode: this.page,
+      mode: this.page == 'VERIFY' ? 'LOGIN' : this.page,
+      verificationMessage: ''
     }
   },
   async fetch() {
@@ -62,6 +64,10 @@ export default {
       } catch (err) {
         this.$toast.error(err.message)
       }
+    }
+    else if (this.page === 'VERIFY') {
+      const { message } = await this.$axios.$get(`/auth/verify?user=${this.$route.query.user}&token=${this.$route.query.token}`)
+      this.verificationMessage = message
     }
   },
 }
@@ -114,6 +120,14 @@ export default {
       @include font-h2-semi();
 
       color: $text-light-primary;
+    }
+    
+    span {
+      margin-top: 4rem;
+      @include font-body-semi();
+      max-width: 50%;
+
+      color: $text-light-secondary;
     }
   }
 }

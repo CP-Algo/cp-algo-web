@@ -11,6 +11,7 @@ const orderedFiles = [
   'submissionAuthor',
   'test',
   'testResult',
+  'verification',
 ]
 
 if (env !== 'production') {

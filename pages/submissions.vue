@@ -40,7 +40,7 @@
         />
         <span class="text">Submission length dsc.</span>
       </div>
-      <button class="new">+ &nbsp; New</button>
+      <a class="new" href="/submit">+ &nbsp; New</a>
     </div>
     <SubmissionDetailsHeader class="heading" />
     <div class="submissionTable">
@@ -64,7 +64,7 @@
     </div>
     <div class="pageDetails">
       <div class="left">
-        <span class="noOfPage">20</span>
+        <span class="noOfPage">{{perPage}}</span>
         <span class="noOfPageSuf">&nbsp; rows per page</span>
       </div>
       <div class="right">
@@ -96,7 +96,7 @@ export default {
       algorithm: { id: '', name: '' },
       languages: [],
       language: { id: '', name: '', ace_id: '' },
-      sort_by: 'LENGTH_DESC',
+      sortBy: 'LENGTH_DESC',
       submissions: [],
       total: 0,
       // perPage: 20,
@@ -105,17 +105,27 @@ export default {
     }
   },
   async fetch() {
-    const { submissions, total } = await this.$axios.$get(
-      `/submissions?page=${this.page}&count=${this.perPage}&algorithm=${this.algorithm.id}&language=${this.language.id}&sort_by=${this.sort_by}`
-    )
-    this.submissions = submissions
-    this.total = total
-
     this.languages = await this.$axios.$get(`/language`)
     this.language = this.languages.find(item => item.id === 54)
 
     this.topics = await this.$axios.$get(`/topics`)
     this.algorithm = this.topics[0].children[0].children[0]
+    if (!this.$route?.query?.algorithm) {
+      this.algorithm = this.topics[0].children[0].children[0]
+    }
+    else {
+      this.topics.forEach(category => {
+        category.children.forEach(subCategory => {
+          subCategory.children.forEach(algorithm => {
+            if (this.$route.query.algorithm === algorithm.id) {
+              this.algorithm = algorithm
+            }
+          })
+        })
+      })
+    }
+
+    await this.fetchSubmissions()
   },
   methods: {
     fetchPrev() {
@@ -126,6 +136,13 @@ export default {
       this.page = this.page + 1
       this.$fetch()
     },
+    async fetchSubmissions() {
+      const { submissions, total } = await this.$axios.$get(
+        `/submissions?page=${this.page}&count=${this.perPage}&algorithm=${this.algorithm.id}&language=${this.language.id}&sort_by=${this.sortBy}`
+      )
+      this.submissions = submissions
+      this.total = total
+    },
     languageSelected(id, name) {
       this.language = this.languages.find(lang => lang.id === id);
       this.showLanguagePopup = false;
@@ -133,6 +150,8 @@ export default {
     algorithmSelected(category, subCategory, algorithm) {
       this.algorithm = algorithm;
       this.showAlgorithmPopup = false;
+      this.page = 1
+      this.fetchSubmissions()
     }
   },
 }

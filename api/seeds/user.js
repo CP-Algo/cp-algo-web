@@ -26,7 +26,7 @@ module.exports = {
           username: 'nayeemul',
           email: 'nayeemul2013@gmail.com',
           password: 'asdfer',
-          verified: true,
+          verified: false,
         },
       ]
 

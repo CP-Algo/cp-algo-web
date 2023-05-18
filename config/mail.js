@@ -13,7 +13,7 @@ module.exports = {
   },
   templates: {
     SIGNUP({ user, verification }) {
-      const verificationURL = `${host}/verify/${user.id}/${verification.token}`
+      const verificationURL = `${host}/auth/verify/${user.id}/${verification.token}`
       return {
         subject: 'Verify your email for CP Algo',
         html:

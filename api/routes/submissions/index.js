@@ -10,50 +10,40 @@ const getAlgorithmsInCategory = require('../../helpers/getAlgorithmsInCategory')
 router.get('/submissions', async function (req, res, next) {
   try {
     // TODO: Filter by author
-    const { category, algorithm, language } = req.query
+    const { algorithm, language } = req.query
 
-    let { sortBy, page, rows } = req.query
+    let { sort_by, page, count } = req.query
 
-    rows = rows || 20
+    count = count || 20
     page = page || 1
-    const offset = rows * (page - 1)
-    sortBy = sortBy || ['createdAt', 'DESC']
-
-    let algorithms = []
-    if (!algorithm && category) {
-      algorithms = await getAlgorithmsInCategory(category)
-    }
+    const offset = count * (page - 1)
+    let sortBy = ['length', 'DESC']
 
     const { rows: submissionRows, count: submissionsCount } =
       await Submission.findAndCountAll({
         where: {
           ...(algorithm
             ? { AlgorithmId: algorithm }
-            : category
-            ? { AlgorithmId: { [Op.in]: algorithms } }
             : {}),
           ...(language ? { LanguageId: language } : {}),
         },
         order: [sortBy],
-        limit: rows,
+        limit: count,
         offset,
       })
 
-    const hasPrev = page > 1
-    const hasNext = submissionsCount > offset + rows
-
     const submissions = await Promise.all(
       submissionRows.map(async (submission, index) => ({
-        ...submission.get({ plain: true }),
+        ...submission.get({ raw: true }),
         rank: offset + index + 1,
         authors: await submission.getAuthors({ raw: true }),
-        author: await (await submission.getCodebook()).getUser(),
-        algorithm: await submission.getAlgorithm(),
-        language: await submission.getLanguage(),
+        author: await (await submission.getCodebook()).getUser({ raw: true }),
+        algorithm: await submission.getAlgorithm({ raw: true }),
+        language: await submission.getLanguage({ raw: true }),
       }))
     )
 
-    return res.json({ submissions, hasPrev, hasNext })
+    return res.json({ submissions, total: submissionsCount })
   } catch (err) {
     next(err)
   }

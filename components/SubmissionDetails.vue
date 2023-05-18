@@ -1,5 +1,5 @@
 <template>
-  <a :href="`/submission/${submissionId}`" :class="{ container: true, removeBackground: !background}" :style="{padding: rank ? '1.6rem 3.6rem' : '1.6rem 0' }">
+  <div @click="$router.push(`/submission/${submissionId}`)" :class="{ container: true, removeBackground: !background}" :style="{padding: rank ? '1.6rem 3.6rem' : '1.6rem 0' }">
     <div v-if="rank" class="rank">
       <span class="hash">#</span>
       <span class="value">{{ rank }}</span>
@@ -85,7 +85,7 @@
         <span class="text">{{ bookmark }}</span>
       </div> -->
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
@@ -184,6 +184,7 @@ $separator-space: 2rem;
   justify-content: space-between;
   border-radius: 1.6rem;
   background-color: $background-dark-secondary;
+  cursor: pointer;
 
   .rank {
     flex: 32;

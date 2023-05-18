@@ -48,11 +48,15 @@
     <div class="profTab">
       <div
         class="ojicon"
-        v-html="require(`~/assets/svg/icon/handlesIcon.svg?raw`)"
+        v-html="require(`~/assets/svg/category/CODEFORCES.svg?raw`)"
+      />
+      <div
+        class="ojicon"
+        v-html="require(`~/assets/svg/category/CODECHEF.svg?raw`)"
       />
     </div>
 
-    <Codebook class="codebookTable" :codebook-id="id" :new-button="false" />
+    <Codebook class="codebookTable" :codebook="codebook" :topics="topics" :new-button="false" />
   </div>
 </template>
 
@@ -61,9 +65,10 @@ export default {
   async asyncData({ $axios, $auth, params }) {
     const username = params.username || $auth.user.username
     const user = await $axios.$get(`/user/${username}/basic`)
-    const handles = await $axios.$get(`/user/${username}/handles`)
+    const { handles } = await $axios.$get(`/user/${username}/handles`)
     const codebook = await $axios.$get(`/codebook/${user.id}`)
-    return { ...user, handles, codebook }
+    const topics = await $axios.$get(`/topics`)
+    return { ...user, handles, codebook, topics }
   },
 }
 </script>
@@ -174,6 +179,13 @@ export default {
     margin-left: 0;
     margin-right: 0;
     background-color: $background-dark-secondary;
+    padding-left: 16rem;
+    
+    .ojicon {
+      width: 3rem;
+      color: $text-light-primary;
+      margin-right: 2rem;
+    }
   }
 
   .codebookTable {

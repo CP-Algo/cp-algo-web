@@ -1,5 +1,63 @@
 module.exports = [
   {
+    id: 'EFFICIENT_SEARCH_ALGORITHMS',
+    name: 'Efficient Search Algorithms',
+    subCategories: [
+      {
+        id: 'BASIC_SEARCH_ALGORITHMS',
+        name: 'Basic',
+        algorithms: [
+          {
+            id: 'BINARY_SEARCH',
+            name: 'Binary Search',
+            description:
+              'Given a sorted binary array, find the first occurrence of $1$.',
+            inputFormat:
+              '$N$\n' +
+              '$A_1, A_2, \\cdots, A_{N}$',
+            inputDefinition:
+              '$N =$ Array size\n' +
+              '$A =$ Sorted array',
+            inputConstraints:
+              '$1 \\le N \\le 10^6$\n' +
+              '$0 \\le A_i \\le 1$',
+            outputFormat: '$\\tt{FirstOne}$',
+            outputDefinition:
+              '$\\tt{FirstOne} =$ Index of the first element that equals to $1$, $-1$ if none exists.' +
+              'More formally, the smallest index, $\\tt{FirstOne}$, satisfying $A_{\\tt{FirstOne}} = 1$. And $-1$ if no such index exists.',
+            outputConstraints: '$-1 \\leq \\tt{FirstOne} < N$',
+          },
+        ],
+      },
+      {
+        id: 'ADVANCED_SEARCH_ALGORITHMS',
+        name: 'Advanced',
+        algorithms: [
+          {
+            id: 'TERNARY_SEARCH',
+            name: 'Ternary Search',
+            description:
+              'Given a sorted binary array, find the first occurrence of $1$.',
+            inputFormat:
+              '$N$\n' +
+              '$A_1, A_2, \\cdots, A_{N}$',
+            inputDefinition:
+              '$N =$ Array size\n' +
+              '$A =$ Sorted array',
+            inputConstraints:
+              '$1 \\le N \\le 10^6$\n' +
+              '$0 \\le A_i \\le 1$',
+            outputFormat: '$\\tt{FirstOne}$',
+            outputDefinition:
+              '$\\tt{FirstOne} =$ Index of the first element that equals to $1$, $-1$ if none exists.' +
+              'More formally, the smallest index, $\\tt{FirstOne}$, satisfying $A_{\\tt{FirstOne}} = 1$. And $-1$ if no such index exists.',
+            outputConstraints: '$-1 \\leq \\tt{FirstOne} < N$',
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: 'DATA_STRUCTURES',
     name: 'Data Structures',
     subCategories: [
@@ -41,38 +99,6 @@ module.exports = [
     id: 'DYNAMIC_PROGRAMMING',
     name: 'Dynamic Programming',
     subCategories: []
-  },
-  {
-    id: 'EFFICIENT_SEARCH_ALGORITHMS',
-    name: 'Efficient Search Algorithms',
-    subCategories: [
-      {
-        id: 'ADVANCED_SEARCH_ALGORITHMS',
-        name: 'Advanced',
-        algorithms: [
-          {
-            id: 'BINARY_SEARCH',
-            name: 'Binary Search',
-            description:
-              'Given a sorted binary array, find the first occurrence of $1$.',
-            inputFormat:
-              '$N$\n' +
-              '$A_1, A_2, \\cdots, A_{N}$',
-            inputDefinition:
-              '$N =$ Array size\n' +
-              '$A =$ Sorted array',
-            inputConstraints:
-              '$1 \\le N \\le 10^6$\n' +
-              '$0 \\le A_i \\le 1$',
-            outputFormat: '$\\tt{FirstOne}$',
-            outputDefinition:
-              '$\\tt{FirstOne} =$ Index of the first element that equals to $1$, $-1$ if none exists.' +
-              'More formally, the smallest index, $\\tt{FirstOne}$, satisfying $A_{\\tt{FirstOne}} = 1$. And $-1$ if no such index exists.',
-            outputConstraints: '$-1 \\leq \\tt{FirstOne} < N$',
-          },
-        ],
-      },
-    ],
   },
   {
     id: 'FAST_FOURIER_TRANSFORM',

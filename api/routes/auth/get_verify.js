@@ -5,9 +5,9 @@ const {
   models: { User, Verification },
 } = require('../../models')
 
-router.post('/verify', async function (req, res, next) {
+router.get('/verify', async function (req, res, next) {
   try {
-    const { user: userID, token } = req.body
+    const { user: userID, token } = req.query
     const verification = await Verification.findOne({
       where: {
         UserId: userID,

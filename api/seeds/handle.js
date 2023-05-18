@@ -14,8 +14,8 @@ module.exports = {
           UserId: user.id,
         },
         {
-          site: 'LIGHTOJ',
-          username: 'DrSwadLOJ',
+          site: 'CODECHEF',
+          username: 'DrSwadCC',
           UserId: user.id,
         },
       ]

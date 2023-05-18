@@ -20,7 +20,7 @@
     <ProfilePopupOption
       icon="my-submissions"
       title="My Submissions"
-      url="/my-submissions"
+      url="/submissions"
     />
     <ProfilePopupOption icon="settings" title="Settings" url="/settings" />
     <ProfilePopupOption icon="logout" title="Log out" :click="logout" />
