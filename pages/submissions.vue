@@ -162,7 +162,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin: 3.6rem 4.7rem;
+  margin: 3.6rem auto;
 
   .option {
     display: flex;

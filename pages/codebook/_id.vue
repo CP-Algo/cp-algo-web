@@ -38,8 +38,7 @@ export default {
 .page-container {
   display: flex;
   flex-direction: column;
-  margin-top: 3.6rem;
-  margin-left: 6rem;
+  margin: 3.6rem auto;
 
   .header {
     display: flex;

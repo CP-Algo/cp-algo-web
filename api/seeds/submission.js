@@ -16,6 +16,8 @@ module.exports = {
           AlgorithmId: 'BINARY_SEARCH',
           LanguageId: 54,
           upvotes: 1,
+          executionTime: 0.007,
+          executionMemory: 12,
         },
         {
           timeComplexity: 'N',

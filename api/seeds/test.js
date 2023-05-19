@@ -21,6 +21,20 @@ module.exports = {
             '0 0 0 0 0',
           output: '-1',
         },
+        {
+          AlgorithmId: 'BINARY_SEARCH',
+          input:
+            '10\n' +
+            '0 0 0 0 0 1 1 1 1 1',
+          output: '5',
+        },
+        {
+          AlgorithmId: 'BINARY_SEARCH',
+          input:
+            '10\n' +
+            '0 0 1 1 1 1 1 1 1 1',
+          output: '2',
+        },
       ]
       await Test.bulkCreate(tests)
     }

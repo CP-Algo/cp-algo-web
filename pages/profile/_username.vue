@@ -77,8 +77,7 @@ export default {
 .page-container {
   display: flex;
   flex-direction: column;
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0 auto;
 
   .header {
     display: flex;

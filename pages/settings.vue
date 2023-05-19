@@ -57,7 +57,7 @@ export default {
 .page-container {
   display: flex;
   align-items: stretch;
-  margin-left: 0;
+  margin: 0 auto;
 
   .sidebar {
     display: flex;

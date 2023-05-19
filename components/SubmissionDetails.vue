@@ -65,7 +65,7 @@
           v-html="require(`~/assets/svg/icon/memoryIcon.svg?raw`)"
         />
         <span class="text">{{
-          requiredMemory ? `${requiredMemory}M` : '-'
+          requiredMemory ? `${requiredMemory}K` : '-'
         }}</span>
       </div>
     </div>

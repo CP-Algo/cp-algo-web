@@ -92,21 +92,6 @@ export default {
 using namespace std;
 
 int main() {
-    int n;
-    cin >> n;
-    
-    vector<int> a(n);
-    for (int &i : a) cin >> i;
-
-    int ans;
-    for (ans = 0; ans < n; ans++) {
-      if (a[ans] == 1) break;
-    }
-    
-    if (ans == n) ans = -1;
-
-    cout << ans << '\\n';
-    
     return 0;
 }`,
       language: { id: '', name: '', ace_id: '' },
